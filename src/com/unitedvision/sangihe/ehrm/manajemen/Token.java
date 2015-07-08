@@ -94,7 +94,7 @@ public class Token implements Serializable {
 		return this.pegawai;
 	}
 
-	public void setOperator(Pegawai pegawai) {
+	public void setPegawai(Pegawai pegawai) {
 		this.pegawai = pegawai;
 	}
 

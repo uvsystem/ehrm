@@ -5,8 +5,6 @@ import java.sql.Time;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "absen")
@@ -21,7 +19,6 @@ public class Hadir extends Absen {
 		super();
 	}
 
-	@Temporal(TemporalType.TIME)
 	@Column(name = "pagi")
 	public Time getPagi() {
 		return pagi;
@@ -31,7 +28,6 @@ public class Hadir extends Absen {
 		this.pagi = pagi;
 	}
 
-	@Temporal(TemporalType.TIME)
 	@Column(name = "pengecekan_satu")
 	public Time getPengecekanPertama() {
 		return pengecekanPertama;
@@ -41,7 +37,6 @@ public class Hadir extends Absen {
 		this.pengecekanPertama = pengecekanPertama;
 	}
 
-	@Temporal(TemporalType.TIME)
 	@Column(name = "pengecekan_dua")
 	public Time getPengecekanKedua() {
 		return pengecekanKedua;
@@ -51,7 +46,6 @@ public class Hadir extends Absen {
 		this.pengecekanKedua = pengecekanKedua;
 	}
 
-	@Temporal(TemporalType.TIME)
 	@Column(name = "sore")
 	public Time getSore() {
 		return sore;

@@ -1,16 +1,20 @@
 package com.unitedvision.sangihe.ehrm.manajemen;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
+@Entity
+@Table(name = "operator")
 public class Operator {
 
 	public enum Role {

@@ -11,8 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "surat_tugas")
@@ -54,7 +54,6 @@ public class SuratTugas {
 		this.nomor = nomor;
 	}
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "tanggal")
 	public Date getTanggal() {
 		return tanggal;
@@ -91,7 +90,8 @@ public class SuratTugas {
 		this.maksud = maksud;
 	}
 
-	@OneToMany(mappedBy = "suratTugas", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@JsonIgnore
+	@OneToMany(mappedBy = "suratTugas", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<PemegangTugas> getDaftarPemegangTugas() {
 		return daftarPemegangTugas;
 	}

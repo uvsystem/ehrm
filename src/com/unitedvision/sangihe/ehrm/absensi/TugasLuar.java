@@ -1,7 +1,9 @@
 package com.unitedvision.sangihe.ehrm.absensi;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
@@ -16,7 +18,8 @@ public class TugasLuar extends Absen {
 		super();
 	}
 
-	@Column(name = "sppd", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "sppd", nullable = false)
 	public Sppd getSppd() {
 		return sppd;
 	}

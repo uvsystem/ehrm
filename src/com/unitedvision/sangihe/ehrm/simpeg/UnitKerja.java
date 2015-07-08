@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "unit_kerja")
 public class UnitKerja {
@@ -75,6 +77,7 @@ public class UnitKerja {
 		this.singkatan = singkatan;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "unitKerja", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<SubUnitKerja> getDaftarSubUnit() {
 		return daftarSubUnit;
@@ -84,6 +87,7 @@ public class UnitKerja {
 		this.daftarSubUnit = daftarSubUnit;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "unitKerja", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<Pegawai> getDaftarPegawai() {
 		return daftarPegawai;
@@ -93,6 +97,7 @@ public class UnitKerja {
 		this.daftarPegawai = daftarPegawai;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "unitKerja", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
 	public List<Jabatan> getDaftarJabatan() {
 		return daftarJabatan;

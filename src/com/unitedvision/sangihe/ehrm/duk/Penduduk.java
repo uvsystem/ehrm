@@ -9,8 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "penduduk")
@@ -54,7 +52,6 @@ public class Penduduk {
 		this.nama = nama;
 	}
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "tanggal_lahir", nullable = false)
 	public Date getTanggalLahir() {
 		return tanggalLahir;

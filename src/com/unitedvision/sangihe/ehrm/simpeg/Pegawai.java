@@ -17,7 +17,11 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.unitedvision.sangihe.ehrm.absensi.Absen;
+import com.unitedvision.sangihe.ehrm.absensi.Cuti;
+import com.unitedvision.sangihe.ehrm.absensi.Hadir;
+import com.unitedvision.sangihe.ehrm.absensi.Izin;
+import com.unitedvision.sangihe.ehrm.absensi.Sakit;
+import com.unitedvision.sangihe.ehrm.absensi.TugasLuar;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator;
@@ -39,7 +43,12 @@ public class Pegawai implements Pejabat {
 	private List<Token> daftarToken;
 	private List<Operator> daftarOperator;
 	private List<PemegangTugas> daftarTugas;
-	private List<Absen> daftarAbsen;
+
+	private List<Hadir> daftarHadir;
+	private List<TugasLuar> daftarTugasLuar;
+	private List<Sakit> daftarSakit;
+	private List<Izin> daftarIzin;
+	private List<Cuti> daftarCuti;
 	
 	public Pegawai() {
 		super();
@@ -65,7 +74,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToOne(mappedBy = "penduduk", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	public Penduduk getPenduduk() {
 		return penduduk;
 	}
@@ -94,7 +103,7 @@ public class Pegawai implements Pejabat {
 		this.password = password;
 	}
 
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
 	public List<RiwayatPangkat> getDaftarPangkat() {
 		return daftarPangkat;
 	}
@@ -103,13 +112,31 @@ public class Pegawai implements Pejabat {
 		this.daftarPangkat = daftarPangkat;
 	}
 
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
 	public List<RiwayatJabatan> getDaftarJabatan() {
 		return daftarJabatan;
 	}
 
 	public void setDaftarJabatan(List<RiwayatJabatan> daftarJabatan) {
 		this.daftarJabatan = daftarJabatan;
+	}
+
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	public List<Operator> getDaftarOperator() {
+		return daftarOperator;
+	}
+
+	public void setDaftarOperator(List<Operator> daftarOperator) {
+		this.daftarOperator = daftarOperator;
+	}
+
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	public List<PemegangTugas> getDaftarTugas() {
+		return daftarTugas;
+	}
+
+	public void setDaftarTugas(List<PemegangTugas> daftarTugas) {
+		this.daftarTugas = daftarTugas;
 	}
 
 	@JsonIgnore
@@ -122,31 +149,54 @@ public class Pegawai implements Pejabat {
 		this.daftarToken = daftarToken;
 	}
 
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
-	public List<Operator> getDaftarOperator() {
-		return daftarOperator;
-	}
-
-	public void setDaftarOperator(List<Operator> daftarOperator) {
-		this.daftarOperator = daftarOperator;
-	}
-
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, orphanRemoval = true)
-	public List<PemegangTugas> getDaftarTugas() {
-		return daftarTugas;
-	}
-
-	public void setDaftarTugas(List<PemegangTugas> daftarTugas) {
-		this.daftarTugas = daftarTugas;
-	}
-
+	@JsonIgnore
 	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-	public List<Absen> getDaftarAbsen() {
-		return daftarAbsen;
+	public List<Hadir> getDaftarHadir() {
+		return daftarHadir;
 	}
 
-	public void setDaftarAbsen(List<Absen> daftarAbsen) {
-		this.daftarAbsen = daftarAbsen;
+	public void setDaftarHadir(List<Hadir> daftarHadir) {
+		this.daftarHadir = daftarHadir;
+	}
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	public List<TugasLuar> getDaftarTugasLuar() {
+		return daftarTugasLuar;
+	}
+
+	public void setDaftarTugasLuar(List<TugasLuar> daftarTugasLuar) {
+		this.daftarTugasLuar = daftarTugasLuar;
+	}
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	public List<Sakit> getDaftarSakit() {
+		return daftarSakit;
+	}
+
+	public void setDaftarSakit(List<Sakit> daftarSakit) {
+		this.daftarSakit = daftarSakit;
+	}
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	public List<Izin> getDaftarIzin() {
+		return daftarIzin;
+	}
+
+	public void setDaftarIzin(List<Izin> daftarIzin) {
+		this.daftarIzin = daftarIzin;
+	}
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	public List<Cuti> getDaftarCuti() {
+		return daftarCuti;
+	}
+
+	public void setDaftarCuti(List<Cuti> daftarCuti) {
+		this.daftarCuti = daftarCuti;
 	}
 
 	@JsonIgnore

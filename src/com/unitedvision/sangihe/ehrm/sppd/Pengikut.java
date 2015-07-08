@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "pengikut")
@@ -56,7 +54,6 @@ public class Pengikut {
 		this.nama = nama;
 	}
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "tanggal_lahir")
 	public Date getTanggalLahir() {
 		return tanggalLahir;

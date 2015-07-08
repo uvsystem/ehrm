@@ -4,10 +4,14 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Digunakan hanya untuk mapping, bukan untuk pengolahan data kegiatan.
@@ -15,6 +19,9 @@ import javax.persistence.OneToMany;
  * @author Deddy Christoper Kakunsi
  *
  */
+
+@Entity
+@Table(name = "kegiatan")
 public class Kegiatan {
 
 	private long id;
@@ -45,6 +52,7 @@ public class Kegiatan {
 		this.nama = nama;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "kegiatan", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<Sppd> getDaftarSppd() {
 		return daftarSppd;

@@ -9,9 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unitedvision.sangihe.ehrm.DateUtil;
 
 @MappedSuperclass
 public abstract class Riwayat {
@@ -54,8 +55,8 @@ public abstract class Riwayat {
 	public void setPegawai(Pegawai pegawai) {
 		this.pegawai = pegawai;
 	}
-	
-	@Temporal(TemporalType.DATE)
+
+	@JsonIgnore
 	@Column(name = "tanggal_mulai")
 	public Date getTanggalMulai() {
 		return tanggalMulai;
@@ -64,8 +65,13 @@ public abstract class Riwayat {
 	public void setTanggalMulai(Date tanggalMulai) {
 		this.tanggalMulai = tanggalMulai;
 	}
+
+	@Transient
+	public String getTanggalMulaiStr() {
+		return DateUtil.toFormattedStringDate(tanggalMulai, "-");
+	}
 	
-	@Temporal(TemporalType.DATE)
+	@JsonIgnore
 	@Column(name = "tanggal_selesai")
 	public Date getTanggalSelesai() {
 		return tanggalSelesai;
@@ -73,6 +79,11 @@ public abstract class Riwayat {
 	
 	public void setTanggalSelesai(Date tanggalSelesai) {
 		this.tanggalSelesai = tanggalSelesai;
+	}
+
+	@Transient
+	public String getTanggalSelesaiStr() {
+		return DateUtil.toFormattedStringDate(tanggalSelesai, "-");
 	}
 
 	@Transient

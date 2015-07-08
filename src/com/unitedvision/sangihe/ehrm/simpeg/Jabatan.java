@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "jabatan")
 public class Jabatan {
@@ -76,6 +78,7 @@ public class Jabatan {
 		this.nama = nama;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "jabatan", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
 	public List<RiwayatJabatan> getDaftarRiwayat() {
 		return daftarRiwayat;

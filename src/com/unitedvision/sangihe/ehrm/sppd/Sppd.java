@@ -16,8 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -99,6 +97,7 @@ public class Sppd {
 		this.kegiatan = kegiatan;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "sppd", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<TugasLuar> getDaftarAbsen() {
 		return daftarAbsen;
@@ -220,7 +219,6 @@ public class Sppd {
 		}
 
 		@JsonIgnore
-		@Temporal(TemporalType.DATE)
 		@Column(name = "tanggal_berangkat", nullable = false)
 		public Date getTanggalBerangkat() {
 			return tanggalBerangkat;

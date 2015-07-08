@@ -1,7 +1,9 @@
 package com.unitedvision.sangihe.ehrm.simpeg;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,7 +16,8 @@ public class RiwayatJabatan extends Riwayat {
 		super();
 	}
 
-	@Column(name = "jabatan", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "jabatan", nullable = false)
 	public Jabatan getJabatan() {
 		return jabatan;
 	}
