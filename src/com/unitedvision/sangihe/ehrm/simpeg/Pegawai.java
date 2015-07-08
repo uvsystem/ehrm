@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unitedvision.sangihe.ehrm.absensi.Absen;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator;
@@ -38,6 +39,7 @@ public class Pegawai implements Pejabat {
 	private List<Token> daftarToken;
 	private List<Operator> daftarOperator;
 	private List<PemegangTugas> daftarTugas;
+	private List<Absen> daftarAbsen;
 	
 	public Pegawai() {
 		super();
@@ -136,6 +138,15 @@ public class Pegawai implements Pejabat {
 
 	public void setDaftarTugas(List<PemegangTugas> daftarTugas) {
 		this.daftarTugas = daftarTugas;
+	}
+
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	public List<Absen> getDaftarAbsen() {
+		return daftarAbsen;
+	}
+
+	public void setDaftarAbsen(List<Absen> daftarAbsen) {
+		this.daftarAbsen = daftarAbsen;
 	}
 
 	@JsonIgnore

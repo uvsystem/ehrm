@@ -7,11 +7,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
+
 @MappedSuperclass
 public abstract class Absen {
 
 	private long id;
 	private Kalendar kalendar;
+	private Pegawai pegawai;
 	
 	public Absen() {
 		super();
@@ -35,5 +38,15 @@ public abstract class Absen {
 
 	public void setKalendar(Kalendar kalendar) {
 		this.kalendar = kalendar;
+	}
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "pegawai", nullable = false)
+	public Pegawai getPegawai() {
+		return pegawai;
+	}
+
+	public void setPegawai(Pegawai pegawai) {
+		this.pegawai = pegawai;
 	}
 }

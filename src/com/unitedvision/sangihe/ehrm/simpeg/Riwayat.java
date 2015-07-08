@@ -17,7 +17,7 @@ import javax.persistence.Transient;
 public abstract class Riwayat {
 
 	private long id;
-	private String nomor;
+	private String nomorSk;
 	private Pegawai pegawai;
 	private Date tanggalMulai;
 	private Date tanggalSelesai;
@@ -36,13 +36,13 @@ public abstract class Riwayat {
 	 * Nomor Surat Pembuktian
 	 * @return
 	 */
-	@Column(name = "nomor")
-	public String getNomor() {
-		return nomor;
+	@Column(name = "nomor_sk")
+	public String getNomorSk() {
+		return nomorSk;
 	}
 
-	public void setNomor(String nomor) {
-		this.nomor = nomor;
+	public void setNomorSk(String nomorSk) {
+		this.nomorSk = nomorSk;
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)

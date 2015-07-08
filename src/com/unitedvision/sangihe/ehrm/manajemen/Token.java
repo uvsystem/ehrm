@@ -27,7 +27,7 @@ public class Token implements Serializable {
 	private Date tanggalBuat;
 	private Date tanggalExpire;
 	
-	private Pegawai pegawai;;
+	private Pegawai pegawai;
 
 	public enum StatusToken {
 		AKTIF,
