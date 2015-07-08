@@ -40,7 +40,7 @@ public class SpringAuthenticationBasedAuthorizationProvider extends Authorizatio
 		
 		switch (authority) {
 			case "ROLE_ADMIN": return Role.ADMIN;
-			case "ROLE_PEGAWAI": return Role.PEGAWAI;
+			case "ROLE_OPERATOR": return Role.OPERATOR;
 			default: return null;
 		}
 	}

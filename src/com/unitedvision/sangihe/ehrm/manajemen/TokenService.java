@@ -7,6 +7,6 @@ public interface TokenService {
 
 	Token get(String token) throws EntityNotExistException, OutOfDateEntityException;
 	Token create(String nip);
-	void lock(String token);
+	Token lock(String token);
 
 }

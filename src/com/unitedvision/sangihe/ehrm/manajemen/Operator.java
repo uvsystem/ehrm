@@ -19,7 +19,7 @@ public class Operator {
 
 	public enum Role {
 		ADMIN,
-		PEGAWAI
+		OPERATOR
 	}
 	
 	private long id;

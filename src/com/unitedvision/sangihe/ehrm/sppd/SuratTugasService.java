@@ -7,7 +7,10 @@ import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 public interface SuratTugasService {
 
 	SuratTugas simpan(SuratTugas suratTugas);
-	SuratTugas simpan(SuratTugas suratTugas, List<Pegawai> daftarPegawai);
+	List<PemegangTugas> simpan(SuratTugas suratTugas, List<Pegawai> daftarPegawai);
+	
+	SuratTugas izinkanPengajuan(SuratTugas suratTugas);
+	SuratTugas tolaskPengajuan(SuratTugas suratTugas);
 	
 	SuratTugas tambahPegawai(SuratTugas suratTugas, Pegawai pegawai);
 	SuratTugas tambahPegawai(long idSuratTugas, Pegawai pegawai);

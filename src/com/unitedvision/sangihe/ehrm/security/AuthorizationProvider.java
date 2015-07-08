@@ -32,8 +32,8 @@ public class AuthorizationProvider {
 	public String getUserRoleStr(final Role role) {
 		if (role == Role.ADMIN) {
 			return "admin";
-		} else if (role == Role.PEGAWAI) {
-			return "pegawai";
+		} else if (role == Role.OPERATOR) {
+			return "operator";
 		} else {
 			return "guest";
 		}

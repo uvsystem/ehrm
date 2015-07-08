@@ -63,9 +63,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		if (role.equals(Role.ADMIN)) {
 			authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-			authList.add(new SimpleGrantedAuthority("ROLE_PEGAWAI"));
-		} else if (role.equals(Role.PEGAWAI)) {
-			authList.add(new SimpleGrantedAuthority("ROLE_PEGAWAI"));
+			authList.add(new SimpleGrantedAuthority("ROLE_OPERATOR"));
+		} else if (role.equals(Role.OPERATOR)) {
+			authList.add(new SimpleGrantedAuthority("ROLE_OPERATOR"));
 		}
 
 		return authList;

@@ -18,10 +18,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "surat_tugas")
 public class SuratTugas {
 
+	public enum Status {
+		PENDING,
+		DITERIMA,
+		DITOLAK
+	}
+	
 	private long id;
 	private Date tanggal;
 	private String nomor;
 	private int jumlahHari;
+	private Status status;
 	
 	/**
 	 * Daerah Tujuan Tugas
@@ -88,6 +95,15 @@ public class SuratTugas {
 
 	public void setMaksud(String maksud) {
 		this.maksud = maksud;
+	}
+
+	@Column(name = "status", nullable = false)
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	@JsonIgnore
