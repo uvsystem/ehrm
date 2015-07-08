@@ -23,6 +23,8 @@ public class DateUtil {
 	
 	public static final long DAY_IN_MILIS = 86400000L;
 	
+	public final static String DEFAULT_DELIMETER = "-";
+	
 	public static long toMilis(int year, int month, int day) {
 		LocalDate epoch = LocalDate.of(EPOCH_YEAR, EPOCH_MONTH, EPOCH_DAY);
 		
@@ -82,6 +84,11 @@ public class DateUtil {
 		return toDate(localDate);
 	}
 
+	/**
+	 * Format mm/DD/YYYY
+	 * @param dateString
+	 * @return
+	 */
 	public static Date getDate(String dateString) {
 		if (dateString == null || dateString.equals(""))
 			return null;
@@ -290,11 +297,21 @@ public class DateUtil {
 		return LocalDate.now(zoneId);
 	}
 	
+	/**
+	 * Format mm/DD/YYYY
+	 * @param dateString
+	 * @return
+	 */
 	public static LocalDate getLocalDate(String dateString) {
-		return getLocalDate(dateString, "-");
-		//return LocalDate.parse(dateString);
+		return getLocalDate(dateString, DEFAULT_DELIMETER);
 	}
 	
+	/**
+	 * Format mm/DD/YYYY
+	 * @param dateString
+	 * @param delim
+	 * @return
+	 */
 	public static LocalDate getLocalDate(String dateString, String delim) {
 		if (dateString == null || dateString.equals(""))
 			return null;
@@ -384,7 +401,7 @@ public class DateUtil {
 
 	public static boolean isFormatted(String dateString) {
 		// bulan-tanggal-tahun
-		String arrStr[] = dateString.split("-");
+		String arrStr[] = dateString.split(DEFAULT_DELIMETER);
 		
 		if ( arrStr[0].length() < 4)
 			return false;
@@ -393,7 +410,7 @@ public class DateUtil {
 	
 	public static String formatDateString(String dateString) {
 		// bulan-tanggal-tahun
-		String arrStr[] = dateString.split("-");
+		String arrStr[] = dateString.split(DEFAULT_DELIMETER);
 
 		if (arrStr[1].length() == 1)
 			arrStr[1] = String.format("0%s", arrStr[1]);

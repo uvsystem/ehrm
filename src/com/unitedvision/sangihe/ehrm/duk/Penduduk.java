@@ -71,7 +71,7 @@ public class Penduduk {
 	}
 	
 	@Embeddable
-	public class Kontak {
+	public static class Kontak {
 		
 		private String email;
 		private String telepon;

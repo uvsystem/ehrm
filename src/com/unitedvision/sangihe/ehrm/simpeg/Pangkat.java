@@ -10,42 +10,35 @@ public enum Pangkat {
 	public String getNama() {
 		
 		switch(this) {
-			case IA:
-				return "";
-			case IB:
-				return "";
-			case IC:
-				return "";
-			case ID:
-				return "";
 			case IIA:
-				return "";
+				return "Pengatur Muda";
 			case IIB:
-				return "";
+				return "Pengatur Muda Tingkat 1";
 			case IIC:
-				return "";
+				return "Pengatur";
 			case IID:
 				return "Pengatur Tingkat I";
 			case IIIA:
-				return "";
+				return "Penata Muda";
 			case IIIB:
-				return "";
+				return "Penata Muda Tingkat 1";
 			case IIIC:
-				return "";
+				return "Penata";
 			case IIID:
-				return "";
+				return "Penata Tingkat 1";
 			case IVA:
-				return "";
+				return "Pembina";
 			case IVB:
-				return "";
+				return "Pembina Tingkat 1";
 			case IVC:
-				return "";
+				return "Pembina Utama Muda";
 			case IVD:
-				return "";
+				return "Pembina Utama Madya";
 			case IVE:
+				return "Pembina Utama";
+			default:
 				return "";
 		}
 
-		return "";
 	}
 }
