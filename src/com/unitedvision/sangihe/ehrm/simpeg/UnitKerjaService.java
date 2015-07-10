@@ -15,6 +15,6 @@ public interface UnitKerjaService {
 	UnitKerja get(long idUnitkerja) throws EntityNotExistException;
 	UnitKerja get(String singkatan) throws EntityNotExistException;
 	
-	List<UnitKerja> get(UnitKerja unitKerja) throws EntityNotExistException;
+	List<SubUnitKerja> get(UnitKerja unitKerja) throws EntityNotExistException;
 	
 }

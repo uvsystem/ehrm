@@ -4,10 +4,15 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -15,6 +20,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "unit_kerja")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(
+	name = "discriminator",
+	discriminatorType = DiscriminatorType.STRING
+)
+@DiscriminatorValue("SKPD")
 public class UnitKerja {
 
 	public enum TipeUnitKerja {
@@ -39,7 +50,7 @@ public class UnitKerja {
 	public UnitKerja() {
 		super();
 	}
-
+	
 	@Id
 	@GeneratedValue
 	public long getId() {
