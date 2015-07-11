@@ -49,4 +49,39 @@ public abstract class Absen {
 	public void setPegawai(Pegawai pegawai) {
 		this.pegawai = pegawai;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result
+				+ ((kalendar == null) ? 0 : kalendar.hashCode());
+		result = prime * result + ((pegawai == null) ? 0 : pegawai.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Absen other = (Absen) obj;
+		if (id != other.id)
+			return false;
+		if (kalendar == null) {
+			if (other.kalendar != null)
+				return false;
+		} else if (!kalendar.equals(other.kalendar))
+			return false;
+		if (pegawai == null) {
+			if (other.pegawai != null)
+				return false;
+		} else if (!pegawai.equals(other.pegawai))
+			return false;
+		return true;
+	}
 }

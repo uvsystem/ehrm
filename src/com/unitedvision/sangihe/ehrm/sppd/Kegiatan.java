@@ -62,4 +62,39 @@ public class Kegiatan {
 		this.daftarSppd = daftarSppd;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((daftarSppd == null) ? 0 : daftarSppd.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((nama == null) ? 0 : nama.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Kegiatan other = (Kegiatan) obj;
+		if (daftarSppd == null) {
+			if (other.daftarSppd != null)
+				return false;
+		} else if (!daftarSppd.equals(other.daftarSppd))
+			return false;
+		if (id != other.id)
+			return false;
+		if (nama == null) {
+			if (other.nama != null)
+				return false;
+		} else if (!nama.equals(other.nama))
+			return false;
+		return true;
+	}
+
 }

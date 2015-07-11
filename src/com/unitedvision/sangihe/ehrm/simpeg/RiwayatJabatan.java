@@ -25,4 +25,29 @@ public class RiwayatJabatan extends Riwayat {
 	public void setJabatan(Jabatan jabatan) {
 		this.jabatan = jabatan;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((jabatan == null) ? 0 : jabatan.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RiwayatJabatan other = (RiwayatJabatan) obj;
+		if (jabatan == null) {
+			if (other.jabatan != null)
+				return false;
+		} else if (!jabatan.equals(other.jabatan))
+			return false;
+		return true;
+	}
 }

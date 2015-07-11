@@ -97,5 +97,84 @@ public class Penduduk {
 		public void setTelepon(String telepon) {
 			this.telepon = telepon;
 		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((email == null) ? 0 : email.hashCode());
+			result = prime * result
+					+ ((telepon == null) ? 0 : telepon.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Kontak other = (Kontak) obj;
+			if (email == null) {
+				if (other.email != null)
+					return false;
+			} else if (!email.equals(other.email))
+				return false;
+			if (telepon == null) {
+				if (other.telepon != null)
+					return false;
+			} else if (!telepon.equals(other.telepon))
+				return false;
+			return true;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((kontak == null) ? 0 : kontak.hashCode());
+		result = prime * result + ((nama == null) ? 0 : nama.hashCode());
+		result = prime * result + ((nik == null) ? 0 : nik.hashCode());
+		result = prime * result
+				+ ((tanggalLahir == null) ? 0 : tanggalLahir.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Penduduk other = (Penduduk) obj;
+		if (id != other.id)
+			return false;
+		if (kontak == null) {
+			if (other.kontak != null)
+				return false;
+		} else if (!kontak.equals(other.kontak))
+			return false;
+		if (nama == null) {
+			if (other.nama != null)
+				return false;
+		} else if (!nama.equals(other.nama))
+			return false;
+		if (nik == null) {
+			if (other.nik != null)
+				return false;
+		} else if (!nik.equals(other.nik))
+			return false;
+		if (tanggalLahir == null) {
+			if (other.tanggalLahir != null)
+				return false;
+		} else if (!tanggalLahir.equals(other.tanggalLahir))
+			return false;
+		return true;
 	}
 }

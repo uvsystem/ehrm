@@ -98,40 +98,6 @@ public class Token implements Serializable {
 		this.pegawai = pegawai;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Token other = (Token) obj;
-		if (pegawai == null) {
-			if (other.pegawai != null)
-				return false;
-		} else if (!pegawai.equals(other.pegawai))
-			return false;
-		if (status != other.status)
-			return false;
-		if (tanggalBuat == null) {
-			if (other.tanggalBuat != null)
-				return false;
-		} else if (!tanggalBuat.equals(other.tanggalBuat))
-			return false;
-		if (tanggalExpire == null) {
-			if (other.tanggalExpire != null)
-				return false;
-		} else if (!tanggalExpire.equals(other.tanggalExpire))
-			return false;
-		if (token == null) {
-			if (other.token != null)
-				return false;
-		} else if (!token.equals(other.token))
-			return false;
-		return true;
-	}
-
 	public Date generateExpireDate() {
 		return generateExpireDate(tanggalBuat);
 	}
@@ -164,5 +130,53 @@ public class Token implements Serializable {
 		Date tomorrow = DateUtil.getDate(year, month, (day + 1));
 
 		return DateUtil.equals(tanggalExpire, tomorrow);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((pegawai == null) ? 0 : pegawai.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
+		result = prime * result
+				+ ((tanggalBuat == null) ? 0 : tanggalBuat.hashCode());
+		result = prime * result
+				+ ((tanggalExpire == null) ? 0 : tanggalExpire.hashCode());
+		result = prime * result + ((token == null) ? 0 : token.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Token other = (Token) obj;
+		if (pegawai == null) {
+			if (other.pegawai != null)
+				return false;
+		} else if (!pegawai.equals(other.pegawai))
+			return false;
+		if (status != other.status)
+			return false;
+		if (tanggalBuat == null) {
+			if (other.tanggalBuat != null)
+				return false;
+		} else if (!tanggalBuat.equals(other.tanggalBuat))
+			return false;
+		if (tanggalExpire == null) {
+			if (other.tanggalExpire != null)
+				return false;
+		} else if (!tanggalExpire.equals(other.tanggalExpire))
+			return false;
+		if (token == null) {
+			if (other.token != null)
+				return false;
+		} else if (!token.equals(other.token))
+			return false;
+		return true;
 	}
 }

@@ -118,4 +118,63 @@ public class UnitKerja {
 		this.daftarJabatan = daftarJabatan;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((daftarJabatan == null) ? 0 : daftarJabatan.hashCode());
+		result = prime * result
+				+ ((daftarPegawai == null) ? 0 : daftarPegawai.hashCode());
+		result = prime * result
+				+ ((daftarSubUnit == null) ? 0 : daftarSubUnit.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((nama == null) ? 0 : nama.hashCode());
+		result = prime * result
+				+ ((singkatan == null) ? 0 : singkatan.hashCode());
+		result = prime * result + ((tipe == null) ? 0 : tipe.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UnitKerja other = (UnitKerja) obj;
+		if (daftarJabatan == null) {
+			if (other.daftarJabatan != null)
+				return false;
+		} else if (!daftarJabatan.equals(other.daftarJabatan))
+			return false;
+		if (daftarPegawai == null) {
+			if (other.daftarPegawai != null)
+				return false;
+		} else if (!daftarPegawai.equals(other.daftarPegawai))
+			return false;
+		if (daftarSubUnit == null) {
+			if (other.daftarSubUnit != null)
+				return false;
+		} else if (!daftarSubUnit.equals(other.daftarSubUnit))
+			return false;
+		if (id != other.id)
+			return false;
+		if (nama == null) {
+			if (other.nama != null)
+				return false;
+		} else if (!nama.equals(other.nama))
+			return false;
+		if (singkatan == null) {
+			if (other.singkatan != null)
+				return false;
+		} else if (!singkatan.equals(other.singkatan))
+			return false;
+		if (tipe != other.tipe)
+			return false;
+		return true;
+	}
+
 }

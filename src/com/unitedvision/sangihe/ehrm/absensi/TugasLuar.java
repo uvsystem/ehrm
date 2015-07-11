@@ -27,4 +27,29 @@ public class TugasLuar extends Absen {
 	public void setSppd(Sppd sppd) {
 		this.sppd = sppd;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((sppd == null) ? 0 : sppd.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TugasLuar other = (TugasLuar) obj;
+		if (sppd == null) {
+			if (other.sppd != null)
+				return false;
+		} else if (!sppd.equals(other.sppd))
+			return false;
+		return true;
+	}
 }

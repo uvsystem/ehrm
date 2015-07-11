@@ -71,4 +71,52 @@ public class Pengikut {
 	public void setKeterangan(String keterangan) {
 		this.keterangan = keterangan;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result
+				+ ((keterangan == null) ? 0 : keterangan.hashCode());
+		result = prime * result + ((nama == null) ? 0 : nama.hashCode());
+		result = prime * result + ((sppd == null) ? 0 : sppd.hashCode());
+		result = prime * result
+				+ ((tanggalLahir == null) ? 0 : tanggalLahir.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pengikut other = (Pengikut) obj;
+		if (id != other.id)
+			return false;
+		if (keterangan == null) {
+			if (other.keterangan != null)
+				return false;
+		} else if (!keterangan.equals(other.keterangan))
+			return false;
+		if (nama == null) {
+			if (other.nama != null)
+				return false;
+		} else if (!nama.equals(other.nama))
+			return false;
+		if (sppd == null) {
+			if (other.sppd != null)
+				return false;
+		} else if (!sppd.equals(other.sppd))
+			return false;
+		if (tanggalLahir == null) {
+			if (other.tanggalLahir != null)
+				return false;
+		} else if (!tanggalLahir.equals(other.tanggalLahir))
+			return false;
+		return true;
+	}
 }

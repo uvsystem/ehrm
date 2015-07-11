@@ -88,4 +88,52 @@ public class Jabatan {
 		this.daftarRiwayat = daftarRiwayat;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((daftarRiwayat == null) ? 0 : daftarRiwayat.hashCode());
+		result = prime * result + ((eselon == null) ? 0 : eselon.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((nama == null) ? 0 : nama.hashCode());
+		result = prime * result + ((pangkat == null) ? 0 : pangkat.hashCode());
+		result = prime * result
+				+ ((unitKerja == null) ? 0 : unitKerja.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Jabatan other = (Jabatan) obj;
+		if (daftarRiwayat == null) {
+			if (other.daftarRiwayat != null)
+				return false;
+		} else if (!daftarRiwayat.equals(other.daftarRiwayat))
+			return false;
+		if (eselon != other.eselon)
+			return false;
+		if (id != other.id)
+			return false;
+		if (nama == null) {
+			if (other.nama != null)
+				return false;
+		} else if (!nama.equals(other.nama))
+			return false;
+		if (pangkat != other.pangkat)
+			return false;
+		if (unitKerja == null) {
+			if (other.unitKerja != null)
+				return false;
+		} else if (!unitKerja.equals(other.unitKerja))
+			return false;
+		return true;
+	}
+
 }

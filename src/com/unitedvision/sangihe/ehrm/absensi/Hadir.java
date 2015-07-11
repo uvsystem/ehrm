@@ -55,4 +55,51 @@ public class Hadir extends Absen {
 		this.sore = sore;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((pagi == null) ? 0 : pagi.hashCode());
+		result = prime * result
+				+ ((pengecekanKedua == null) ? 0 : pengecekanKedua.hashCode());
+		result = prime
+				* result
+				+ ((pengecekanPertama == null) ? 0 : pengecekanPertama
+						.hashCode());
+		result = prime * result + ((sore == null) ? 0 : sore.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Hadir other = (Hadir) obj;
+		if (pagi == null) {
+			if (other.pagi != null)
+				return false;
+		} else if (!pagi.equals(other.pagi))
+			return false;
+		if (pengecekanKedua == null) {
+			if (other.pengecekanKedua != null)
+				return false;
+		} else if (!pengecekanKedua.equals(other.pengecekanKedua))
+			return false;
+		if (pengecekanPertama == null) {
+			if (other.pengecekanPertama != null)
+				return false;
+		} else if (!pengecekanPertama.equals(other.pengecekanPertama))
+			return false;
+		if (sore == null) {
+			if (other.sore != null)
+				return false;
+		} else if (!sore.equals(other.sore))
+			return false;
+		return true;
+	}
+
 }

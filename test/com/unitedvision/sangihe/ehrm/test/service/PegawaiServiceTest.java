@@ -2,6 +2,8 @@ package com.unitedvision.sangihe.ehrm.test.service;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import javax.persistence.PersistenceException;
 
 import org.junit.Before;
@@ -15,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.DateUtil;
+import com.unitedvision.sangihe.ehrm.EntityNotExistException;
+import com.unitedvision.sangihe.ehrm.IdenticRelationshipException;
+import com.unitedvision.sangihe.ehrm.NullCollectionException;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.duk.repository.PendudukRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.Eselon;
@@ -23,9 +28,11 @@ import com.unitedvision.sangihe.ehrm.simpeg.JabatanService;
 import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.PegawaiService;
+import com.unitedvision.sangihe.ehrm.simpeg.RiwayatPangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerjaService;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja.TipeUnitKerja;
+import com.unitedvision.sangihe.ehrm.simpeg.repository.JabatanRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.RiwayatJabatanRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.RiwayatPangkatRepository;
@@ -50,14 +57,17 @@ public class PegawaiServiceTest {
 	private RiwayatPangkatRepository riwayatPangkatRepository;
 	@Autowired
 	private RiwayatJabatanRepository riwayatJabatanRepository;
+	@Autowired
+	private JabatanRepository jabatanRepository;
 
 	private long count;
 	private Pegawai pegawai;
-	private Jabatan jabatan;
+	private Jabatan jabatanKaSubBagDatabase;
+	private UnitKerja unitKerja;
 	
 	@Before
-	public void setup() {
-		UnitKerja unitKerja = new UnitKerja();
+	public void setup() throws IdenticRelationshipException, NullCollectionException {
+		unitKerja = new UnitKerja();
 		unitKerja.setNama("Pengelolaan Data Elektronik");
 		unitKerja.setSingkatan("BPDE");
 		unitKerja.setTipe(TipeUnitKerja.BAGIAN);
@@ -81,17 +91,42 @@ public class PegawaiServiceTest {
 		pegawai.setKontak(kontak);
 		
 		pegawaiService.simpan(pegawai);
-		
 		assertEquals(count + 1, pegawaiRepository.count());
 		assertEquals(countPenduduk + 1, pendudukRepository.count());
 		
-		jabatan = new Jabatan();
-		jabatan.setEselon(Eselon.V);
-		jabatan.setPangkat(Pangkat.IIIC);
-		jabatan.setUnitKerja(unitKerja);
-		jabatan.setNama("Kepala Sub Bagian Database");
+		long countRiwayatPangkat = riwayatPangkatRepository.count();
+
+		pegawaiService.promosi(pegawai, Pangkat.IIIA, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
 		
-		jabatanService.simpan(jabatan);
+		//assertEquals(Pangkat.IIIA, pegawai.getPangkat());
+		assertEquals(countRiwayatPangkat + 1, riwayatPangkatRepository.count());
+		
+		long countJabatan = jabatanRepository.count();
+		
+		jabatanKaSubBagDatabase = new Jabatan();
+		jabatanKaSubBagDatabase.setEselon(Eselon.V);
+		jabatanKaSubBagDatabase.setPangkat(Pangkat.IIIC);
+		jabatanKaSubBagDatabase.setUnitKerja(unitKerja);
+		jabatanKaSubBagDatabase.setNama("Kepala Sub Bagian Database");
+		
+		jabatanService.simpan(jabatanKaSubBagDatabase);
+		assertEquals(countJabatan + 1, jabatanRepository.count());
+		
+		Jabatan jabatanKaSubBagJaringan = new Jabatan();
+		jabatanKaSubBagJaringan.setEselon(Eselon.V);
+		jabatanKaSubBagJaringan.setPangkat(Pangkat.IIIC);
+		jabatanKaSubBagJaringan.setUnitKerja(unitKerja);
+		jabatanKaSubBagJaringan.setNama("Kepala Sub Bagian Jaringan");
+		
+		jabatanService.simpan(jabatanKaSubBagJaringan);
+		assertEquals(countJabatan + 2, jabatanRepository.count());
+
+		long countRiwayatJabatan = riwayatJabatanRepository.count();
+
+		pegawaiService.promosi(pegawai, jabatanKaSubBagJaringan, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
+		
+		//assertEquals(Pangkat.IIIA, pegawai.getPangkat());
+		assertEquals(countRiwayatJabatan + 1, riwayatJabatanRepository.count());
 	}
 	
 	@Test(expected = PersistenceException.class)
@@ -129,7 +164,7 @@ public class PegawaiServiceTest {
 	}
 	
 	@Test
-	public void test_mutasi() {
+	public void test_mutasi() throws IdenticRelationshipException {
 		UnitKerja unitKerja = new UnitKerja();
 		unitKerja.setNama("Umum");
 		unitKerja.setSingkatan("BUMUM");
@@ -143,22 +178,57 @@ public class PegawaiServiceTest {
 	}
 	
 	@Test
-	public void test_promosi_pangkat() {
-		pegawaiService.promosi(pegawai, Pangkat.IIIA, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
+	public void test_promosi_pangkat() throws IdenticRelationshipException, NullCollectionException {
+		pegawaiService.promosi(pegawai, Pangkat.IIIB, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
 		
-		assertEquals(Pangkat.IIIA, pegawai.getPangkat());
+		assertEquals(Pangkat.IIIB, pegawai.getPangkat());
 		
 		long countRiwayat = riwayatPangkatRepository.count();
-		assertEquals(countRiwayat + 1, riwayatPangkatRepository.count());
+		assertEquals(countRiwayat + 2, riwayatPangkatRepository.count());
 	}
 	
 	@Test
-	public void test_promosi_jabatan() {
-		pegawaiService.promosi(pegawai, jabatan, DateUtil.getDate("12-01-2014"), null, "002/SK/2015");
+	public void test_promosi_jabatan() throws IdenticRelationshipException, NullCollectionException {
+		pegawaiService.promosi(pegawai, jabatanKaSubBagDatabase, DateUtil.getDate("12-01-2014"), null, "002/SK/2015");
 		
-		assertEquals(jabatan, pegawai.getJabatan());
+		assertEquals(jabatanKaSubBagDatabase, pegawai.getJabatan());
 		
 		long countRiwayat = riwayatJabatanRepository.count();
-		assertEquals(countRiwayat + 1, riwayatJabatanRepository.count());
+		assertEquals(countRiwayat + 2, riwayatJabatanRepository.count());
+	}
+	
+	@Test
+	public void test_get_by_pangkat() throws EntityNotExistException {
+		List<Pegawai> list = pegawaiService.get(Pangkat.IIIA);
+		
+		assertNotEquals(0, list.size());
+	}
+	
+	@Test
+	public void test_get_by_eselon() throws EntityNotExistException {
+		List<Pegawai> list = pegawaiService.get(Eselon.V);
+		
+		assertNotEquals(0, list.size());
+	}
+	
+	@Test
+	public void test_get_by_unit_kerja() throws EntityNotExistException {
+		List<Pegawai> list = pegawaiService.get(unitKerja);
+		
+		assertNotEquals(0, list.size());
+	}
+
+	@Test
+	public void test_get() throws EntityNotExistException {
+		assertNotEquals(0, riwayatPangkatRepository.count());
+
+		Pegawai pegawai = pegawaiService.getByNip("090213016");
+		assertNotNull(pegawai.getPenduduk());
+		assertEquals("Deddy Christoper Kakunsi", pegawai.getNama());
+		assertNotNull(pegawai.getUnitKerja());
+		assertEquals("Pengelolaan Data Elektronik", pegawai.getUnitKerja().getNama());
+		
+		assertNotNull(pegawai);
+		assertNotEquals(0, pegawai.getDaftarPangkat().size());
 	}
 }

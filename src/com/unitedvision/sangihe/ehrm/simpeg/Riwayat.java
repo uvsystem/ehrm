@@ -92,5 +92,53 @@ public abstract class Riwayat {
 			return false;
 		return false;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((nomorSk == null) ? 0 : nomorSk.hashCode());
+		result = prime * result + ((pegawai == null) ? 0 : pegawai.hashCode());
+		result = prime * result
+				+ ((tanggalMulai == null) ? 0 : tanggalMulai.hashCode());
+		result = prime * result
+				+ ((tanggalSelesai == null) ? 0 : tanggalSelesai.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Riwayat other = (Riwayat) obj;
+		if (id != other.id)
+			return false;
+		if (nomorSk == null) {
+			if (other.nomorSk != null)
+				return false;
+		} else if (!nomorSk.equals(other.nomorSk))
+			return false;
+		if (pegawai == null) {
+			if (other.pegawai != null)
+				return false;
+		} else if (!pegawai.equals(other.pegawai))
+			return false;
+		if (tanggalMulai == null) {
+			if (other.tanggalMulai != null)
+				return false;
+		} else if (!tanggalMulai.equals(other.tanggalMulai))
+			return false;
+		if (tanggalSelesai == null) {
+			if (other.tanggalSelesai != null)
+				return false;
+		} else if (!tanggalSelesai.equals(other.tanggalSelesai))
+			return false;
+		return true;
+	}
 	
 }

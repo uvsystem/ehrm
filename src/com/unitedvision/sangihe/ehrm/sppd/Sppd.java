@@ -2,6 +2,7 @@ package com.unitedvision.sangihe.ehrm.sppd;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,8 +19,12 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
+import com.unitedvision.sangihe.ehrm.NullCollectionException;
 import com.unitedvision.sangihe.ehrm.absensi.TugasLuar;
 import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
@@ -41,7 +46,7 @@ public class Sppd {
 	private Perjalanan perjalanan;
 	
 	private List<TugasLuar> daftarAbsen;
-	private List<Pengikut> daftarPengikut;
+	private Set<Pengikut> daftarPengikut;
 
 	public Sppd() {
 		super();
@@ -67,7 +72,7 @@ public class Sppd {
 	}
 
 	@JsonIgnore
-	@OneToOne(targetEntity = PemegangTugas.class, fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "pemegang_tugas", referencedColumnName = "id")
 	public PemegangTugas getPemegangTugas() {
 		return pemegangTugas;
@@ -117,12 +122,13 @@ public class Sppd {
 		daftarAbsen.remove(tugasLuar);
 	}
 
-	@OneToMany(mappedBy = "sppd", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	public List<Pengikut> getDaftarPengikut() {
+	@OneToMany(mappedBy = "sppd", cascade = CascadeType.ALL, orphanRemoval = true)
+	@LazyCollection(LazyCollectionOption.FALSE)
+	public Set<Pengikut> getDaftarPengikut() {
 		return daftarPengikut;
 	}
 
-	public void setDaftarPengikut(List<Pengikut> daftarPengikut) {
+	public void setDaftarPengikut(Set<Pengikut> daftarPengikut) {
 		this.daftarPengikut = daftarPengikut;
 	}
 	
@@ -185,6 +191,47 @@ public class Sppd {
 
 		public void setKodeRekening(String kodeRekening) {
 			this.kodeRekening = kodeRekening;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result
+					+ ((kodeRekening == null) ? 0 : kodeRekening.hashCode());
+			result = prime * result
+					+ ((nomorDpa == null) ? 0 : nomorDpa.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Anggaran other = (Anggaran) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (kodeRekening == null) {
+				if (other.kodeRekening != null)
+					return false;
+			} else if (!kodeRekening.equals(other.kodeRekening))
+				return false;
+			if (nomorDpa == null) {
+				if (other.nomorDpa != null)
+					return false;
+			} else if (!nomorDpa.equals(other.nomorDpa))
+				return false;
+			return true;
+		}
+
+		@Transient
+		private Sppd getOuterType() {
+			return Sppd.this;
 		}
 
 	}
@@ -258,6 +305,57 @@ public class Sppd {
 			
 			return suratTugas.getJumlahHari();
 		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((asal == null) ? 0 : asal.hashCode());
+			result = prime
+					* result
+					+ ((modaTransportasi == null) ? 0 : modaTransportasi
+							.hashCode());
+			result = prime
+					* result
+					+ ((tanggalBerangkat == null) ? 0 : tanggalBerangkat
+							.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Perjalanan other = (Perjalanan) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (asal == null) {
+				if (other.asal != null)
+					return false;
+			} else if (!asal.equals(other.asal))
+				return false;
+			if (modaTransportasi == null) {
+				if (other.modaTransportasi != null)
+					return false;
+			} else if (!modaTransportasi.equals(other.modaTransportasi))
+				return false;
+			if (tanggalBerangkat == null) {
+				if (other.tanggalBerangkat != null)
+					return false;
+			} else if (!tanggalBerangkat.equals(other.tanggalBerangkat))
+				return false;
+			return true;
+		}
+
+		@Transient
+		private Sppd getOuterType() {
+			return Sppd.this;
+		}
 		
 	}
 	
@@ -279,7 +377,7 @@ public class Sppd {
 			return getPegawai().getNip();
 		}
 		
-		public String getPangkat() {
+		public String getPangkat() throws NullCollectionException {
 			Pangkat pangkat = getPegawai().getPangkat();
 			String nama = pangkat.getNama();
 			String namaPangkat = pangkat.name();
@@ -287,7 +385,7 @@ public class Sppd {
 			return String.format("%s, %s", nama, namaPangkat);
 		}
 		
-		public String getJabatan() {
+		public String getJabatan() throws NullCollectionException {
 			return getPegawai().getJabatan().getNama();
 		}
 		
@@ -312,6 +410,82 @@ public class Sppd {
 			return DateUtil.toFormattedStringDate(getSuratTugas().getTanggal(), "-");
 		}
 
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((anggaran == null) ? 0 : anggaran.hashCode());
+		result = prime * result
+				+ ((daftarAbsen == null) ? 0 : daftarAbsen.hashCode());
+		result = prime * result
+				+ ((daftarPengikut == null) ? 0 : daftarPengikut.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result
+				+ ((kegiatan == null) ? 0 : kegiatan.hashCode());
+		result = prime * result + ((nomor == null) ? 0 : nomor.hashCode());
+		result = prime * result
+				+ ((pemegangTugas == null) ? 0 : pemegangTugas.hashCode());
+		result = prime * result
+				+ ((perjalanan == null) ? 0 : perjalanan.hashCode());
+		result = prime * result + ((tingkat == null) ? 0 : tingkat.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sppd other = (Sppd) obj;
+		if (anggaran == null) {
+			if (other.anggaran != null)
+				return false;
+		} else if (!anggaran.equals(other.anggaran))
+			return false;
+		if (daftarAbsen == null) {
+			if (other.daftarAbsen != null)
+				return false;
+		} else if (!daftarAbsen.equals(other.daftarAbsen))
+			return false;
+		if (daftarPengikut == null) {
+			if (other.daftarPengikut != null)
+				return false;
+		} else if (!daftarPengikut.equals(other.daftarPengikut))
+			return false;
+		if (id != other.id)
+			return false;
+		if (kegiatan == null) {
+			if (other.kegiatan != null)
+				return false;
+		} else if (!kegiatan.equals(other.kegiatan))
+			return false;
+		if (nomor == null) {
+			if (other.nomor != null)
+				return false;
+		} else if (!nomor.equals(other.nomor))
+			return false;
+		if (pemegangTugas == null) {
+			if (other.pemegangTugas != null)
+				return false;
+		} else if (!pemegangTugas.equals(other.pemegangTugas))
+			return false;
+		if (perjalanan == null) {
+			if (other.perjalanan != null)
+				return false;
+		} else if (!perjalanan.equals(other.perjalanan))
+			return false;
+		if (tingkat == null) {
+			if (other.tingkat != null)
+				return false;
+		} else if (!tingkat.equals(other.tingkat))
+			return false;
+		return true;
 	}
 
 }

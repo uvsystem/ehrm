@@ -1,6 +1,7 @@
 package com.unitedvision.sangihe.ehrm.simpeg;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,7 +17,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unitedvision.sangihe.ehrm.NullCollectionException;
 import com.unitedvision.sangihe.ehrm.absensi.Cuti;
 import com.unitedvision.sangihe.ehrm.absensi.Hadir;
 import com.unitedvision.sangihe.ehrm.absensi.Izin;
@@ -38,20 +43,21 @@ public class Pegawai implements Pejabat {
 	private UnitKerja unitKerja;
 	private String password;
 
-	private List<RiwayatPangkat> daftarPangkat;
-	private List<RiwayatJabatan> daftarJabatan;
-	private List<Token> daftarToken;
-	private List<Operator> daftarOperator;
-	private List<PemegangTugas> daftarTugas;
+	private List<RiwayatPangkat> daftarPangkat = new ArrayList<>();
+	private List<RiwayatJabatan> daftarJabatan = new ArrayList<>();
+	private List<Operator> daftarOperator = new ArrayList<>();
+	private List<Token> daftarToken = new ArrayList<>();
+	private List<PemegangTugas> daftarTugas = new ArrayList<>();
 
-	private List<Hadir> daftarHadir;
-	private List<TugasLuar> daftarTugasLuar;
-	private List<Sakit> daftarSakit;
-	private List<Izin> daftarIzin;
-	private List<Cuti> daftarCuti;
+	private List<Hadir> daftarHadir = new ArrayList<>();
+	private List<TugasLuar> daftarTugasLuar = new ArrayList<>();
+	private List<Sakit> daftarSakit = new ArrayList<>();
+	private List<Izin> daftarIzin = new ArrayList<>();
+	private List<Cuti> daftarCuti = new ArrayList<>();
 	
 	public Pegawai() {
 		super();
+		penduduk = new Penduduk();
 	}
 
 	@Id
@@ -75,6 +81,7 @@ public class Pegawai implements Pejabat {
 
 	@JsonIgnore
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "penduduk")
 	public Penduduk getPenduduk() {
 		return penduduk;
 	}
@@ -103,7 +110,8 @@ public class Pegawai implements Pejabat {
 		this.password = password;
 	}
 
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai")
+	@Fetch(FetchMode.SUBSELECT)
 	public List<RiwayatPangkat> getDaftarPangkat() {
 		return daftarPangkat;
 	}
@@ -112,7 +120,7 @@ public class Pegawai implements Pejabat {
 		this.daftarPangkat = daftarPangkat;
 	}
 
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY)
 	public List<RiwayatJabatan> getDaftarJabatan() {
 		return daftarJabatan;
 	}
@@ -121,7 +129,7 @@ public class Pegawai implements Pejabat {
 		this.daftarJabatan = daftarJabatan;
 	}
 
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY)
 	public List<Operator> getDaftarOperator() {
 		return daftarOperator;
 	}
@@ -150,7 +158,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
 	public List<Hadir> getDaftarHadir() {
 		return daftarHadir;
 	}
@@ -160,7 +168,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
 	public List<TugasLuar> getDaftarTugasLuar() {
 		return daftarTugasLuar;
 	}
@@ -170,7 +178,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
 	public List<Sakit> getDaftarSakit() {
 		return daftarSakit;
 	}
@@ -180,7 +188,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
 	public List<Izin> getDaftarIzin() {
 		return daftarIzin;
 	}
@@ -190,7 +198,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
 	public List<Cuti> getDaftarCuti() {
 		return daftarCuti;
 	}
@@ -201,36 +209,52 @@ public class Pegawai implements Pejabat {
 
 	@JsonIgnore
 	@Transient
-	public RiwayatPangkat getPangkatTerakhir() {
-		return daftarPangkat.get(daftarPangkat.size());
+	public RiwayatPangkat getPangkatTerakhir() throws NullCollectionException {
+		if (getDaftarPangkat() == null)
+			throw new NullCollectionException();
+
+		for (RiwayatPangkat rp : daftarPangkat) {
+			if (rp.getTanggalSelesai() == null)
+				return rp;
+		}
+		
+		throw new NullCollectionException();
 	}
 
 	@Transient
-	public Pangkat getPangkat() {
+	public Pangkat getPangkat() throws NullCollectionException {
 		return getPangkatTerakhir().getPangkat();
 	}
 
 	@JsonIgnore
 	@Transient
-	public RiwayatJabatan getJabatanTerakhir() {
-		return daftarJabatan.get(daftarJabatan.size());
+	public RiwayatJabatan getJabatanTerakhir() throws NullCollectionException {
+		if (getDaftarJabatan() == null)
+			throw new NullCollectionException();
+
+		for (RiwayatJabatan rj : daftarJabatan) {
+			if (rj.getTanggalSelesai() == null)
+				return rj;
+		}
+		
+		throw new NullCollectionException();
 	}
 	
 	@Override
 	@Transient
-	public Jabatan getJabatan() {
+	public Jabatan getJabatan() throws NullCollectionException {
 		return getJabatanTerakhir().getJabatan();
 	}
 
 	@Override
 	@Transient
-	public Eselon getEselon() {
+	public Eselon getEselon() throws NullCollectionException {
 		return getJabatan().getEselon();
 	}
 
 	@Override
 	@Transient
-	public Date tanggalMulai() {
+	public Date tanggalMulai() throws NullCollectionException {
 		return getJabatanTerakhir().getTanggalMulai();
 	}
 
@@ -268,6 +292,125 @@ public class Pegawai implements Pejabat {
 
 	public void setKontak(Kontak kontak) {
 		penduduk.setKontak(kontak);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((daftarCuti == null) ? 0 : daftarCuti.hashCode());
+		result = prime * result
+				+ ((daftarHadir == null) ? 0 : daftarHadir.hashCode());
+		result = prime * result
+				+ ((daftarIzin == null) ? 0 : daftarIzin.hashCode());
+		result = prime * result
+				+ ((daftarJabatan == null) ? 0 : daftarJabatan.hashCode());
+		result = prime * result
+				+ ((daftarOperator == null) ? 0 : daftarOperator.hashCode());
+		result = prime * result
+				+ ((daftarPangkat == null) ? 0 : daftarPangkat.hashCode());
+		result = prime * result
+				+ ((daftarSakit == null) ? 0 : daftarSakit.hashCode());
+		result = prime * result
+				+ ((daftarToken == null) ? 0 : daftarToken.hashCode());
+		result = prime * result
+				+ ((daftarTugas == null) ? 0 : daftarTugas.hashCode());
+		result = prime * result
+				+ ((daftarTugasLuar == null) ? 0 : daftarTugasLuar.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((nip == null) ? 0 : nip.hashCode());
+		result = prime * result
+				+ ((password == null) ? 0 : password.hashCode());
+		result = prime * result
+				+ ((penduduk == null) ? 0 : penduduk.hashCode());
+		result = prime * result
+				+ ((unitKerja == null) ? 0 : unitKerja.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Pegawai other = (Pegawai) obj;
+		if (daftarCuti == null) {
+			if (other.daftarCuti != null)
+				return false;
+		} else if (!daftarCuti.equals(other.daftarCuti))
+			return false;
+		if (daftarHadir == null) {
+			if (other.daftarHadir != null)
+				return false;
+		} else if (!daftarHadir.equals(other.daftarHadir))
+			return false;
+		if (daftarIzin == null) {
+			if (other.daftarIzin != null)
+				return false;
+		} else if (!daftarIzin.equals(other.daftarIzin))
+			return false;
+		if (daftarJabatan == null) {
+			if (other.daftarJabatan != null)
+				return false;
+		} else if (!daftarJabatan.equals(other.daftarJabatan))
+			return false;
+		if (daftarOperator == null) {
+			if (other.daftarOperator != null)
+				return false;
+		} else if (!daftarOperator.equals(other.daftarOperator))
+			return false;
+		if (daftarPangkat == null) {
+			if (other.daftarPangkat != null)
+				return false;
+		} else if (!daftarPangkat.equals(other.daftarPangkat))
+			return false;
+		if (daftarSakit == null) {
+			if (other.daftarSakit != null)
+				return false;
+		} else if (!daftarSakit.equals(other.daftarSakit))
+			return false;
+		if (daftarToken == null) {
+			if (other.daftarToken != null)
+				return false;
+		} else if (!daftarToken.equals(other.daftarToken))
+			return false;
+		if (daftarTugas == null) {
+			if (other.daftarTugas != null)
+				return false;
+		} else if (!daftarTugas.equals(other.daftarTugas))
+			return false;
+		if (daftarTugasLuar == null) {
+			if (other.daftarTugasLuar != null)
+				return false;
+		} else if (!daftarTugasLuar.equals(other.daftarTugasLuar))
+			return false;
+		if (id != other.id)
+			return false;
+		if (nip == null) {
+			if (other.nip != null)
+				return false;
+		} else if (!nip.equals(other.nip))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (penduduk == null) {
+			if (other.penduduk != null)
+				return false;
+		} else if (!penduduk.equals(other.penduduk))
+			return false;
+		if (unitKerja == null) {
+			if (other.unitKerja != null)
+				return false;
+		} else if (!unitKerja.equals(other.unitKerja))
+			return false;
+		return true;
 	}
 	
 }
