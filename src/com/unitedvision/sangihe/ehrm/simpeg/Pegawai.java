@@ -120,7 +120,8 @@ public class Pegawai implements Pejabat {
 		this.daftarPangkat = daftarPangkat;
 	}
 
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pegawai")
+	@Fetch(FetchMode.SUBSELECT)
 	public List<RiwayatJabatan> getDaftarJabatan() {
 		return daftarJabatan;
 	}
@@ -129,7 +130,8 @@ public class Pegawai implements Pejabat {
 		this.daftarJabatan = daftarJabatan;
 	}
 
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pegawai")
+	@Fetch(FetchMode.SUBSELECT)
 	public List<Operator> getDaftarOperator() {
 		return daftarOperator;
 	}

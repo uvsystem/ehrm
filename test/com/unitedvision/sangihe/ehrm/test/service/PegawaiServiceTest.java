@@ -28,7 +28,6 @@ import com.unitedvision.sangihe.ehrm.simpeg.JabatanService;
 import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.PegawaiService;
-import com.unitedvision.sangihe.ehrm.simpeg.RiwayatPangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerjaService;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja.TipeUnitKerja;
@@ -60,7 +59,9 @@ public class PegawaiServiceTest {
 	@Autowired
 	private JabatanRepository jabatanRepository;
 
-	private long count;
+	private long countPegawai;
+	private long countRiwayatPangkat;
+	private long countRiwayatJabatan;
 	private Pegawai pegawai;
 	private Jabatan jabatanKaSubBagDatabase;
 	private UnitKerja unitKerja;
@@ -74,7 +75,7 @@ public class PegawaiServiceTest {
 		
 		unitKerjaService.simpan(unitKerja);
 		
-		count = pegawaiRepository.count();
+		countPegawai = pegawaiRepository.count();
 		long countPenduduk = pendudukRepository.count();
 		
 		pegawai = new Pegawai();
@@ -91,10 +92,10 @@ public class PegawaiServiceTest {
 		pegawai.setKontak(kontak);
 		
 		pegawaiService.simpan(pegawai);
-		assertEquals(count + 1, pegawaiRepository.count());
+		assertEquals(countPegawai + 1, pegawaiRepository.count());
 		assertEquals(countPenduduk + 1, pendudukRepository.count());
 		
-		long countRiwayatPangkat = riwayatPangkatRepository.count();
+		countRiwayatPangkat = riwayatPangkatRepository.count();
 
 		pegawaiService.promosi(pegawai, Pangkat.IIIA, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
 		
@@ -121,11 +122,10 @@ public class PegawaiServiceTest {
 		jabatanService.simpan(jabatanKaSubBagJaringan);
 		assertEquals(countJabatan + 2, jabatanRepository.count());
 
-		long countRiwayatJabatan = riwayatJabatanRepository.count();
+		countRiwayatJabatan = riwayatJabatanRepository.count();
 
 		pegawaiService.promosi(pegawai, jabatanKaSubBagJaringan, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
 		
-		//assertEquals(Pangkat.IIIA, pegawai.getPangkat());
 		assertEquals(countRiwayatJabatan + 1, riwayatJabatanRepository.count());
 	}
 	
@@ -178,23 +178,21 @@ public class PegawaiServiceTest {
 	}
 	
 	@Test
-	public void test_promosi_pangkat() throws IdenticRelationshipException, NullCollectionException {
-		pegawaiService.promosi(pegawai, Pangkat.IIIB, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
+	public void test_promosi_pangkat() throws IdenticRelationshipException, NullCollectionException, EntityNotExistException {
+		pegawaiService.promosi(pegawai.getNip(), Pangkat.IIIB, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
 		
+		pegawai = pegawaiService.getByNip(pegawai.getNip());
 		assertEquals(Pangkat.IIIB, pegawai.getPangkat());
-		
-		long countRiwayat = riwayatPangkatRepository.count();
-		assertEquals(countRiwayat + 2, riwayatPangkatRepository.count());
+		assertEquals(countRiwayatPangkat + 2, riwayatPangkatRepository.count());
 	}
 	
 	@Test
-	public void test_promosi_jabatan() throws IdenticRelationshipException, NullCollectionException {
-		pegawaiService.promosi(pegawai, jabatanKaSubBagDatabase, DateUtil.getDate("12-01-2014"), null, "002/SK/2015");
+	public void test_promosi_jabatan() throws IdenticRelationshipException, NullCollectionException, EntityNotExistException {
+		pegawaiService.promosi(pegawai.getNip(), jabatanKaSubBagDatabase, DateUtil.getDate("12-01-2014"), null, "002/SK/2015");
 		
+		pegawai = pegawaiService.getByNip(pegawai.getNip());
 		assertEquals(jabatanKaSubBagDatabase, pegawai.getJabatan());
-		
-		long countRiwayat = riwayatJabatanRepository.count();
-		assertEquals(countRiwayat + 2, riwayatJabatanRepository.count());
+		assertEquals(countRiwayatJabatan + 2, riwayatJabatanRepository.count());
 	}
 	
 	@Test

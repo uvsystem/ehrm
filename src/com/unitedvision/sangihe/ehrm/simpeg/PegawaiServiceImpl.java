@@ -155,7 +155,17 @@ public class PegawaiServiceImpl implements PegawaiService {
 
 	@Override
 	public Pegawai getByNip(String nip) throws EntityNotExistException {
-		return pegawaiRepository.findByNip(nip);
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		
+		List<RiwayatPangkat> daftarPangkat = riwayatPangkatRepository.findByPegawai(pegawai);
+		List<RiwayatJabatan> daftarJabatan = riwayatJabatanRepository.findByPegawai(pegawai);
+		List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
+
+		pegawai.setDaftarPangkat(daftarPangkat);
+		pegawai.setDaftarJabatan(daftarJabatan);
+		pegawai.setDaftarOperator(daftarOperator);
+		
+		return pegawai;
 	}
 
 	@Override
@@ -186,12 +196,12 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 
 	@Override
-	public List<RiwayatPangkat> getRiwayatJabatan(Pegawai pegawai) throws EntityNotExistException {
+	public List<RiwayatJabatan> getRiwayatJabatan(Pegawai pegawai) throws EntityNotExistException {
 		return riwayatJabatanRepository.findByPegawai(pegawai);
 	}
 
 	@Override
-	public List<RiwayatPangkat> getRiwayatJabatan(String nip) throws EntityNotExistException {
+	public List<RiwayatJabatan> getRiwayatJabatan(String nip) throws EntityNotExistException {
 		Pegawai pegawai = getByNip(nip);
 		
 		return getRiwayatJabatan(pegawai);
@@ -206,7 +216,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 	public List<Operator> get(String nip) throws EntityNotExistException {
 		Pegawai pegawai = getByNip(nip);
 		
-		return get(pegawai);
+		return pegawai.getDaftarOperator();
 	}
 
 }

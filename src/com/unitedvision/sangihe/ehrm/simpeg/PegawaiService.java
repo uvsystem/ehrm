@@ -32,8 +32,8 @@ public interface PegawaiService {
 	List<RiwayatPangkat> getRiwayatPangkat(Pegawai pegawai) throws EntityNotExistException;
 	List<RiwayatPangkat> getRiwayatPangkat(String nip) throws EntityNotExistException;
 
-	List<RiwayatPangkat> getRiwayatJabatan(Pegawai pegawai) throws EntityNotExistException;
-	List<RiwayatPangkat> getRiwayatJabatan(String nip) throws EntityNotExistException;
+	List<RiwayatJabatan> getRiwayatJabatan(Pegawai pegawai) throws EntityNotExistException;
+	List<RiwayatJabatan> getRiwayatJabatan(String nip) throws EntityNotExistException;
 
 	List<Operator> get(Pegawai pegawai) throws EntityNotExistException;
 	List<Operator> get(String nip) throws EntityNotExistException;
