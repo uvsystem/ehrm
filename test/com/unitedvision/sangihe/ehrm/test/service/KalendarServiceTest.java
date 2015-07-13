@@ -2,7 +2,7 @@ package com.unitedvision.sangihe.ehrm.test.service;
 
 import static org.junit.Assert.*;
 
-import javax.persistence.PersistenceException;
+import java.time.Month;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,24 +29,28 @@ public class KalendarServiceTest {
 	private KalendarService kalendarService;
 	@Autowired
 	private KalendarRepository kalendarRepository;
+
+	private long count;
 	
 	@Before
 	public void setup() {
-		long count = kalendarRepository.count();
+		count = kalendarRepository.count();
 		
 		Kalendar kalendar = new Kalendar();
-		kalendar.setTanggal(DateUtil.getNow());
+		kalendar.setTanggal(DateUtil.getDate(2015, Month.JANUARY, 1));
 		
-		kalendarService.simpan(kalendar);
+		kalendarService.tambah(kalendar);
 		
 		assertEquals(count + 1, kalendarRepository.count());
 	}
 	
-	@Test(expected = PersistenceException.class)
+	@Test
 	public void test_duplicate() {
 		Kalendar kalendar = new Kalendar();
-		kalendar.setTanggal(DateUtil.getNow());
+		kalendar.setTanggal(DateUtil.getDate(2015, Month.JANUARY, 1));
 		
-		kalendarService.simpan(kalendar);
+		kalendarService.tambah(kalendar);
+
+		assertEquals(count + 1, kalendarRepository.count());
 	}
 }

@@ -17,6 +17,11 @@ public class Kalendar {
 		super();
 	}
 
+	public Kalendar(Date tanggal) {
+		super();
+		this.tanggal = tanggal;
+	}
+
 	@Id
 	@Column(name = "tanggal")
 	public Date getTanggal() {

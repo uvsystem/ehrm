@@ -1,15 +1,31 @@
 package com.unitedvision.sangihe.ehrm.absensi;
 
+import java.sql.Date;
+
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
-@MappedSuperclass
+@Entity
+@Table(name = "absen")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(
+	name = "status",
+	discriminatorType = DiscriminatorType.STRING
+)
+@DiscriminatorValue("ABSEN")
 public abstract class Absen {
 
 	private long id;
@@ -18,6 +34,7 @@ public abstract class Absen {
 	
 	public Absen() {
 		super();
+		kalendar = new Kalendar();
 	}
 	
 	@Id
@@ -38,6 +55,15 @@ public abstract class Absen {
 
 	public void setKalendar(Kalendar kalendar) {
 		this.kalendar = kalendar;
+	}
+
+	@Transient
+	public Date getTanggal() {
+		return kalendar.getTanggal();
+	}
+	
+	public void setTanggal(Date tanggal) {
+		kalendar.setTanggal(tanggal);
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)

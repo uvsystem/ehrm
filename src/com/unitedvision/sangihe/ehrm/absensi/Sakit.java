@@ -1,11 +1,11 @@
 package com.unitedvision.sangihe.ehrm.absensi;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "absen")
+@DiscriminatorValue("SAKIT")
 public class Sakit extends Absen {
 	
 	private String penyakit;

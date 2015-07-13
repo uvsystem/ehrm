@@ -6,13 +6,17 @@ import java.util.List;
 
 public interface KalendarService {
 
-	Kalendar simpan(Kalendar kalendar);
+	Kalendar tambah(Kalendar kalendar);
+	
+	Kalendar tambah(Date tanggal);
 	
 	void hapus(Kalendar kalendar);
+	
+	void hapus(Date tanggal);
 
 	Kalendar get(Date tanggal);
 	
-	List<Kalendar> get(Month bulan);
+	List<Kalendar> get(Month bulan, int tahun);
 	
 	List<Kalendar> get(Date dateAwal, Date dateAkhir);
 

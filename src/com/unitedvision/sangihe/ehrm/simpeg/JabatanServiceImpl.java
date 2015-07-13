@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.JabatanRepository;
 
 @Service
@@ -36,7 +37,7 @@ public class JabatanServiceImpl implements JabatanService {
 	}
 
 	@Override
-	public List<Jabatan> get(UnitKerja unitKerja) {
+	public List<Jabatan> get(UnitKerja unitKerja) throws EntityNotExistException {
 		return jabatanRepository.findByUnitKerja(unitKerja);
 	}
 }

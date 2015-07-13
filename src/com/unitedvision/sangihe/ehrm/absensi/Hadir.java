@@ -3,11 +3,11 @@ package com.unitedvision.sangihe.ehrm.absensi;
 import java.sql.Time;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "absen")
+@DiscriminatorValue("HADIR")
 public class Hadir extends Absen {
 
 	private Time pagi;

@@ -1,15 +1,15 @@
 package com.unitedvision.sangihe.ehrm.absensi;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
 
 @Entity
-@Table(name = "absen")
+@DiscriminatorValue("TUGAS_LUAR")
 public class TugasLuar extends Absen {
 
 	private Sppd sppd;

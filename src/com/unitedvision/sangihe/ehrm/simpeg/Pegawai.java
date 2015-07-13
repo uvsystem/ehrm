@@ -22,11 +22,7 @@ import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.NullCollectionException;
-import com.unitedvision.sangihe.ehrm.absensi.Cuti;
-import com.unitedvision.sangihe.ehrm.absensi.Hadir;
-import com.unitedvision.sangihe.ehrm.absensi.Izin;
-import com.unitedvision.sangihe.ehrm.absensi.Sakit;
-import com.unitedvision.sangihe.ehrm.absensi.TugasLuar;
+import com.unitedvision.sangihe.ehrm.absensi.Absen;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator;
@@ -49,11 +45,12 @@ public class Pegawai implements Pejabat {
 	private List<Token> daftarToken = new ArrayList<>();
 	private List<PemegangTugas> daftarTugas = new ArrayList<>();
 
-	private List<Hadir> daftarHadir = new ArrayList<>();
-	private List<TugasLuar> daftarTugasLuar = new ArrayList<>();
-	private List<Sakit> daftarSakit = new ArrayList<>();
-	private List<Izin> daftarIzin = new ArrayList<>();
-	private List<Cuti> daftarCuti = new ArrayList<>();
+	private List<Absen> daftarAbsen = new ArrayList<>();
+	//private List<Hadir> daftarHadir = new ArrayList<>();
+	//private List<TugasLuar> daftarTugasLuar = new ArrayList<>();
+	//private List<Sakit> daftarSakit = new ArrayList<>();
+	//private List<Izin> daftarIzin = new ArrayList<>();
+	//private List<Cuti> daftarCuti = new ArrayList<>();
 	
 	public Pegawai() {
 		super();
@@ -159,6 +156,8 @@ public class Pegawai implements Pejabat {
 		this.daftarToken = daftarToken;
 	}
 
+	
+	/*
 	@JsonIgnore
 	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
 	public List<Hadir> getDaftarHadir() {
@@ -207,6 +206,17 @@ public class Pegawai implements Pejabat {
 
 	public void setDaftarCuti(List<Cuti> daftarCuti) {
 		this.daftarCuti = daftarCuti;
+	}
+	*/
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
+	public List<Absen> getDaftarAbsen() {
+		return daftarAbsen;
+	}
+
+	public void setDaftarAbsen(List<Absen> daftarAbsen) {
+		this.daftarAbsen = daftarAbsen;
 	}
 
 	@JsonIgnore
@@ -301,25 +311,15 @@ public class Pegawai implements Pejabat {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((daftarCuti == null) ? 0 : daftarCuti.hashCode());
-		result = prime * result
-				+ ((daftarHadir == null) ? 0 : daftarHadir.hashCode());
-		result = prime * result
-				+ ((daftarIzin == null) ? 0 : daftarIzin.hashCode());
-		result = prime * result
 				+ ((daftarJabatan == null) ? 0 : daftarJabatan.hashCode());
 		result = prime * result
 				+ ((daftarOperator == null) ? 0 : daftarOperator.hashCode());
 		result = prime * result
 				+ ((daftarPangkat == null) ? 0 : daftarPangkat.hashCode());
 		result = prime * result
-				+ ((daftarSakit == null) ? 0 : daftarSakit.hashCode());
-		result = prime * result
 				+ ((daftarToken == null) ? 0 : daftarToken.hashCode());
 		result = prime * result
 				+ ((daftarTugas == null) ? 0 : daftarTugas.hashCode());
-		result = prime * result
-				+ ((daftarTugasLuar == null) ? 0 : daftarTugasLuar.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((nip == null) ? 0 : nip.hashCode());
 		result = prime * result
@@ -340,21 +340,6 @@ public class Pegawai implements Pejabat {
 		if (getClass() != obj.getClass())
 			return false;
 		Pegawai other = (Pegawai) obj;
-		if (daftarCuti == null) {
-			if (other.daftarCuti != null)
-				return false;
-		} else if (!daftarCuti.equals(other.daftarCuti))
-			return false;
-		if (daftarHadir == null) {
-			if (other.daftarHadir != null)
-				return false;
-		} else if (!daftarHadir.equals(other.daftarHadir))
-			return false;
-		if (daftarIzin == null) {
-			if (other.daftarIzin != null)
-				return false;
-		} else if (!daftarIzin.equals(other.daftarIzin))
-			return false;
 		if (daftarJabatan == null) {
 			if (other.daftarJabatan != null)
 				return false;
@@ -370,11 +355,6 @@ public class Pegawai implements Pejabat {
 				return false;
 		} else if (!daftarPangkat.equals(other.daftarPangkat))
 			return false;
-		if (daftarSakit == null) {
-			if (other.daftarSakit != null)
-				return false;
-		} else if (!daftarSakit.equals(other.daftarSakit))
-			return false;
 		if (daftarToken == null) {
 			if (other.daftarToken != null)
 				return false;
@@ -384,11 +364,6 @@ public class Pegawai implements Pejabat {
 			if (other.daftarTugas != null)
 				return false;
 		} else if (!daftarTugas.equals(other.daftarTugas))
-			return false;
-		if (daftarTugasLuar == null) {
-			if (other.daftarTugasLuar != null)
-				return false;
-		} else if (!daftarTugasLuar.equals(other.daftarTugasLuar))
 			return false;
 		if (id != other.id)
 			return false;

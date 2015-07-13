@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.simpeg.Eselon;
 import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
@@ -12,14 +13,14 @@ import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 
 public interface PegawaiRepository extends JpaRepository<Pegawai, Long> {
 
-	Pegawai findByNip(String nip);
+	Pegawai findByNip(String nip) throws EntityNotExistException;
 
-	List<Pegawai> findByUnitKerja(UnitKerja unitKerja);
+	List<Pegawai> findByUnitKerja(UnitKerja unitKerja) throws EntityNotExistException;
 
 	@Query("FROM RiwayatPangkat rp JOIN rp.pegawai pg WHERE rp.pangkat = ?1 AND rp.tanggalSelesai IS NULL")
-	List<Pegawai> findByPangkat(Pangkat pangkat);
+	List<Pegawai> findByPangkat(Pangkat pangkat) throws EntityNotExistException;
 
 	@Query("FROM RiwayatJabatan rj JOIN rj.pegawai pg WHERE rj.jabatan.eselon = ?1 AND rj.tanggalSelesai IS NULL")
-	List<Pegawai> findByJabatan_Eselon(Eselon eselon);
+	List<Pegawai> findByJabatan_Eselon(Eselon eselon) throws EntityNotExistException;
 
 }

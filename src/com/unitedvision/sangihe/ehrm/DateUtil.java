@@ -147,6 +147,10 @@ public class DateUtil {
 		int year = getYear(date);
 		Month month = getMonth(date);
 		
+		return getFirstDate(month, year);
+	}
+	
+	public static Date getFirstDate(Month month, int year) {
 		LocalDate firstDate = LocalDate.of(year, month, 1);
 		
 		return toDate(firstDate);
@@ -159,6 +163,10 @@ public class DateUtil {
 		int year = getYear(date);
 		Month month = getMonth(date);
 		
+		return getLastDate(month, year);
+	}
+	
+	public static Date getLastDate(Month month, int year) {
 		LocalDate firstDate = LocalDate.of(year, month, getLastDay(month, year));
 		
 		return toDate(firstDate);
