@@ -106,12 +106,12 @@ public class SppdServiceTest {
 		sppd.setNomor("001/SPPD/2015");
 		sppd.setTingkat("Prioritas");
 		
-		Anggaran anggaran = sppd.new Anggaran();
+		Anggaran anggaran = new Anggaran();
 		anggaran.setNomorDpa("001/DPA/2015");
 		anggaran.setKodeRekening("07.21.131.0089");
 		sppd.setAnggaran(anggaran);
 		
-		Perjalanan perjalanan = sppd.new Perjalanan();
+		Perjalanan perjalanan = new Perjalanan();
 		perjalanan.setAsal("Tahuna");
 		perjalanan.setModaTransportasi("Kapal Laut");
 		perjalanan.setTanggalBerangkat(DateUtil.getNow());

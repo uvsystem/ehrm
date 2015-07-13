@@ -1,8 +1,8 @@
 package com.unitedvision.sangihe.ehrm.sppd;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,8 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Parent;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
@@ -46,10 +45,11 @@ public class Sppd {
 	private Perjalanan perjalanan;
 	
 	private List<TugasLuar> daftarAbsen;
-	private Set<Pengikut> daftarPengikut;
+	private List<Pengikut> daftarPengikut;
 
 	public Sppd() {
 		super();
+		daftarPengikut = new ArrayList<>();
 	}
 
 	@Id
@@ -122,13 +122,12 @@ public class Sppd {
 		daftarAbsen.remove(tugasLuar);
 	}
 
-	@OneToMany(mappedBy = "sppd", cascade = CascadeType.ALL, orphanRemoval = true)
-	@LazyCollection(LazyCollectionOption.FALSE)
-	public Set<Pengikut> getDaftarPengikut() {
+	@OneToMany(mappedBy = "sppd", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	public List<Pengikut> getDaftarPengikut() {
 		return daftarPengikut;
 	}
 
-	public void setDaftarPengikut(Set<Pengikut> daftarPengikut) {
+	public void setDaftarPengikut(List<Pengikut> daftarPengikut) {
 		this.daftarPengikut = daftarPengikut;
 	}
 	
@@ -161,13 +160,23 @@ public class Sppd {
 	}
 
 	@Embeddable
-	public class Anggaran {
-		
+	public static class Anggaran {
+
+		private Sppd sppd;
 		private String nomorDpa;
 		private String kodeRekening;
-
+		
 		public Anggaran() {
 			super();
+		}
+
+		@Parent
+		public Sppd getSppd() {
+			return sppd;
+		}
+
+		public void setSppd(Sppd sppd) {
+			this.sppd = sppd;
 		}
 
 		@Column(name = "nomor_dpa", nullable = false)
@@ -181,7 +190,7 @@ public class Sppd {
 		
 		@Transient
 		public String getNamaKegiatan() {
-			return kegiatan.getNama();
+			return sppd.getKegiatan().getNama();
 		}
 
 		@Column(name = "rekening", nullable = false)
@@ -197,7 +206,6 @@ public class Sppd {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + getOuterType().hashCode();
 			result = prime * result
 					+ ((kodeRekening == null) ? 0 : kodeRekening.hashCode());
 			result = prime * result
@@ -214,8 +222,6 @@ public class Sppd {
 			if (getClass() != obj.getClass())
 				return false;
 			Anggaran other = (Anggaran) obj;
-			if (!getOuterType().equals(other.getOuterType()))
-				return false;
 			if (kodeRekening == null) {
 				if (other.kodeRekening != null)
 					return false;
@@ -229,22 +235,23 @@ public class Sppd {
 			return true;
 		}
 
-		@Transient
-		private Sppd getOuterType() {
-			return Sppd.this;
-		}
-
 	}
 	
 	@Embeddable
-	public class Perjalanan {
-		
+	public static class Perjalanan {
+
+		private Sppd sppd;
 		private String modaTransportasi;
 		private String asal = "Tahuna";
 		private Date tanggalBerangkat;
 
-		public Perjalanan() {
-			super();
+		@Parent
+		public Sppd getSppd() {
+			return sppd;
+		}
+
+		public void setSppd(Sppd sppd) {
+			this.sppd = sppd;
 		}
 
 		@Column(name = "moda_transportasi", nullable = false)
@@ -301,7 +308,7 @@ public class Sppd {
 		
 		@Transient
 		public int getJumlahHari() {
-			SuratTugas suratTugas = pemegangTugas.getSuratTugas();
+			SuratTugas suratTugas = sppd.getPemegangTugas().getSuratTugas();
 			
 			return suratTugas.getJumlahHari();
 		}
@@ -310,7 +317,6 @@ public class Sppd {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + getOuterType().hashCode();
 			result = prime * result + ((asal == null) ? 0 : asal.hashCode());
 			result = prime
 					* result
@@ -332,8 +338,6 @@ public class Sppd {
 			if (getClass() != obj.getClass())
 				return false;
 			Perjalanan other = (Perjalanan) obj;
-			if (!getOuterType().equals(other.getOuterType()))
-				return false;
 			if (asal == null) {
 				if (other.asal != null)
 					return false;
@@ -350,11 +354,6 @@ public class Sppd {
 			} else if (!tanggalBerangkat.equals(other.tanggalBerangkat))
 				return false;
 			return true;
-		}
-
-		@Transient
-		private Sppd getOuterType() {
-			return Sppd.this;
 		}
 		
 	}
