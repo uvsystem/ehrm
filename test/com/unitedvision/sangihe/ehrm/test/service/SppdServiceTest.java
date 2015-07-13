@@ -94,7 +94,8 @@ public class SppdServiceTest {
 		List<Pegawai> daftarPegawai = new ArrayList<>();
 		daftarPegawai.add(pegawai);
 		
-		List<PemegangTugas> list = suratTugasService.simpan(suratTugas, daftarPegawai);
+		suratTugas = suratTugasService.simpan(suratTugas, daftarPegawai);
+		List<PemegangTugas> list = suratTugas.getDaftarPemegangTugas();
 		pemegangTugas = list.get(0);
 	}
 	

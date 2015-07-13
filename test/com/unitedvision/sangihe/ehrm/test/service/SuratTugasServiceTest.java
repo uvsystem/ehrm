@@ -48,6 +48,7 @@ public class SuratTugasServiceTest {
 
 	private UnitKerja unitKerja;
 	private Pegawai pegawai;
+	private SuratTugas suratTugas;
 	private long countSuratTugas;
 	private long countPemegangTugas;
 	
@@ -77,11 +78,8 @@ public class SuratTugasServiceTest {
 		pegawai.setKontak(kontak);
 		
 		pegawaiService.simpan(pegawai);
-	}
-	
-	@Test
-	public void test_simpan() {
-		SuratTugas suratTugas = new SuratTugas();
+		
+		suratTugas = new SuratTugas();
 		suratTugas.setJumlahHari(3);
 		suratTugas.setMaksud("Konsultasi Teknis Pengembangan Rencana Induk TIK");
 		suratTugas.setTujuan("Manado");
@@ -89,7 +87,8 @@ public class SuratTugasServiceTest {
 		List<Pegawai> daftarPegawai = new ArrayList<>();
 		daftarPegawai.add(pegawai);
 		
-		List<PemegangTugas> list = suratTugasService.simpan(suratTugas, daftarPegawai);
+		suratTugas= suratTugasService.simpan(suratTugas, daftarPegawai);
+		List<PemegangTugas> list = suratTugas.getDaftarPemegangTugas();
 
 		assertNotEquals(0, list.size());
 		assertEquals(countSuratTugas + 1, suratTugasRepository.count());
@@ -99,19 +98,6 @@ public class SuratTugasServiceTest {
 	
 	@Test
 	public void test_tambah_pegawai() {
-		SuratTugas suratTugas = new SuratTugas();
-		suratTugas.setJumlahHari(3);
-		suratTugas.setMaksud("Konsultasi Teknis Pengembangan Rencana Induk TIK");
-		suratTugas.setTujuan("Manado");
-		
-		List<Pegawai> daftarPegawai = new ArrayList<>();
-		daftarPegawai.add(pegawai);
-		
-		suratTugasService.simpan(suratTugas, daftarPegawai);
-		
-		assertEquals(countSuratTugas + 1, suratTugasRepository.count());
-		assertEquals(countPemegangTugas + 1, pemegangTugasRepository.count());
-
 		Pegawai pegawai2 = new Pegawai();
 		pegawai2.setNik("7171070512910001");
 		pegawai2.setNip("090213015");
@@ -128,39 +114,21 @@ public class SuratTugasServiceTest {
 		pegawaiService.simpan(pegawai2);
 		
 		suratTugasService.tambahPegawai(suratTugas, pegawai2);
+		assertEquals(countSuratTugas + 1, suratTugasRepository.count());
+		assertEquals(countPemegangTugas + 2, pemegangTugasRepository.count());
 	}
 	
+	@Test
 	public void test_izinkan_pengajuan() {
-		SuratTugas suratTugas = new SuratTugas();
-		suratTugas.setJumlahHari(3);
-		suratTugas.setMaksud("Konsultasi Teknis Pengembangan Rencana Induk TIK");
-		suratTugas.setTujuan("Manado");
-
-		List<Pegawai> daftarPegawai = new ArrayList<>();
-		daftarPegawai.add(pegawai);
-
-		List<PemegangTugas> list = suratTugasService.simpan(suratTugas, daftarPegawai);
-
 		suratTugas = suratTugasService.izinkanPengajuan(suratTugas);
 
 		assertEquals(Status.DITERIMA, suratTugas.getStatus());
-		assertNotEquals(0, list.size());
 	}
 	
+	@Test
 	public void test_tolak_pengajuan() {
-		SuratTugas suratTugas = new SuratTugas();
-		suratTugas.setJumlahHari(3);
-		suratTugas.setMaksud("Konsultasi Teknis Pengembangan Rencana Induk TIK");
-		suratTugas.setTujuan("Manado");
-
-		List<Pegawai> daftarPegawai = new ArrayList<>();
-		daftarPegawai.add(pegawai);
-
-		List<PemegangTugas> list = suratTugasService.simpan(suratTugas, daftarPegawai);
-
-		suratTugas = suratTugasService.tolaskPengajuan(suratTugas);
+		suratTugas = suratTugasService.tolakPengajuan(suratTugas);
 
 		assertEquals(Status.DITOLAK, suratTugas.getStatus());
-		assertNotEquals(0, list.size());
 	}
 }

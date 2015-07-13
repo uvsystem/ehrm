@@ -1,6 +1,7 @@
 package com.unitedvision.sangihe.ehrm.sppd;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 @Entity
 @Table(name = "surat_tugas")
@@ -40,6 +42,7 @@ public class SuratTugas {
 	
 	public SuratTugas() {
 		super();
+		daftarPemegangTugas = new ArrayList<>();
 	}
 
 	@Id
@@ -107,13 +110,36 @@ public class SuratTugas {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "suratTugas", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "suratTugas", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	public List<PemegangTugas> getDaftarPemegangTugas() {
 		return daftarPemegangTugas;
 	}
 
 	public void setDaftarPemegangTugas(List<PemegangTugas> daftarPemegangTugas) {
 		this.daftarPemegangTugas = daftarPemegangTugas;
+	}
+	
+	public void addPemegangTugas(PemegangTugas pemegangTugas) {
+		pemegangTugas.setSuratTugas(this);
+		this.daftarPemegangTugas.add(pemegangTugas);
+	}
+	
+	public void addPemegangTugas(Pegawai pegawai) {
+		PemegangTugas pemegangTugas = new PemegangTugas();
+		pemegangTugas.setPegawai(pegawai);
+		pemegangTugas.setSuratTugas(this);
+		
+		addPemegangTugas(pemegangTugas);
+	}
+	
+	public void addPemegangTugas(List<Pegawai> daftarPegawai) {
+		for (Pegawai pegawai : daftarPegawai)
+			addPemegangTugas(pegawai);
+	}
+	
+	public void removePemegangTugas(PemegangTugas pemegangTugas) {
+		pemegangTugas.setSuratTugas(null);
+		this.daftarPemegangTugas.remove(pemegangTugas);
 	}
 
 	@Override
