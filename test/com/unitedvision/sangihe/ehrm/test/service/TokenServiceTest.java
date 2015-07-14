@@ -16,6 +16,7 @@ import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.OutOfDateEntityException;
+import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.manajemen.Token;
 import com.unitedvision.sangihe.ehrm.manajemen.TokenService;
@@ -46,7 +47,7 @@ public class TokenServiceTest {
 	private Pegawai pegawai;
 	
 	@Before
-	public void setup() {
+	public void setup() throws EntityNotExistException {
 		UnitKerja unitKerja = new UnitKerja();
 		unitKerja.setNama("Pengelolaan Data Elektronik");
 		unitKerja.setSingkatan("BPDE");
@@ -70,37 +71,42 @@ public class TokenServiceTest {
 		pegawaiService.simpan(pegawai);
 
 		token = tokenService.create("090213016");
+
+		String username = pegawai.getNip();
+		String code = DateUtil.codedString(DateUtil.getNow());
 		
-		assertNotEquals(0, token.getToken());
+		assertEquals(String.format("%s-%s", username, code), token.getToken());
+		assertNotEquals("", token.getToken());
+		assertNotEquals(0, tokenRepository.count());
 	}
 	
 	@Test
-	public void test_simpan() {
+	public void test_simpan() throws EntityNotExistException {
 		Token token = tokenService.create("090213016");
 		
-		assertNotEquals(0, token.getToken());
+		assertNotEquals("", token.getToken());
 		assertEquals(StatusToken.AKTIF, token.getStatus());
 		assertEquals(DateUtil.getNow(), token.getTanggalBuat());
 		assertEquals(DateUtil.add(DateUtil.getNow(), 2), token.getTanggalExpire());
 	}
 	
 	@Test
-	public void test_lock() {
+	public void test_lock() throws EntityNotExistException {
 		tokenService.lock(token.getToken());
 
 		assertEquals(StatusToken.LOCKED, token.getStatus());
 	}
 	
 	@Test
-	public void test_get() throws EntityNotExistException, OutOfDateEntityException {
+	public void test_get() throws EntityNotExistException, OutOfDateEntityException, UnauthenticatedAccessException {
 		Token token2 = tokenService.get(token.getToken());
 		
 		assertNotEquals(0, token2.getToken());
 		assertEquals(StatusToken.AKTIF, token2.getStatus());
 	}
 	
-	@Test(expected = OutOfDateEntityException.class)
-	public void test_get_locked() throws EntityNotExistException, OutOfDateEntityException {
+	@Test(expected = UnauthenticatedAccessException.class)
+	public void test_get_locked() throws EntityNotExistException, OutOfDateEntityException, UnauthenticatedAccessException {
 		tokenService.lock(token.getToken());
 		tokenService.get(token.getToken());
 	}

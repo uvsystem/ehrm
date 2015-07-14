@@ -119,6 +119,15 @@ public class Token implements Serializable {
 		
 		return token;
 	}
+	
+	public Token extend() {
+		if (isRenewable()) {
+			Date now = DateUtil.getNow();
+			generateExpireDate(now);
+		}
+		
+		return this;
+	}
 
 	@Transient
 	public boolean isRenewable() {
