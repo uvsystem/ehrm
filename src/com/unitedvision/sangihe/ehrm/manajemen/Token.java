@@ -9,6 +9,7 @@ import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * The persistent class for the token database table.
@@ -141,6 +142,12 @@ public class Token implements Serializable {
 		return DateUtil.equals(tanggalExpire, tomorrow);
 	}
 
+	@JsonIgnore
+	@Transient
+	public List<Operator> getDaftarOperator() {
+		return pegawai.getDaftarOperator();
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -188,4 +195,5 @@ public class Token implements Serializable {
 			return false;
 		return true;
 	}
+	
 }

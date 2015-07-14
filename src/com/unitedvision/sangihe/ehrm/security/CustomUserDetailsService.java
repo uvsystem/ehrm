@@ -20,7 +20,6 @@ import com.unitedvision.sangihe.ehrm.manajemen.Operator.Role;
 import com.unitedvision.sangihe.ehrm.manajemen.Token;
 import com.unitedvision.sangihe.ehrm.manajemen.TokenService;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
-import com.unitedvision.sangihe.ehrm.simpeg.PegawaiService;
 
 /**
  * Custom Authentication Provider.
@@ -30,8 +29,7 @@ import com.unitedvision.sangihe.ehrm.simpeg.PegawaiService;
  */
 @Service("authService")
 public class CustomUserDetailsService implements UserDetailsService {
-	@Autowired
-	private PegawaiService pegawaiService;
+
 	@Autowired
 	private TokenService tokenService;
 	
@@ -42,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public CustomUser loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {
-			Pegawai pegawai = pegawaiService.getByNip(username);
+			Pegawai pegawai = tokenService.login(username);
 			Operator operator = getOperator(pegawai);
 			
 			return new CustomUser(operator.getUsername(), operator.getPassword(), operator, getAuthorities(operator.getRole()));

@@ -18,6 +18,8 @@ import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.OutOfDateEntityException;
 import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
+import com.unitedvision.sangihe.ehrm.manajemen.Aplikasi;
+import com.unitedvision.sangihe.ehrm.manajemen.AplikasiService;
 import com.unitedvision.sangihe.ehrm.manajemen.Token;
 import com.unitedvision.sangihe.ehrm.manajemen.TokenService;
 import com.unitedvision.sangihe.ehrm.manajemen.Token.StatusToken;
@@ -35,6 +37,8 @@ import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja.TipeUnitKerja;
 public class TokenServiceTest {
 
 	@Autowired
+	private AplikasiService aplikasiService;
+	@Autowired
 	private TokenService tokenService;
 	@Autowired
 	private PegawaiService pegawaiService;
@@ -48,6 +52,12 @@ public class TokenServiceTest {
 	
 	@Before
 	public void setup() throws EntityNotExistException {
+		Aplikasi aplikasi = new Aplikasi();
+		aplikasi.setKode("SIMPEG");
+		aplikasi.setNama("Sistem Informasi Manajemen Pegawai");
+		aplikasi.setUrl("https://sistem.sangihekab.go.id/simpeg");
+		aplikasiService.simpan(aplikasi);
+		
 		UnitKerja unitKerja = new UnitKerja();
 		unitKerja.setNama("Pengelolaan Data Elektronik");
 		unitKerja.setSingkatan("BPDE");
@@ -67,8 +77,9 @@ public class TokenServiceTest {
 		kontak.setEmail("deddy.kakunsi@gmail.com");
 		kontak.setTelepon("083247643198");
 		pegawai.setKontak(kontak);
-		
 		pegawaiService.simpan(pegawai);
+		
+		aplikasiService.tambahOperator("090213016", "SIMPEG");
 
 		token = tokenService.create("090213016");
 
@@ -81,13 +92,14 @@ public class TokenServiceTest {
 	}
 	
 	@Test
-	public void test_simpan() throws EntityNotExistException {
+	public void test_create() throws EntityNotExistException {
 		Token token = tokenService.create("090213016");
 		
 		assertNotEquals("", token.getToken());
 		assertEquals(StatusToken.AKTIF, token.getStatus());
 		assertEquals(DateUtil.getNow(), token.getTanggalBuat());
 		assertEquals(DateUtil.add(DateUtil.getNow(), 2), token.getTanggalExpire());
+		assertNotEquals(0, token.getDaftarOperator());
 	}
 	
 	@Test
@@ -103,6 +115,7 @@ public class TokenServiceTest {
 		
 		assertNotEquals(0, token2.getToken());
 		assertEquals(StatusToken.AKTIF, token2.getStatus());
+		assertNotEquals(0, token2.getDaftarOperator());
 	}
 	
 	@Test(expected = UnauthenticatedAccessException.class)

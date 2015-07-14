@@ -1,5 +1,7 @@
 package com.unitedvision.sangihe.ehrm.manajemen;
 
+import java.util.List;
+
 import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 import com.unitedvision.sangihe.ehrm.manajemen.Token.StatusToken;
+import com.unitedvision.sangihe.ehrm.manajemen.repository.OperatorRepository;
 import com.unitedvision.sangihe.ehrm.manajemen.repository.TokenRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
@@ -23,6 +26,20 @@ public class TokenServiceImpl implements TokenService {
 	private TokenRepository tokenRepository;
 	@Autowired
 	private PegawaiRepository pegawaiRepository;
+	@Autowired
+	private OperatorRepository operatorRepository;
+	
+	@Override
+	@Transactional(readOnly = false)
+	public Pegawai login(String username) throws EntityNotExistException {
+		Pegawai pegawai = pegawaiRepository.findByNip(username);
+		
+		List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
+		
+		pegawai.setDaftarOperator(daftarOperator);
+		
+		return pegawai;
+	}
 
 	@Override
 	public Token get(String token) throws EntityNotExistException, OutOfDateEntityException, UnauthenticatedAccessException {
@@ -33,6 +50,11 @@ public class TokenServiceImpl implements TokenService {
 			
 			if (tokenObject == null)
 				throw new PersistenceException("Token tidak ditemukan");
+
+			Pegawai pegawai = tokenObject.getpegawai();
+			List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
+			pegawai.setDaftarOperator(daftarOperator);
+			
 		} catch (PersistenceException e) {
 			throw new EntityNotExistException(e.getMessage());
 		}
@@ -47,7 +69,10 @@ public class TokenServiceImpl implements TokenService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Token create(Pegawai pegawai) {
+	public Token create(Pegawai pegawai) throws EntityNotExistException {
+		List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
+		pegawai.setDaftarOperator(daftarOperator);
+		
 		Token token = new Token();
 		token.setPegawai(pegawai);
 		token.setTanggalBuat(DateUtil.getNow());
