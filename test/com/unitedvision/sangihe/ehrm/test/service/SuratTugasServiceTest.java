@@ -91,6 +91,7 @@ public class SuratTugasServiceTest {
 		List<PemegangTugas> list = suratTugas.getDaftarPemegangTugas();
 
 		assertNotEquals(0, list.size());
+		assertEquals(1, suratTugas.getDaftarPemegangTugas().size());
 		assertEquals(countSuratTugas + 1, suratTugasRepository.count());
 		assertEquals(countPemegangTugas + 1, pemegangTugasRepository.count());
 		assertEquals(Status.PENDING, suratTugas.getStatus());
@@ -113,7 +114,8 @@ public class SuratTugasServiceTest {
 		
 		pegawaiService.simpan(pegawai2);
 		
-		suratTugasService.tambahPegawai(suratTugas, pegawai2);
+		suratTugas = suratTugasService.tambahPegawai(suratTugas, pegawai2);
+		assertEquals(2, suratTugas.getDaftarPemegangTugas().size());
 		assertEquals(countSuratTugas + 1, suratTugasRepository.count());
 		assertEquals(countPemegangTugas + 2, pemegangTugasRepository.count());
 	}
@@ -122,6 +124,7 @@ public class SuratTugasServiceTest {
 	public void test_izinkan_pengajuan() {
 		suratTugas = suratTugasService.izinkanPengajuan(suratTugas);
 
+		assertEquals(1, suratTugas.getDaftarPemegangTugas().size());
 		assertEquals(Status.DITERIMA, suratTugas.getStatus());
 	}
 	
@@ -129,6 +132,7 @@ public class SuratTugasServiceTest {
 	public void test_tolak_pengajuan() {
 		suratTugas = suratTugasService.tolakPengajuan(suratTugas);
 
+		assertEquals(1, suratTugas.getDaftarPemegangTugas().size());
 		assertEquals(Status.DITOLAK, suratTugas.getStatus());
 	}
 }

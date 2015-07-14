@@ -123,9 +123,10 @@ public class SppdServiceTest {
 		
 		sppd.addPengikut(pengikut);
 		
-		sppdService.simpan(sppd);
+		sppd = sppdService.simpan(sppd);
 		
 		assertEquals(countSppd + 1, sppdRepository.count());
 		assertEquals(countPengikut + 1, pengikutRepository.count());
+		assertNotEquals(0, sppd.getDaftarPengikut().size());
 	}
 }
