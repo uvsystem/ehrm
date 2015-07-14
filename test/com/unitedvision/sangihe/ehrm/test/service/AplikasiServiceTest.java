@@ -15,12 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.DateUtil;
+import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.manajemen.Aplikasi;
 import com.unitedvision.sangihe.ehrm.manajemen.AplikasiService;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator.Role;
 import com.unitedvision.sangihe.ehrm.manajemen.repository.AplikasiRepository;
+import com.unitedvision.sangihe.ehrm.manajemen.repository.OperatorRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.PegawaiService;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
@@ -41,6 +43,8 @@ public class AplikasiServiceTest {
 	private PegawaiService pegawaiService;
 	@Autowired
 	private AplikasiRepository aplikasiRepository;
+	@Autowired
+	private OperatorRepository operatorRepository;
 
 	private Pegawai pegawai;
 	
@@ -90,17 +94,29 @@ public class AplikasiServiceTest {
 		aplikasiService.simpan(aplikasi);
 	}
 	
-	public void tambah_operator() {
-		Operator operator = aplikasiService.tambahOperator("090213016", "SIMPEG");
+	public void tambah_operator() throws EntityNotExistException {
+		long count = operatorRepository.count();
 		
-		assertNotEquals(0, operator.getId());
-		assertEquals(Role.OPERATOR, operator.getRole());
+		Aplikasi aplikasi = aplikasiService.tambahOperator("090213016", "SIMPEG");
+		
+		for (Operator operator : aplikasi.getDaftarOperator()) {
+			if (operator.getPegawai().getNip().equals("090213016"))
+				assertEquals(Role.OPERATOR, operator.getRole());
+		}
+		
+		assertNotEquals(count + 1, operatorRepository.count());
 	}
 	
-	public void tambah_admin() {
-		Operator operator = aplikasiService.tambahAdmin("090213016", "SIMPEG");
+	public void tambah_admin() throws EntityNotExistException {
+		long count = operatorRepository.count();
 		
-		assertNotEquals(0, operator.getId());
-		assertEquals(Role.ADMIN, operator.getRole());
+		Aplikasi aplikasi = aplikasiService.tambahAdmin("090213016", "SIMPEG");
+		
+		for (Operator operator : aplikasi.getDaftarOperator()) {
+			if (operator.getPegawai().getNip().equals("090213016"))
+				assertEquals(Role.ADMIN, operator.getRole());
+		}
+		
+		assertNotEquals(count + 1, operatorRepository.count());
 	}
 }

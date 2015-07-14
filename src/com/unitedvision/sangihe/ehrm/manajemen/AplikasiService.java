@@ -18,11 +18,11 @@ public interface AplikasiService {
 	List<Aplikasi> get(String kode) throws EntityNotExistException;
 	List<Aplikasi> get() throws EntityNotExistException;
 
-	Operator tambahAdmin(Pegawai pegawai, Aplikasi aplikasi);
-	Operator tambahAdmin(String nip, String kodeAplikasi);
+	Aplikasi tambahAdmin(Pegawai pegawai, Aplikasi aplikasi);
+	Aplikasi tambahAdmin(String nip, String kodeAplikasi) throws EntityNotExistException;
 
-	Operator tambahOperator(Pegawai pegawai, Aplikasi aplikasi);
-	Operator tambahOperator(String nip, String kodeAplikasi);
+	Aplikasi tambahOperator(Pegawai pegawai, Aplikasi aplikasi);
+	Aplikasi tambahOperator(String nip, String kodeAplikasi) throws EntityNotExistException;
 	
 	Operator promosi(long idOperator, Role role);
 	

@@ -1,0 +1,125 @@
+package com.unitedvision.sangihe.ehrm.manajemen;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.unitedvision.sangihe.ehrm.EntityNotExistException;
+import com.unitedvision.sangihe.ehrm.manajemen.Operator.Role;
+import com.unitedvision.sangihe.ehrm.manajemen.repository.AplikasiRepository;
+import com.unitedvision.sangihe.ehrm.manajemen.repository.OperatorRepository;
+import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
+import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
+
+@Service
+@Transactional(readOnly = true)
+public class AplikasiServiceImpl implements AplikasiService {
+	
+	@Autowired
+	private AplikasiRepository aplikasiRepository;
+	@Autowired
+	private OperatorRepository operatorRepository;
+	@Autowired
+	private PegawaiRepository pegawaiRepository;
+
+	@Override
+	@Transactional(readOnly = false)
+	public Aplikasi simpan(Aplikasi aplikasi) {
+		return aplikasiRepository.save(aplikasi);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void hapus(Aplikasi aplikasi) {
+		aplikasiRepository.delete(aplikasi);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void hapus(long idAplikasi) {
+		aplikasiRepository.delete(idAplikasi);
+	}
+
+	@Override
+	public Aplikasi get(long idAplikasi) throws EntityNotExistException {
+		return aplikasiRepository.findOne(idAplikasi);
+	}
+
+	@Override
+	public List<Aplikasi> get(String kode) throws EntityNotExistException {
+		return aplikasiRepository.findByKodeLike(kode);
+	}
+	
+	public Aplikasi getByKode(String kode) throws EntityNotExistException {
+		return aplikasiRepository.findByKode(kode);
+	}
+
+	@Override
+	public List<Aplikasi> get() throws EntityNotExistException {
+		return aplikasiRepository.findAll();
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public Aplikasi tambahAdmin(Pegawai pegawai, Aplikasi aplikasi) {
+		aplikasi.addOperator(pegawai, Role.ADMIN);
+		
+		return aplikasiRepository.save(aplikasi);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public Aplikasi tambahAdmin(String nip, String kodeAplikasi) throws EntityNotExistException {
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		Aplikasi aplikasi = aplikasiRepository.findByKode(kodeAplikasi);
+		
+		return tambahAdmin(pegawai, aplikasi);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public Aplikasi tambahOperator(Pegawai pegawai, Aplikasi aplikasi) {
+		aplikasi.addOperator(pegawai, Role.OPERATOR);
+		
+		return aplikasiRepository.save(aplikasi);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public Aplikasi tambahOperator(String nip, String kodeAplikasi) throws EntityNotExistException {
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		Aplikasi aplikasi = aplikasiRepository.findByKode(kodeAplikasi);
+		
+		return tambahOperator(pegawai, aplikasi);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public Operator promosi(long idOperator, Role role) {
+		Operator operator= operatorRepository.findOne(idOperator);
+		operator.setRole(role);
+		
+		return operatorRepository.save(operator);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void hapus(Operator operator) {
+		operatorRepository.delete(operator);
+	}
+
+	@Override
+	public List<Operator> get(Aplikasi aplikasi) throws EntityNotExistException {
+		return operatorRepository.findByAplikasi(aplikasi);
+	}
+
+	@Override
+	public List<Operator> getOperator(String kode) throws EntityNotExistException {
+		Aplikasi aplikasi = aplikasiRepository.findByKode(kode);
+		
+		return get(aplikasi);
+	}
+
+}

@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.unitedvision.sangihe.ehrm.manajemen.Operator.Role;
+import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
+
 @Entity
 @Table(name = "aplikasi")
 public class Aplikasi {
@@ -63,13 +66,31 @@ public class Aplikasi {
 		this.url = url;
 	}
 
-	@OneToMany(mappedBy = "aplikasi", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "aplikasi", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	public List<Operator> getDaftarOperator() {
 		return daftarOperator;
 	}
 
 	public void setDaftarOperator(List<Operator> daftarOperator) {
 		this.daftarOperator = daftarOperator;
+	}
+	
+	public void addOperator(Operator operator) {
+		operator.setAplikasi(this);
+		daftarOperator.add(operator);
+	}
+	
+	public void addOperator(Pegawai pegawai, Role role) {
+		Operator operator = new Operator();
+		operator.setPegawai(pegawai);
+		operator.setRole(role);
+		
+		addOperator(operator);
+	}
+	
+	public void removeOperator(Operator operator) {
+		operator.setAplikasi(null);
+		daftarOperator.remove(operator);
 	}
 
 	@Override
