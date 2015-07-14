@@ -15,6 +15,8 @@ public interface AplikasiService {
 
 	Aplikasi get(long idAplikasi) throws EntityNotExistException;
 
+	Aplikasi getByKode(String kode) throws EntityNotExistException;
+
 	List<Aplikasi> get(String kode) throws EntityNotExistException;
 	List<Aplikasi> get() throws EntityNotExistException;
 

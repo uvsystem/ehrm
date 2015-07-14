@@ -94,6 +94,7 @@ public class AplikasiServiceTest {
 		aplikasiService.simpan(aplikasi);
 	}
 	
+	@Test
 	public void tambah_operator() throws EntityNotExistException {
 		long count = operatorRepository.count();
 		
@@ -104,9 +105,10 @@ public class AplikasiServiceTest {
 				assertEquals(Role.OPERATOR, operator.getRole());
 		}
 		
-		assertNotEquals(count + 1, operatorRepository.count());
+		assertEquals(count + 1, operatorRepository.count());
 	}
 	
+	@Test
 	public void tambah_admin() throws EntityNotExistException {
 		long count = operatorRepository.count();
 		
@@ -117,6 +119,16 @@ public class AplikasiServiceTest {
 				assertEquals(Role.ADMIN, operator.getRole());
 		}
 		
-		assertNotEquals(count + 1, operatorRepository.count());
+		assertEquals(count + 1, operatorRepository.count());
+	}
+	
+	@Test
+	public void test_get() throws EntityNotExistException {
+		aplikasiService.tambahAdmin("090213016", "SIMPEG");
+		
+		Aplikasi aplikasi = aplikasiService.getByKode("SIMPEG");
+		
+		assertNotNull(aplikasi);
+		assertNotEquals(0, aplikasi.getDaftarOperator().size());
 	}
 }

@@ -1,5 +1,6 @@
 package com.unitedvision.sangihe.ehrm.manajemen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -27,6 +28,7 @@ public class Aplikasi {
 	
 	public Aplikasi() {
 		super();
+		daftarOperator = new ArrayList<>();
 	}
 
 	@Id

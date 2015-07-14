@@ -52,6 +52,7 @@ public class AplikasiServiceImpl implements AplikasiService {
 		return aplikasiRepository.findByKodeLike(kode);
 	}
 	
+	@Override
 	public Aplikasi getByKode(String kode) throws EntityNotExistException {
 		return aplikasiRepository.findByKode(kode);
 	}
