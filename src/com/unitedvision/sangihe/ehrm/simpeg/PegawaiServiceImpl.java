@@ -159,11 +159,9 @@ public class PegawaiServiceImpl implements PegawaiService {
 		
 		List<RiwayatPangkat> daftarPangkat = riwayatPangkatRepository.findByPegawai(pegawai);
 		List<RiwayatJabatan> daftarJabatan = riwayatJabatanRepository.findByPegawai(pegawai);
-		List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
 
 		pegawai.setDaftarPangkat(daftarPangkat);
 		pegawai.setDaftarJabatan(daftarJabatan);
-		pegawai.setDaftarOperator(daftarOperator);
 		
 		return pegawai;
 	}

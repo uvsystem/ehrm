@@ -17,9 +17,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.NullCollectionException;
 import com.unitedvision.sangihe.ehrm.absensi.Absen;
@@ -107,8 +104,7 @@ public class Pegawai implements Pejabat {
 		this.password = password;
 	}
 
-	@OneToMany(mappedBy = "pegawai")
-	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<RiwayatPangkat> getDaftarPangkat() {
 		return daftarPangkat;
 	}
@@ -117,8 +113,7 @@ public class Pegawai implements Pejabat {
 		this.daftarPangkat = daftarPangkat;
 	}
 
-	@OneToMany(mappedBy = "pegawai")
-	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<RiwayatJabatan> getDaftarJabatan() {
 		return daftarJabatan;
 	}
@@ -127,8 +122,7 @@ public class Pegawai implements Pejabat {
 		this.daftarJabatan = daftarJabatan;
 	}
 
-	@OneToMany(mappedBy = "pegawai")
-	@Fetch(FetchMode.SUBSELECT)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<Operator> getDaftarOperator() {
 		return daftarOperator;
 	}

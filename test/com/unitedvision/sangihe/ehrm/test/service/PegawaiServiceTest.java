@@ -219,14 +219,16 @@ public class PegawaiServiceTest {
 	@Test
 	public void test_get() throws EntityNotExistException {
 		assertNotEquals(0, riwayatPangkatRepository.count());
+		assertNotEquals(0, riwayatJabatanRepository.count());
 
 		Pegawai pegawai = pegawaiService.getByNip("090213016");
 		assertNotNull(pegawai.getPenduduk());
 		assertEquals("Deddy Christoper Kakunsi", pegawai.getNama());
 		assertNotNull(pegawai.getUnitKerja());
 		assertEquals("Pengelolaan Data Elektronik", pegawai.getUnitKerja().getNama());
-		
+
 		assertNotNull(pegawai);
 		assertNotEquals(0, pegawai.getDaftarPangkat().size());
+		assertNotEquals(0, pegawai.getDaftarJabatan().size());
 	}
 }
