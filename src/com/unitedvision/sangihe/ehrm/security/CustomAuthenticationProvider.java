@@ -1,5 +1,7 @@
 package com.unitedvision.sangihe.ehrm.security;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -8,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.OutOfDateEntityException;
 import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 
@@ -29,7 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         } else {
     		try {
     			user = userDetailService.loadUserByToken(password);
-    		} catch (EntityNotExistException e) {
+    		} catch (PersistenceException e) {
     			user = userDetailService.loadUserByUsername(username);
     		} catch (UnauthenticatedAccessException | OutOfDateEntityException e) {
                 throw new BadCredentialsException(e.getMessage());

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.IdenticRelationshipException;
 import com.unitedvision.sangihe.ehrm.NullCollectionException;
 import com.unitedvision.sangihe.ehrm.duk.repository.PendudukRepository;
@@ -55,7 +54,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Pegawai mutasi(String nip, long idUnitKerja) throws IdenticRelationshipException, EntityNotExistException {
+	public Pegawai mutasi(String nip, long idUnitKerja) throws IdenticRelationshipException {
 		Pegawai pegawai = getByNip(nip);
 		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
 		
@@ -95,7 +94,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Pegawai promosi(String nip, Pangkat pangkat, Date tanggalPromosi, Date tanggalSelesai, String nomorSk) throws IdenticRelationshipException, EntityNotExistException {
+	public Pegawai promosi(String nip, Pangkat pangkat, Date tanggalPromosi, Date tanggalSelesai, String nomorSk) throws IdenticRelationshipException {
 		Pegawai pegawai = getByNip(nip);
 		
 		return promosi(pegawai, pangkat, tanggalPromosi, tanggalSelesai, nomorSk);
@@ -133,7 +132,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Pegawai promosi(String nip, Jabatan jabatan, Date tanggalPromosi, Date tanggalSelesai, String nomorSk) throws IdenticRelationshipException, EntityNotExistException {
+	public Pegawai promosi(String nip, Jabatan jabatan, Date tanggalPromosi, Date tanggalSelesai, String nomorSk) throws IdenticRelationshipException {
 		Pegawai pegawai = getByNip(nip);
 		
 		return promosi(pegawai, jabatan, tanggalPromosi, tanggalSelesai, nomorSk);
@@ -147,14 +146,14 @@ public class PegawaiServiceImpl implements PegawaiService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void hapus(String nip) throws EntityNotExistException {
+	public void hapus(String nip) {
 		Pegawai pegawai = getByNip(nip);
 
 		hapus(pegawai);
 	}
 
 	@Override
-	public Pegawai getByNip(String nip) throws EntityNotExistException {
+	public Pegawai getByNip(String nip) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
 		List<RiwayatPangkat> daftarPangkat = riwayatPangkatRepository.findByPegawai(pegawai);
@@ -167,51 +166,51 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 
 	@Override
-	public List<Pegawai> get(UnitKerja unitKerja) throws EntityNotExistException {
+	public List<Pegawai> get(UnitKerja unitKerja) {
 		return pegawaiRepository.findByUnitKerja(unitKerja);
 	}
 
 	@Override
-	public List<Pegawai> get(Pangkat pangkat) throws EntityNotExistException {
+	public List<Pegawai> get(Pangkat pangkat) {
 		return pegawaiRepository.findByPangkat(pangkat);
 	}
 
 	@Override
-	public List<Pegawai> get(Eselon eselon) throws EntityNotExistException {
+	public List<Pegawai> get(Eselon eselon) {
 		return pegawaiRepository.findByJabatan_Eselon(eselon);
 	}
 
 	@Override
-	public List<RiwayatPangkat> getRiwayatPangkat(Pegawai pegawai) throws EntityNotExistException {
+	public List<RiwayatPangkat> getRiwayatPangkat(Pegawai pegawai) {
 		return riwayatPangkatRepository.findByPegawai(pegawai);
 	}
 
 	@Override
-	public List<RiwayatPangkat> getRiwayatPangkat(String nip) throws EntityNotExistException {
+	public List<RiwayatPangkat> getRiwayatPangkat(String nip) {
 		Pegawai pegawai = getByNip(nip);
 		
 		return getRiwayatPangkat(pegawai);
 	}
 
 	@Override
-	public List<RiwayatJabatan> getRiwayatJabatan(Pegawai pegawai) throws EntityNotExistException {
+	public List<RiwayatJabatan> getRiwayatJabatan(Pegawai pegawai) {
 		return riwayatJabatanRepository.findByPegawai(pegawai);
 	}
 
 	@Override
-	public List<RiwayatJabatan> getRiwayatJabatan(String nip) throws EntityNotExistException {
+	public List<RiwayatJabatan> getRiwayatJabatan(String nip) {
 		Pegawai pegawai = getByNip(nip);
 		
 		return getRiwayatJabatan(pegawai);
 	}
 
 	@Override
-	public List<Operator> get(Pegawai pegawai) throws EntityNotExistException {
+	public List<Operator> get(Pegawai pegawai) {
 		return operatorRepository.findByPegawai(pegawai);
 	}
 
 	@Override
-	public List<Operator> get(String nip) throws EntityNotExistException {
+	public List<Operator> get(String nip) {
 		Pegawai pegawai = getByNip(nip);
 		
 		return pegawai.getDaftarOperator();

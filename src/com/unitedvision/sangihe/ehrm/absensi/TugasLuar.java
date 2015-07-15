@@ -18,6 +18,13 @@ public class TugasLuar extends Absen {
 		super();
 	}
 
+	public TugasLuar(Sppd sppd, Kalendar kalendar) {
+		super();
+		setSppd(sppd);
+		setPegawai(sppd.getPemegangTugas().getPegawai());
+		setKalendar(kalendar);
+	}
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "sppd", nullable = false)
 	public Sppd getSppd() {

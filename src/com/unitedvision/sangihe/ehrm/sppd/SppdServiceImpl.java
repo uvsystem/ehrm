@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
+import com.unitedvision.sangihe.ehrm.absensi.AbsenService;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
 import com.unitedvision.sangihe.ehrm.sppd.repository.SppdRepository;
@@ -16,6 +16,8 @@ import com.unitedvision.sangihe.ehrm.sppd.repository.SppdRepository;
 public class SppdServiceImpl implements SppdService {
 
 	@Autowired
+	private AbsenService absenService;
+	@Autowired
 	private SppdRepository sppdRepository;
 	@Autowired
 	private PegawaiRepository pegawaiRepository;
@@ -23,7 +25,11 @@ public class SppdServiceImpl implements SppdService {
 	@Override
 	@Transactional(readOnly = false)
 	public Sppd simpan(Sppd sppd) {
-		return sppdRepository.save(sppd);
+		sppd = sppdRepository.save(sppd);
+		
+		absenService.tambahTugasLuar(sppd);
+		
+		return sppd;
 	}
 
 	@Override
@@ -68,17 +74,17 @@ public class SppdServiceImpl implements SppdService {
 	}
 
 	@Override
-	public Sppd get(String nomorSppd) throws EntityNotExistException {
+	public Sppd get(String nomorSppd) {
 		return sppdRepository.findByNomor(nomorSppd);
 	}
 
 	@Override
-	public List<Sppd> getByPegawai(Pegawai pegawai) throws EntityNotExistException {
+	public List<Sppd> getByPegawai(Pegawai pegawai) {
 		return sppdRepository.findByPemegangTugas_Pegawai(pegawai);
 	}
 
 	@Override
-	public List<Sppd> getByPegawai(String nip) throws EntityNotExistException {
+	public List<Sppd> getByPegawai(String nip) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
 		return getByPegawai(pegawai);

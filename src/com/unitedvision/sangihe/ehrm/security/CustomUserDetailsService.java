@@ -3,6 +3,8 @@ package com.unitedvision.sangihe.ehrm.security;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.CodeUtil;
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.OutOfDateEntityException;
 import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator;
@@ -44,12 +45,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 			Operator operator = getOperator(pegawai);
 			
 			return new CustomUser(operator.getUsername(), operator.getPassword(), operator, getAuthorities(operator.getRole()));
-		} catch (EntityNotExistException | UnauthenticatedAccessException e) {
+		} catch (PersistenceException | UnauthenticatedAccessException e) {
 			throw new UsernameNotFoundException(e.getMessage());
 		}
 	}
 	
-	public CustomUser loadUserByToken(String tokenString) throws EntityNotExistException, UnauthenticatedAccessException, OutOfDateEntityException {
+	public CustomUser loadUserByToken(String tokenString) throws UnauthenticatedAccessException, OutOfDateEntityException {
 		Token token = tokenService.get(tokenString);
 		Operator operator = getOperator(token.getpegawai());
 		

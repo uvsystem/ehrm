@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @ComponentScan({
+	"com.unitedvision.sangihe.ehrm.interceptor",
 	"com.unitedvision.sangihe.ehrm.manajemen",
 	"com.unitedvision.sangihe.ehrm.duk",
 	"com.unitedvision.sangihe.ehrm.simpeg",

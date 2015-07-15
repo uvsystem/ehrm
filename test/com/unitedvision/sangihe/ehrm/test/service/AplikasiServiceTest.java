@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.DateUtil;
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.manajemen.Aplikasi;
 import com.unitedvision.sangihe.ehrm.manajemen.AplikasiService;
@@ -95,7 +94,7 @@ public class AplikasiServiceTest {
 	}
 	
 	@Test
-	public void tambah_operator() throws EntityNotExistException {
+	public void tambah_operator() {
 		long count = operatorRepository.count();
 		
 		Aplikasi aplikasi = aplikasiService.tambahOperator("090213016", "SIMPEG");
@@ -109,7 +108,7 @@ public class AplikasiServiceTest {
 	}
 	
 	@Test
-	public void tambah_admin() throws EntityNotExistException {
+	public void tambah_admin() {
 		long count = operatorRepository.count();
 		
 		Aplikasi aplikasi = aplikasiService.tambahAdmin("090213016", "SIMPEG");
@@ -123,7 +122,7 @@ public class AplikasiServiceTest {
 	}
 	
 	@Test
-	public void test_get() throws EntityNotExistException {
+	public void test_get() {
 		aplikasiService.tambahAdmin("090213016", "SIMPEG");
 		
 		Aplikasi aplikasi = aplikasiService.getByKode("SIMPEG");

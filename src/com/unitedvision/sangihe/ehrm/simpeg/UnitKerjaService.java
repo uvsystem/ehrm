@@ -2,19 +2,17 @@ package com.unitedvision.sangihe.ehrm.simpeg;
 
 import java.util.List;
 
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
-
 public interface UnitKerjaService {
 
 	UnitKerja simpan(UnitKerja unitKerja);
-	UnitKerja tambahSubUnit(long idUnitKerja, UnitKerja unitKerja) throws EntityNotExistException;
+	UnitKerja tambahSubUnit(long idUnitKerja, UnitKerja unitKerja);
 	
 	void hapus(UnitKerja unitKerja);
 	void hapus(long idUnitKerja);
 	
-	UnitKerja get(long idUnitkerja) throws EntityNotExistException;
-	UnitKerja get(String singkatan) throws EntityNotExistException;
+	UnitKerja get(long idUnitkerja);
+	UnitKerja get(String singkatan);
 	
-	List<SubUnitKerja> get(UnitKerja unitKerja) throws EntityNotExistException;
+	List<SubUnitKerja> get(UnitKerja unitKerja);
 	
 }

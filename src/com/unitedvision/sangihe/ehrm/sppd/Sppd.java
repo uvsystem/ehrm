@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,8 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Parent;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
@@ -40,9 +36,12 @@ public class Sppd {
 	private String tingkat;
 
 	private Kegiatan kegiatan;
-	
-	private Anggaran anggaran;
-	private Perjalanan perjalanan;
+
+	private String nomorDpa;
+	private String kodeRekening;
+	private String modaTransportasi;
+	private String asal = "Tahuna";
+	private Date tanggalBerangkat;
 	
 	private List<TugasLuar> daftarAbsen;
 	private List<Pengikut> daftarPengikut;
@@ -141,221 +140,86 @@ public class Sppd {
 		daftarPengikut.remove(pengikut);
 	}
 
-	@Embedded
-	public Anggaran getAnggaran() {
-		return anggaran;
+	@Column(name = "nomor_dpa", nullable = false)
+	public String getNomorDpa() {
+		return nomorDpa;
 	}
 
-	public void setAnggaran(Anggaran anggaran) {
-		this.anggaran = anggaran;
-	}
-
-	@Embedded
-	public Perjalanan getPerjalanan() {
-		return perjalanan;
-	}
-
-	public void setPerjalanan(Perjalanan perjalanan) {
-		this.perjalanan = perjalanan;
-	}
-
-	@Embeddable
-	public static class Anggaran {
-
-		private Sppd sppd;
-		private String nomorDpa;
-		private String kodeRekening;
-		
-		public Anggaran() {
-			super();
-		}
-
-		@Parent
-		public Sppd getSppd() {
-			return sppd;
-		}
-
-		public void setSppd(Sppd sppd) {
-			this.sppd = sppd;
-		}
-
-		@Column(name = "nomor_dpa", nullable = false)
-		public String getNomorDpa() {
-			return nomorDpa;
-		}
-
-		public void setNomorDpa(String nomorDpa) {
-			this.nomorDpa = nomorDpa;
-		}
-		
-		@Transient
-		public String getNamaKegiatan() {
-			return sppd.getKegiatan().getNama();
-		}
-
-		@Column(name = "rekening", nullable = false)
-		public String getKodeRekening() {
-			return kodeRekening;
-		}
-
-		public void setKodeRekening(String kodeRekening) {
-			this.kodeRekening = kodeRekening;
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result
-					+ ((kodeRekening == null) ? 0 : kodeRekening.hashCode());
-			result = prime * result
-					+ ((nomorDpa == null) ? 0 : nomorDpa.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Anggaran other = (Anggaran) obj;
-			if (kodeRekening == null) {
-				if (other.kodeRekening != null)
-					return false;
-			} else if (!kodeRekening.equals(other.kodeRekening))
-				return false;
-			if (nomorDpa == null) {
-				if (other.nomorDpa != null)
-					return false;
-			} else if (!nomorDpa.equals(other.nomorDpa))
-				return false;
-			return true;
-		}
-
+	public void setNomorDpa(String nomorDpa) {
+		this.nomorDpa = nomorDpa;
 	}
 	
-	@Embeddable
-	public static class Perjalanan {
+	@Transient
+	public String getNamaKegiatan() {
+		return getKegiatan().getNama();
+	}
 
-		private Sppd sppd;
-		private String modaTransportasi;
-		private String asal = "Tahuna";
-		private Date tanggalBerangkat;
+	@Column(name = "rekening", nullable = false)
+	public String getKodeRekening() {
+		return kodeRekening;
+	}
 
-		@Parent
-		public Sppd getSppd() {
-			return sppd;
-		}
+	public void setKodeRekening(String kodeRekening) {
+		this.kodeRekening = kodeRekening;
+	}
 
-		public void setSppd(Sppd sppd) {
-			this.sppd = sppd;
-		}
+	@Column(name = "moda_transportasi", nullable = false)
+	public String getModaTransportasi() {
+		return modaTransportasi;
+	}
 
-		@Column(name = "moda_transportasi", nullable = false)
-		public String getModaTransportasi() {
-			return modaTransportasi;
-		}
+	public void setModaTransportasi(String modaTransportasi) {
+		this.modaTransportasi = modaTransportasi;
+	}
 
-		public void setModaTransportasi(String modaTransportasi) {
-			this.modaTransportasi = modaTransportasi;
-		}
+	@Column(name = "asal", nullable = false)
+	public String getAsal() {
+		return asal;
+	}
 
-		@Column(name = "asal", nullable = false)
-		public String getAsal() {
-			return asal;
-		}
+	public void setAsal(String asal) {
+		this.asal = asal;
+	}
 
-		public void setAsal(String asal) {
-			this.asal = asal;
-		}
+	@JsonIgnore
+	@Column(name = "tanggal_berangkat", nullable = false)
+	public Date getTanggalBerangkat() {
+		return tanggalBerangkat;
+	}
 
-		@JsonIgnore
-		@Column(name = "tanggal_berangkat", nullable = false)
-		public Date getTanggalBerangkat() {
-			return tanggalBerangkat;
-		}
+	public void setTanggalBerangkat(Date tanggalBerangkat) {
+		this.tanggalBerangkat = tanggalBerangkat;
+	}
 
-		public void setTanggalBerangkat(Date tanggalBerangkat) {
-			this.tanggalBerangkat = tanggalBerangkat;
-		}
+	@Transient
+	public String getBerangkat() {
+		return DateUtil.toFormattedStringDate(tanggalBerangkat, "-");
+	}
 
-		@Transient
-		public String getBerangkat() {
-			return DateUtil.toFormattedStringDate(tanggalBerangkat, "-");
-		}
+	public void setBerangkat(String berangkat) {
+		tanggalBerangkat = DateUtil.getDate(berangkat);
+	}
 
-		public void setBerangkat(String berangkat) {
-			tanggalBerangkat = DateUtil.getDate(berangkat);
-		}
+	@JsonIgnore
+	@Transient
+	public Date getTanggalKembali() {
+		return DateUtil.add(tanggalBerangkat, getJumlahHari() - 1);
+	}
 
-		@JsonIgnore
-		@Transient
-		public Date getTanggalKembali() {
-			return DateUtil.add(tanggalBerangkat, getJumlahHari());
-		}
+	@Transient
+	public String getKembali() {
+		return DateUtil.toFormattedStringDate(getTanggalKembali(), "-");
+	}
 
-		@Transient
-		public String getKembali() {
-			return DateUtil.toFormattedStringDate(getTanggalKembali(), "-");
-		}
-
-		public void setKembali(String kembali) {
-			// do nothing
-		}
+	public void setKembali(String kembali) {
+		// do nothing
+	}
+	
+	@Transient
+	public int getJumlahHari() {
+		SuratTugas suratTugas = getPemegangTugas().getSuratTugas();
 		
-		@Transient
-		public int getJumlahHari() {
-			SuratTugas suratTugas = sppd.getPemegangTugas().getSuratTugas();
-			
-			return suratTugas.getJumlahHari();
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + ((asal == null) ? 0 : asal.hashCode());
-			result = prime
-					* result
-					+ ((modaTransportasi == null) ? 0 : modaTransportasi
-							.hashCode());
-			result = prime
-					* result
-					+ ((tanggalBerangkat == null) ? 0 : tanggalBerangkat
-							.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			Perjalanan other = (Perjalanan) obj;
-			if (asal == null) {
-				if (other.asal != null)
-					return false;
-			} else if (!asal.equals(other.asal))
-				return false;
-			if (modaTransportasi == null) {
-				if (other.modaTransportasi != null)
-					return false;
-			} else if (!modaTransportasi.equals(other.modaTransportasi))
-				return false;
-			if (tanggalBerangkat == null) {
-				if (other.tanggalBerangkat != null)
-					return false;
-			} else if (!tanggalBerangkat.equals(other.tanggalBerangkat))
-				return false;
-			return true;
-		}
-		
+		return suratTugas.getJumlahHari();
 	}
 	
 	public class Detail {
@@ -416,8 +280,6 @@ public class Sppd {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((anggaran == null) ? 0 : anggaran.hashCode());
-		result = prime * result
 				+ ((daftarAbsen == null) ? 0 : daftarAbsen.hashCode());
 		result = prime * result
 				+ ((daftarPengikut == null) ? 0 : daftarPengikut.hashCode());
@@ -427,8 +289,6 @@ public class Sppd {
 		result = prime * result + ((nomor == null) ? 0 : nomor.hashCode());
 		result = prime * result
 				+ ((pemegangTugas == null) ? 0 : pemegangTugas.hashCode());
-		result = prime * result
-				+ ((perjalanan == null) ? 0 : perjalanan.hashCode());
 		result = prime * result + ((tingkat == null) ? 0 : tingkat.hashCode());
 		return result;
 	}
@@ -442,11 +302,6 @@ public class Sppd {
 		if (getClass() != obj.getClass())
 			return false;
 		Sppd other = (Sppd) obj;
-		if (anggaran == null) {
-			if (other.anggaran != null)
-				return false;
-		} else if (!anggaran.equals(other.anggaran))
-			return false;
 		if (daftarAbsen == null) {
 			if (other.daftarAbsen != null)
 				return false;
@@ -473,11 +328,6 @@ public class Sppd {
 			if (other.pemegangTugas != null)
 				return false;
 		} else if (!pemegangTugas.equals(other.pemegangTugas))
-			return false;
-		if (perjalanan == null) {
-			if (other.perjalanan != null)
-				return false;
-		} else if (!perjalanan.equals(other.perjalanan))
 			return false;
 		if (tingkat == null) {
 			if (other.tingkat != null)

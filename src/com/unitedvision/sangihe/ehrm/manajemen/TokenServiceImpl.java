@@ -2,14 +2,11 @@ package com.unitedvision.sangihe.ehrm.manajemen;
 
 import java.util.List;
 
-import javax.persistence.PersistenceException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.DateUtil;
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 import com.unitedvision.sangihe.ehrm.manajemen.Token.StatusToken;
 import com.unitedvision.sangihe.ehrm.manajemen.repository.OperatorRepository;
@@ -31,7 +28,7 @@ public class TokenServiceImpl implements TokenService {
 	
 	@Override
 	@Transactional(readOnly = false)
-	public Pegawai login(String username) throws EntityNotExistException {
+	public Pegawai login(String username) {
 		Pegawai pegawai = pegawaiRepository.findByNip(username);
 		
 		List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
@@ -42,22 +39,12 @@ public class TokenServiceImpl implements TokenService {
 	}
 
 	@Override
-	public Token get(String token) throws EntityNotExistException, OutOfDateEntityException, UnauthenticatedAccessException {
-		Token tokenObject;
-		
-		try {
-			tokenObject = tokenRepository.findByToken(token);
-			
-			if (tokenObject == null)
-				throw new PersistenceException("Token tidak ditemukan");
+	public Token get(String token) throws OutOfDateEntityException, UnauthenticatedAccessException {
+		Token tokenObject = tokenRepository.findByToken(token);
 
-			Pegawai pegawai = tokenObject.getpegawai();
-			List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
-			pegawai.setDaftarOperator(daftarOperator);
-			
-		} catch (PersistenceException e) {
-			throw new EntityNotExistException(e.getMessage());
-		}
+		Pegawai pegawai = tokenObject.getpegawai();
+		List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
+		pegawai.setDaftarOperator(daftarOperator);
 		
 		if (tokenObject.getStatus().equals(StatusToken.LOCKED))
 			throw new UnauthenticatedAccessException();
@@ -69,7 +56,7 @@ public class TokenServiceImpl implements TokenService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Token create(Pegawai pegawai) throws EntityNotExistException {
+	public Token create(Pegawai pegawai) {
 		List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
 		pegawai.setDaftarOperator(daftarOperator);
 		
@@ -85,7 +72,7 @@ public class TokenServiceImpl implements TokenService {
 	
 	@Override
 	@Transactional(readOnly = false)
-	public Token create(String nip) throws EntityNotExistException {
+	public Token create(String nip) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
 		return create(pegawai);
@@ -93,7 +80,7 @@ public class TokenServiceImpl implements TokenService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Token lock(String token) throws EntityNotExistException {
+	public Token lock(String token) {
 		Token tokenObject = tokenRepository.findByToken(token);
 		tokenObject.setStatus(StatusToken.LOCKED);
 		

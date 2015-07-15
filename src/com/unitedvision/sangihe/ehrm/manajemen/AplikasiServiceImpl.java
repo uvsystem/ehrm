@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator.Role;
 import com.unitedvision.sangihe.ehrm.manajemen.repository.AplikasiRepository;
 import com.unitedvision.sangihe.ehrm.manajemen.repository.OperatorRepository;
@@ -43,22 +42,22 @@ public class AplikasiServiceImpl implements AplikasiService {
 	}
 
 	@Override
-	public Aplikasi get(long idAplikasi) throws EntityNotExistException {
+	public Aplikasi get(long idAplikasi) {
 		return aplikasiRepository.findOne(idAplikasi);
 	}
 
 	@Override
-	public List<Aplikasi> get(String kode) throws EntityNotExistException {
+	public List<Aplikasi> get(String kode) {
 		return aplikasiRepository.findByKodeLike(kode);
 	}
 	
 	@Override
-	public Aplikasi getByKode(String kode) throws EntityNotExistException {
+	public Aplikasi getByKode(String kode) {
 		return aplikasiRepository.findByKode(kode);
 	}
 
 	@Override
-	public List<Aplikasi> get() throws EntityNotExistException {
+	public List<Aplikasi> get() {
 		return aplikasiRepository.findAll();
 	}
 
@@ -72,7 +71,7 @@ public class AplikasiServiceImpl implements AplikasiService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Aplikasi tambahAdmin(String nip, String kodeAplikasi) throws EntityNotExistException {
+	public Aplikasi tambahAdmin(String nip, String kodeAplikasi) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		Aplikasi aplikasi = aplikasiRepository.findByKode(kodeAplikasi);
 		
@@ -89,7 +88,7 @@ public class AplikasiServiceImpl implements AplikasiService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Aplikasi tambahOperator(String nip, String kodeAplikasi) throws EntityNotExistException {
+	public Aplikasi tambahOperator(String nip, String kodeAplikasi) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		Aplikasi aplikasi = aplikasiRepository.findByKode(kodeAplikasi);
 		
@@ -112,12 +111,12 @@ public class AplikasiServiceImpl implements AplikasiService {
 	}
 
 	@Override
-	public List<Operator> get(Aplikasi aplikasi) throws EntityNotExistException {
+	public List<Operator> get(Aplikasi aplikasi) {
 		return operatorRepository.findByAplikasi(aplikasi);
 	}
 
 	@Override
-	public List<Operator> getOperator(String kode) throws EntityNotExistException {
+	public List<Operator> getOperator(String kode) {
 		Aplikasi aplikasi = aplikasiRepository.findByKode(kode);
 		
 		return get(aplikasi);

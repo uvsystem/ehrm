@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.DateUtil;
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.OutOfDateEntityException;
 import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
@@ -51,7 +50,7 @@ public class TokenServiceTest {
 	private Pegawai pegawai;
 	
 	@Before
-	public void setup() throws EntityNotExistException {
+	public void setup() {
 		Aplikasi aplikasi = new Aplikasi();
 		aplikasi.setKode("SIMPEG");
 		aplikasi.setNama("Sistem Informasi Manajemen Pegawai");
@@ -92,7 +91,7 @@ public class TokenServiceTest {
 	}
 	
 	@Test
-	public void test_create() throws EntityNotExistException {
+	public void test_create() {
 		Token token = tokenService.create("090213016");
 		
 		assertNotEquals("", token.getToken());
@@ -103,14 +102,14 @@ public class TokenServiceTest {
 	}
 	
 	@Test
-	public void test_lock() throws EntityNotExistException {
+	public void test_lock() {
 		tokenService.lock(token.getToken());
 
 		assertEquals(StatusToken.LOCKED, token.getStatus());
 	}
 	
 	@Test
-	public void test_get() throws EntityNotExistException, OutOfDateEntityException, UnauthenticatedAccessException {
+	public void test_get() throws OutOfDateEntityException, UnauthenticatedAccessException {
 		Token token2 = tokenService.get(token.getToken());
 		
 		assertNotEquals(0, token2.getToken());
@@ -119,14 +118,14 @@ public class TokenServiceTest {
 	}
 	
 	@Test(expected = UnauthenticatedAccessException.class)
-	public void test_get_locked() throws EntityNotExistException, OutOfDateEntityException, UnauthenticatedAccessException {
+	public void test_get_locked() throws OutOfDateEntityException, UnauthenticatedAccessException {
 		tokenService.lock(token.getToken());
 		tokenService.get(token.getToken());
 	}
 
 	@Ignore
 	@Test(expected = OutOfDateEntityException.class)
-	public void test_get_expire() throws EntityNotExistException, OutOfDateEntityException {
+	public void test_get_expire() throws OutOfDateEntityException {
 		// take expire token
 	}
 }

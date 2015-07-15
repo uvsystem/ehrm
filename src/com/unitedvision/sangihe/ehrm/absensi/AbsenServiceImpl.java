@@ -2,6 +2,7 @@ package com.unitedvision.sangihe.ehrm.absensi;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -11,10 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.DateUtil;
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.absensi.repository.CutiRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.HadirRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.IzinRepository;
+import com.unitedvision.sangihe.ehrm.absensi.repository.KalendarRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.SakitRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.TugasLuarRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
@@ -41,6 +42,8 @@ public class AbsenServiceImpl implements AbsenService {
 	private PegawaiRepository pegawaiRepository;
 	@Autowired
 	private SppdRepository sppdRepository;
+	@Autowired
+	private KalendarRepository kalendarRepository;
 	
 	/**
 	 * Ambil absen jika sudah ada, buat baru jika tidak ada.
@@ -50,7 +53,7 @@ public class AbsenServiceImpl implements AbsenService {
 	 * @return
 	 * @throws EntityNotExistException 
 	 */
-	private Hadir getHadir(String nip, Date tanggal) throws EntityNotExistException {
+	private Hadir getHadir(String nip, Date tanggal) {
 		
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 
@@ -63,10 +66,7 @@ public class AbsenServiceImpl implements AbsenService {
 			
 			hadir = hadirRepository.findByPegawaiAndKalendar_Tanggal(pegawai, tanggal);
 			
-			if (hadir == null)
-				throw new EntityNotExistException();
-			
-		} catch (EntityNotExistException | PersistenceException e) {
+		} catch (PersistenceException e) {
 			
 			hadir = new Hadir();
 			hadir.setPegawai(pegawai);
@@ -78,7 +78,7 @@ public class AbsenServiceImpl implements AbsenService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Hadir apelPagi(String nip, Date tanggal, Time jam) throws AbsenException, EntityNotExistException {
+	public Hadir apelPagi(String nip, Date tanggal, Time jam) throws AbsenException {
 
 		// Buat entitas absen hadir yang baru
 		Hadir hadir= getHadir(nip, tanggal);
@@ -97,7 +97,7 @@ public class AbsenServiceImpl implements AbsenService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Hadir pengecekanSatu(String nip, Date tanggal, Time jam) throws AbsenException, EntityNotExistException {
+	public Hadir pengecekanSatu(String nip, Date tanggal, Time jam) throws AbsenException {
 
 		Hadir hadir= getHadir(nip, tanggal);
 		
@@ -115,7 +115,7 @@ public class AbsenServiceImpl implements AbsenService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Hadir pengecekanDua(String nip, Date tanggal, Time jam) throws AbsenException, EntityNotExistException {
+	public Hadir pengecekanDua(String nip, Date tanggal, Time jam) throws AbsenException {
 
 		Hadir hadir= getHadir(nip, tanggal);
 		
@@ -133,7 +133,7 @@ public class AbsenServiceImpl implements AbsenService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Hadir apelSore(String nip, Date tanggal, Time jam) throws AbsenException, EntityNotExistException {
+	public Hadir apelSore(String nip, Date tanggal, Time jam) throws AbsenException {
 
 		Hadir hadir= getHadir(nip, tanggal);
 		
@@ -151,7 +151,7 @@ public class AbsenServiceImpl implements AbsenService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public TugasLuar tambahTugasLuar(String nip, Date tanggal, String nomorSppd) throws EntityNotExistException {
+	public TugasLuar tambahTugasLuar(String nip, Date tanggal, String nomorSppd) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		Sppd sppd = sppdRepository.findByNomor(nomorSppd);
 		
@@ -165,7 +165,22 @@ public class AbsenServiceImpl implements AbsenService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Sakit tambahSakit(String nip, Date tanggal, String penyakit) throws EntityNotExistException {
+	public List<TugasLuar> tambahTugasLuar(Sppd sppd) {
+		Date tanggalBerangkat = sppd.getTanggalBerangkat();
+		Date tanggalKembali = sppd.getTanggalKembali();
+		
+		List<Kalendar> daftarTanggal = kalendarRepository.findByTanggalBetween(tanggalBerangkat, tanggalKembali);
+		List<TugasLuar> daftarTugasLuar = new ArrayList<>();
+		for (Kalendar kalendar : daftarTanggal) {
+			daftarTugasLuar.add(new TugasLuar(sppd, kalendar));
+		}
+		
+		return tugasLuarRepository.save(daftarTugasLuar);
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public Sakit tambahSakit(String nip, Date tanggal, String penyakit) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 
 		Sakit sakit = new Sakit();
@@ -178,7 +193,7 @@ public class AbsenServiceImpl implements AbsenService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Izin tambahIzin(String nip, Date tanggal, String alasan) throws EntityNotExistException {
+	public Izin tambahIzin(String nip, Date tanggal, String alasan) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 
 		Izin izin = new Izin();
@@ -191,7 +206,7 @@ public class AbsenServiceImpl implements AbsenService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public Cuti tambahCuti(String nip, Date tanggal, String jenisCuti) throws EntityNotExistException {
+	public Cuti tambahCuti(String nip, Date tanggal, String jenisCuti) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 
 		Cuti cuti = new Cuti();
@@ -203,52 +218,52 @@ public class AbsenServiceImpl implements AbsenService {
 	}
 
 	@Override
-	public List<Hadir> getHadir(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException {
+	public List<Hadir> getHadir(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) {
 		return hadirRepository.findByPegawaiAndKalendar_TanggalBetween(pegawai, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
-	public List<Hadir> getHadir(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException {
+	public List<Hadir> getHadir(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) {
 		return hadirRepository.findByPegawai_UnitKerjaAndKalendar_TanggalBetween(unitKerja, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
-	public List<TugasLuar> getTugasLuar(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException {
+	public List<TugasLuar> getTugasLuar(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) {
 		return tugasLuarRepository.findByPegawaiAndKalendar_TanggalBetween(pegawai, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
-	public List<TugasLuar> getTugasLuar(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException {
+	public List<TugasLuar> getTugasLuar(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) {
 		return tugasLuarRepository.findByPegawai_UnitKerjaAndKalendar_TanggalBetween(unitKerja, tanggalAkhir, tanggalAkhir);
 	}
 
 	@Override
-	public List<Sakit> getSakit(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException {
+	public List<Sakit> getSakit(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) {
 		return sakitRepository.findByPegawaiAndKalendar_TanggalBetween(pegawai, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
-	public List<Sakit> getSakit(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException {
+	public List<Sakit> getSakit(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) {
 		return sakitRepository.findByPegawai_UnitKerjaAndKalendar_TanggalBetween(unitKerja, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
-	public List<Izin> getIzin(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException {
+	public List<Izin> getIzin(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) {
 		return izinRepository.findByPegawaiAndKalendar_TanggalBetween(pegawai, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
-	public List<Izin> getIzin(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException {
+	public List<Izin> getIzin(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) {
 		return izinRepository.findByPegawai_UnitKerjaAndKalendar_TanggalBetween(unitKerja, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
-	public List<Cuti> getCuti(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException {
+	public List<Cuti> getCuti(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) {
 		return cutiRepository.findByPegawaiAndKalendar_TanggalBetween(pegawai, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
-	public List<Cuti> getCuti(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException {
+	public List<Cuti> getCuti(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) {
 		return cutiRepository.findByPegawai_UnitKerjaAndKalendar_TanggalBetween(unitKerja, tanggalAwal, tanggalAkhir);
 	}
 

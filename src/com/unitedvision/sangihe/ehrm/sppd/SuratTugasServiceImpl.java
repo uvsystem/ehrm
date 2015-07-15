@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
 import com.unitedvision.sangihe.ehrm.sppd.SuratTugas.Status;
@@ -64,7 +63,7 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public SuratTugas tambahPegawai(long idSuratTugas, String nip) throws EntityNotExistException {
+	public SuratTugas tambahPegawai(long idSuratTugas, String nip) {
 		SuratTugas suratTugas = suratTugasRepository.findOne(idSuratTugas);
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
@@ -91,17 +90,17 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 	}
 
 	@Override
-	public SuratTugas get(String nomorSuratTugas) throws EntityNotExistException {
+	public SuratTugas get(String nomorSuratTugas) {
 		return suratTugasRepository.findByNomor(nomorSuratTugas);
 	}
 
 	@Override
-	public List<SuratTugas> getByPegawai(Pegawai pegawai) throws EntityNotExistException {
+	public List<SuratTugas> getByPegawai(Pegawai pegawai) {
 		return suratTugasRepository.findByPegawai(pegawai);
 	}
 
 	@Override
-	public List<SuratTugas> getByPegawai(String nip) throws EntityNotExistException {
+	public List<SuratTugas> getByPegawai(String nip) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
 		return getByPegawai(pegawai);

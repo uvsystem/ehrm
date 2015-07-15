@@ -14,7 +14,6 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.simpeg.SubUnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerjaService;
@@ -66,7 +65,7 @@ public class UnitKerjaServiceTest {
 	}
 	
 	@Test
-	public void test_get_by_singkatan() throws EntityNotExistException {
+	public void test_get_by_singkatan() {
 		UnitKerja unitKerja = unitKerjaService.get("SETDA");
 		
 		assertNotNull(unitKerja);

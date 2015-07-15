@@ -2,6 +2,7 @@ package com.unitedvision.sangihe.ehrm.test.service;
 
 import static org.junit.Assert.*;
 
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.DateUtil;
+import com.unitedvision.sangihe.ehrm.absensi.Kalendar;
+import com.unitedvision.sangihe.ehrm.absensi.repository.KalendarRepository;
+import com.unitedvision.sangihe.ehrm.absensi.repository.TugasLuarRepository;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.PegawaiService;
@@ -25,8 +29,6 @@ import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja.TipeUnitKerja;
 import com.unitedvision.sangihe.ehrm.sppd.PemegangTugas;
 import com.unitedvision.sangihe.ehrm.sppd.Pengikut;
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
-import com.unitedvision.sangihe.ehrm.sppd.Sppd.Anggaran;
-import com.unitedvision.sangihe.ehrm.sppd.Sppd.Perjalanan;
 import com.unitedvision.sangihe.ehrm.sppd.SppdService;
 import com.unitedvision.sangihe.ehrm.sppd.SuratTugas;
 import com.unitedvision.sangihe.ehrm.sppd.SuratTugasService;
@@ -51,6 +53,10 @@ public class SppdServiceTest {
 	private SppdRepository sppdRepository;
 	@Autowired
 	private PengikutRepository pengikutRepository;
+	@Autowired
+	private TugasLuarRepository tugasLuarRepository;
+	@Autowired
+	private KalendarRepository kalendarRepository;
 
 	private UnitKerja unitKerja;
 	private Pegawai pegawai;
@@ -97,6 +103,13 @@ public class SppdServiceTest {
 		suratTugas = suratTugasService.simpan(suratTugas, daftarPegawai);
 		List<PemegangTugas> list = suratTugas.getDaftarPemegangTugas();
 		pemegangTugas = list.get(0);
+		
+		List<Kalendar> daftarKalendar = new ArrayList<>();
+		daftarKalendar.add(new Kalendar(DateUtil.getDate(2015, Month.JANUARY, 1)));
+		daftarKalendar.add(new Kalendar(DateUtil.getDate(2015, Month.JANUARY, 2)));
+		daftarKalendar.add(new Kalendar(DateUtil.getDate(2015, Month.JANUARY, 3)));
+		daftarKalendar.add(new Kalendar(DateUtil.getDate(2015, Month.JANUARY, 4)));
+		kalendarRepository.save(daftarKalendar);
 	}
 	
 	@Test
@@ -106,16 +119,12 @@ public class SppdServiceTest {
 		sppd.setNomor("001/SPPD/2015");
 		sppd.setTingkat("Prioritas");
 		
-		Anggaran anggaran = new Anggaran();
-		anggaran.setNomorDpa("001/DPA/2015");
-		anggaran.setKodeRekening("07.21.131.0089");
-		sppd.setAnggaran(anggaran);
+		sppd.setNomorDpa("001/DPA/2015");
+		sppd.setKodeRekening("07.21.131.0089");
 		
-		Perjalanan perjalanan = new Perjalanan();
-		perjalanan.setAsal("Tahuna");
-		perjalanan.setModaTransportasi("Kapal Laut");
-		perjalanan.setTanggalBerangkat(DateUtil.getNow());
-		sppd.setPerjalanan(perjalanan);
+		sppd.setAsal("Tahuna");
+		sppd.setModaTransportasi("Kapal Laut");
+		sppd.setTanggalBerangkat(DateUtil.getDate(2015, Month.JANUARY, 1));
 
 		Pengikut pengikut = new Pengikut();
 		pengikut.setNama("Lusye Landeng");
@@ -128,5 +137,7 @@ public class SppdServiceTest {
 		assertEquals(countSppd + 1, sppdRepository.count());
 		assertEquals(countPengikut + 1, pengikutRepository.count());
 		assertNotEquals(0, sppd.getDaftarPengikut().size());
+		
+		assertEquals(pemegangTugas.getSuratTugas().getJumlahHari(), tugasLuarRepository.countBySppd(sppd));
 	}
 }

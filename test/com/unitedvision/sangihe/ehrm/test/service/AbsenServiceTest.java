@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.DateUtil;
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.absensi.AbsenException;
 import com.unitedvision.sangihe.ehrm.absensi.AbsenService;
 import com.unitedvision.sangihe.ehrm.absensi.Cuti;
@@ -22,7 +21,6 @@ import com.unitedvision.sangihe.ehrm.absensi.Izin;
 import com.unitedvision.sangihe.ehrm.absensi.Kalendar;
 import com.unitedvision.sangihe.ehrm.absensi.KalendarService;
 import com.unitedvision.sangihe.ehrm.absensi.Sakit;
-import com.unitedvision.sangihe.ehrm.absensi.TugasLuar;
 import com.unitedvision.sangihe.ehrm.absensi.repository.CutiRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.HadirRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.IzinRepository;
@@ -94,7 +92,7 @@ public class AbsenServiceTest {
 	}
 
 	@Test
-	public void apel_pagi() throws AbsenException, EntityNotExistException {
+	public void apel_pagi() throws AbsenException {
 		Hadir hadir = absenService.apelPagi("090213016", DateUtil.getNow(), DateUtil.getTime(7, 0, 0));
 
 		assertNotNull(hadir);
@@ -103,7 +101,7 @@ public class AbsenServiceTest {
 	}
 
 	@Test
-	public void pengecekan_satu() throws AbsenException, EntityNotExistException {
+	public void pengecekan_satu() throws AbsenException {
 		Hadir hadir = absenService.pengecekanSatu("090213016", DateUtil.getNow(), DateUtil.getTime(11, 0, 0));
 
 		assertNotNull(hadir);
@@ -113,7 +111,7 @@ public class AbsenServiceTest {
 	}
 
 	@Test
-	public void pengecekan_dua() throws AbsenException, EntityNotExistException {
+	public void pengecekan_dua() throws AbsenException {
 		Hadir hadir = absenService.pengecekanDua("090213016", DateUtil.getNow(), DateUtil.getTime(13, 0, 0));
 
 		assertNotNull(hadir);
@@ -123,7 +121,7 @@ public class AbsenServiceTest {
 	}
 
 	@Test
-	public void apel_sore() throws AbsenException, EntityNotExistException {
+	public void apel_sore() throws AbsenException {
 		Hadir hadir = absenService.apelSore("090213016", DateUtil.getNow(), DateUtil.getTime(16, 0, 0));
 
 		assertNotNull(hadir);
@@ -133,15 +131,7 @@ public class AbsenServiceTest {
 	}
 
 	@Test
-	public void tugas_luar() throws EntityNotExistException {
-		TugasLuar tugasLuar = absenService.tambahTugasLuar("090213016", DateUtil.getNow(), null);
-		
-		assertNotNull(tugasLuar);
-		assertNotEquals(0, tugasLuar.getId());
-	}
-
-	@Test
-	public void sakit() throws EntityNotExistException {
+	public void sakit() {
 		String penyakit = "Demam Berdarah";
 		Sakit sakit = absenService.tambahSakit("090213016", DateUtil.getNow(), penyakit);
 		
@@ -151,7 +141,7 @@ public class AbsenServiceTest {
 	}
 
 	@Test
-	public void izin() throws EntityNotExistException {
+	public void izin() {
 		String alasan = "Kedukaan";
 		Izin izin = absenService.tambahIzin("090213016", DateUtil.getNow(), alasan);
 		
@@ -161,7 +151,7 @@ public class AbsenServiceTest {
 	}
 
 	@Test
-	public void cuti() throws EntityNotExistException {
+	public void cuti() {
 		String jenisCuti = "Hamil";
 		Cuti cuti = absenService.tambahCuti("090213016", DateUtil.getNow(), jenisCuti);
 		

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.SubUnitKerjaRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.UnitKerjaRepository;
 
@@ -27,7 +26,7 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public UnitKerja tambahSubUnit(long idUnitKerja, UnitKerja unitKerja) throws EntityNotExistException {
+	public UnitKerja tambahSubUnit(long idUnitKerja, UnitKerja unitKerja) {
 		SubUnitKerja subUnitKerja;
 
 		if (unitKerja instanceof SubUnitKerja) {
@@ -55,17 +54,17 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 	}
 
 	@Override
-	public UnitKerja get(long idUnitkerja) throws EntityNotExistException {
+	public UnitKerja get(long idUnitkerja) {
 		return unitKerjaRepository.findOne(idUnitkerja);
 	}
 
 	@Override
-	public UnitKerja get(String singkatan) throws EntityNotExistException {
+	public UnitKerja get(String singkatan) {
 		return unitKerjaRepository.findBySingkatan(singkatan);
 	}
 
 	@Override
-	public List<SubUnitKerja> get(UnitKerja unitKerja) throws EntityNotExistException {
+	public List<SubUnitKerja> get(UnitKerja unitKerja) {
 		return subUnitKerjaRepository.findByUnitKerja(unitKerja);
 	}
 

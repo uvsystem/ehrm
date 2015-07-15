@@ -4,9 +4,9 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
+import com.unitedvision.sangihe.ehrm.sppd.Sppd;
 
 public interface AbsenService {
 	
@@ -19,7 +19,7 @@ public interface AbsenService {
 	 * @throws AbsenException
 	 * @throws EntityNotExistException 
 	 */
-	Hadir apelPagi(String nip, Date tanggal, Time jam) throws AbsenException, EntityNotExistException;
+	Hadir apelPagi(String nip, Date tanggal, Time jam) throws AbsenException;
 
 	/**
 	 * Isi absen pengecekan pertama.
@@ -30,7 +30,7 @@ public interface AbsenService {
 	 * @throws AbsenException 
 	 * @throws EntityNotExistException 
 	 */
-	Hadir pengecekanSatu(String nip, Date tanggal, Time jam) throws AbsenException, EntityNotExistException;
+	Hadir pengecekanSatu(String nip, Date tanggal, Time jam) throws AbsenException;
 
 	/**
 	 * Isi absen pengecekan kedua.
@@ -41,7 +41,7 @@ public interface AbsenService {
 	 * @throws AbsenException 
 	 * @throws EntityNotExistException 
 	 */
-	Hadir pengecekanDua(String nip, Date tanggal, Time jam) throws AbsenException, EntityNotExistException;
+	Hadir pengecekanDua(String nip, Date tanggal, Time jam) throws AbsenException;
 
 	/**
 	 * Isi absen sore.
@@ -52,26 +52,28 @@ public interface AbsenService {
 	 * @throws AbsenException 
 	 * @throws EntityNotExistException 
 	 */
-	Hadir apelSore(String nip, Date tanggal, Time jam) throws AbsenException, EntityNotExistException;
+	Hadir apelSore(String nip, Date tanggal, Time jam) throws AbsenException;
 
-	TugasLuar tambahTugasLuar(String nip, Date tanggal, String nomorSppd) throws EntityNotExistException;
-	Sakit tambahSakit(String nip, Date tanggal, String penyakit) throws EntityNotExistException;
-	Izin tambahIzin(String nip, Date tanggal, String alasan) throws EntityNotExistException;
-	Cuti tambahCuti(String nip, Date tanggal, String jenisCuti) throws EntityNotExistException;
+	TugasLuar tambahTugasLuar(String nip, Date tanggal, String nomorSppd);
+	List<TugasLuar> tambahTugasLuar(Sppd sppd);
+
+	Sakit tambahSakit(String nip, Date tanggal, String penyakit);
+	Izin tambahIzin(String nip, Date tanggal, String alasan);
+	Cuti tambahCuti(String nip, Date tanggal, String jenisCuti);
 	
-	List<Hadir> getHadir(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException;
-	List<Hadir> getHadir(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException;
+	List<Hadir> getHadir(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir);
+	List<Hadir> getHadir(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir);
 	
-	List<TugasLuar> getTugasLuar(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException;
-	List<TugasLuar> getTugasLuar(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException;
+	List<TugasLuar> getTugasLuar(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir);
+	List<TugasLuar> getTugasLuar(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir);
 	
-	List<Sakit> getSakit(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException;
-	List<Sakit> getSakit(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException;
+	List<Sakit> getSakit(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir);
+	List<Sakit> getSakit(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir);
 	
-	List<Izin> getIzin(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException;
-	List<Izin> getIzin(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException;
+	List<Izin> getIzin(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir);
+	List<Izin> getIzin(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir);
 	
-	List<Cuti> getCuti(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException;
-	List<Cuti> getCuti(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) throws EntityNotExistException;
-	
+	List<Cuti> getCuti(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir);
+	List<Cuti> getCuti(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir);
+
 }

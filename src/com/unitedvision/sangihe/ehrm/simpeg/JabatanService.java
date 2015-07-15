@@ -2,8 +2,6 @@ package com.unitedvision.sangihe.ehrm.simpeg;
 
 import java.util.List;
 
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
-
 public interface JabatanService {
 
 	Jabatan simpan(Jabatan jabatan);
@@ -13,6 +11,6 @@ public interface JabatanService {
 	
 	Jabatan get(long idJabatan);
 	
-	List<Jabatan> get(UnitKerja unitKerja) throws EntityNotExistException;
+	List<Jabatan> get(UnitKerja unitKerja);
 
 }

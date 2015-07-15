@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.DateUtil;
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.IdenticRelationshipException;
 import com.unitedvision.sangihe.ehrm.NullCollectionException;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
@@ -178,7 +177,7 @@ public class PegawaiServiceTest {
 	}
 	
 	@Test
-	public void test_promosi_pangkat() throws IdenticRelationshipException, NullCollectionException, EntityNotExistException {
+	public void test_promosi_pangkat() throws IdenticRelationshipException, NullCollectionException {
 		pegawaiService.promosi(pegawai.getNip(), Pangkat.IIIB, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
 		
 		pegawai = pegawaiService.getByNip(pegawai.getNip());
@@ -187,7 +186,7 @@ public class PegawaiServiceTest {
 	}
 	
 	@Test
-	public void test_promosi_jabatan() throws IdenticRelationshipException, NullCollectionException, EntityNotExistException {
+	public void test_promosi_jabatan() throws IdenticRelationshipException, NullCollectionException {
 		pegawaiService.promosi(pegawai.getNip(), jabatanKaSubBagDatabase, DateUtil.getDate("12-01-2014"), null, "002/SK/2015");
 		
 		pegawai = pegawaiService.getByNip(pegawai.getNip());
@@ -196,28 +195,28 @@ public class PegawaiServiceTest {
 	}
 	
 	@Test
-	public void test_get_by_pangkat() throws EntityNotExistException {
+	public void test_get_by_pangkat() {
 		List<Pegawai> list = pegawaiService.get(Pangkat.IIIA);
 		
 		assertNotEquals(0, list.size());
 	}
 	
 	@Test
-	public void test_get_by_eselon() throws EntityNotExistException {
+	public void test_get_by_eselon() {
 		List<Pegawai> list = pegawaiService.get(Eselon.V);
 		
 		assertNotEquals(0, list.size());
 	}
 	
 	@Test
-	public void test_get_by_unit_kerja() throws EntityNotExistException {
+	public void test_get_by_unit_kerja() {
 		List<Pegawai> list = pegawaiService.get(unitKerja);
 		
 		assertNotEquals(0, list.size());
 	}
 
 	@Test
-	public void test_get() throws EntityNotExistException {
+	public void test_get() {
 		assertNotEquals(0, riwayatPangkatRepository.count());
 		assertNotEquals(0, riwayatJabatanRepository.count());
 

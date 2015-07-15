@@ -2,7 +2,6 @@ package com.unitedvision.sangihe.ehrm.sppd;
 
 import java.util.List;
 
-import com.unitedvision.sangihe.ehrm.EntityNotExistException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 public interface SppdService {
@@ -17,9 +16,9 @@ public interface SppdService {
 	void hapus(long idSppd);
 
 	Sppd get(long idSppd);
-	Sppd get(String nomorSppd) throws EntityNotExistException;
+	Sppd get(String nomorSppd);
 
-	List<Sppd> getByPegawai(Pegawai pegawai) throws EntityNotExistException;
-	List<Sppd> getByPegawai(String nip) throws EntityNotExistException;
+	List<Sppd> getByPegawai(Pegawai pegawai);
+	List<Sppd> getByPegawai(String nip);
 
 }
