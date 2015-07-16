@@ -6,6 +6,4 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ JabatanControllerTest.class, UnitKerjaControllerTest.class })
-public class ControllerTest {
-
-}
+public class ControllerTest { }

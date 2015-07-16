@@ -10,6 +10,4 @@ import org.junit.runners.Suite.SuiteClasses;
 		PegawaiServiceTest.class, SppdServiceTest.class,
 		SuratTugasServiceTest.class, TokenServiceTest.class,
 		UnitKerjaServiceTest.class })
-public class ServiceTest {
-
-}
+public class ServiceTest { }
