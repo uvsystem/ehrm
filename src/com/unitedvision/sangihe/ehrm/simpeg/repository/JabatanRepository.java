@@ -11,4 +11,6 @@ public interface JabatanRepository extends JpaRepository<Jabatan, Long> {
 
 	List<Jabatan> findByUnitKerja(UnitKerja unitKerja);
 
+	List<Jabatan> findByNamaContaining(String keyword);
+
 }

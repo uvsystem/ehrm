@@ -4,13 +4,16 @@ import java.util.List;
 
 public interface JabatanService {
 
+	Jabatan simpan(Long idUnitKerja, Jabatan jabatan);
 	Jabatan simpan(Jabatan jabatan);
 	
 	void hapus(Jabatan jabatan);
-	void hapus(long idJabatan);
+	void hapus(Long idJabatan);
 	
-	Jabatan get(long idJabatan);
+	Jabatan get(Long idJabatan);
 	
-	List<Jabatan> get(UnitKerja unitKerja);
+	List<Jabatan> getByUnitKerja(UnitKerja unitKerja);
+	List<Jabatan> getByUnitKerja(Long idUnitKerja);
+	List<Jabatan> cari(String keyword);
 
 }

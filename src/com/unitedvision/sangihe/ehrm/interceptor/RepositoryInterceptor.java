@@ -34,16 +34,19 @@ public class RepositoryInterceptor {
 	}
 	
 	private String createMessage(Exception ex) {
-		String key = ex.getMessage();
+		String message = ex.getMessage();
+		System.out.println(String.format("Exception: %s", message));
 		
-		if (key.contains("username")) {
+		if (message.contains("username")) {
 			return "Username yang anda masukan sudah digunakan";
-		} else if (key.contains("nip")) {
+		} else if (message.contains("nip")) {
 			return "NIP yang anda masukan sudah digunakan";
-		} else if (key.contains("nama")) {
+		} else if (message.contains("nama")) {
 			return "Nama yang anda masukan sudah digunakan";
-		} else if (key.contains("akronim")) {
+		} else if (message.contains("akronim")) {
 			return "Singkatan yang anda masukan sudah digunakan";
+		} else if(message.contains("jabatan_unit")) {
+			return "Jabatan yang anda masukan sudah digunakan";
 		} else {
 			return "Error";
 		}

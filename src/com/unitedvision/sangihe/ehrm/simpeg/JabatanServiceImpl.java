@@ -14,6 +14,8 @@ public class JabatanServiceImpl implements JabatanService {
 
 	@Autowired
 	private JabatanRepository jabatanRepository;
+	@Autowired
+	private UnitKerjaService unitKerjaService;
 	
 	@Override
 	public Jabatan simpan(Jabatan jabatan) {
@@ -21,22 +23,43 @@ public class JabatanServiceImpl implements JabatanService {
 	}
 
 	@Override
+	public Jabatan simpan(Long idUnitKerja, Jabatan jabatan) {
+		UnitKerja unitKerja = unitKerjaService.get(idUnitKerja);
+		jabatan.setUnitKerja(unitKerja);
+		
+		return simpan(jabatan);
+	}
+	
+	@Override
 	public void hapus(Jabatan jabatan) {
 		jabatanRepository.delete(jabatan);
 	}
 
 	@Override
-	public void hapus(long idJabatan) {
+	public void hapus(Long idJabatan) {
 		jabatanRepository.delete(idJabatan);
 	}
 
 	@Override
-	public Jabatan get(long idJabatan) {
+	public Jabatan get(Long idJabatan) {
 		return jabatanRepository.findOne(idJabatan);
 	}
 
 	@Override
-	public List<Jabatan> get(UnitKerja unitKerja) {
+	public List<Jabatan> getByUnitKerja(UnitKerja unitKerja) {
 		return jabatanRepository.findByUnitKerja(unitKerja);
 	}
+	
+	@Override
+	public List<Jabatan> getByUnitKerja(Long idUnitKerja) {
+		UnitKerja unitKerja = unitKerjaService.get(idUnitKerja);
+		
+		return getByUnitKerja(unitKerja);
+	}
+
+	@Override
+	public List<Jabatan> cari(String keyword) {
+		return jabatanRepository.findByNamaContaining(keyword);
+	}
+
 }

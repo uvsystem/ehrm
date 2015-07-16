@@ -21,9 +21,6 @@ public class SubUnitKerja extends UnitKerja {
 	public SubUnitKerja(UnitKerja unitKerja) {
 		super();
 		this.setUnitKerja(unitKerja);
-		this.setNama(unitKerja.getNama());
-		this.setSingkatan(unitKerja.getSingkatan());
-		this.setTipe(unitKerja.getTipe());
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)

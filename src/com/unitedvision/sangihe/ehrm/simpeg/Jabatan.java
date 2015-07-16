@@ -31,6 +31,11 @@ public class Jabatan {
 		super();
 	}
 
+	public Jabatan(UnitKerja unitKerja) {
+		super();
+		setUnitKerja(unitKerja);
+	}
+
 	@Id
 	@GeneratedValue
 	public long getId() {
