@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.DateUtil;
-import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.PegawaiService;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
@@ -71,11 +70,8 @@ public class SuratTugasServiceTest {
 		pegawai.setPassword("dkakunsi");
 		pegawai.setTanggalLahir(DateUtil.getDate("12-05-1991"));
 		pegawai.setUnitKerja(unitKerja);
-		
-		Kontak kontak = new Kontak();
-		kontak.setEmail("deddy.kakunsi@gmail.com");
-		kontak.setTelepon("083247643198");
-		pegawai.setKontak(kontak);
+		pegawai.setEmail("deddy.kakunsi@gmail.com");
+		pegawai.setTelepon("083247643198");
 		
 		pegawaiService.simpan(pegawai);
 		
@@ -106,11 +102,8 @@ public class SuratTugasServiceTest {
 		pegawai2.setPassword("dkakunsi");
 		pegawai2.setTanggalLahir(DateUtil.getDate("12-05-1991"));
 		pegawai2.setUnitKerja(unitKerja);
-		
-		Kontak kontak = new Kontak();
-		kontak.setEmail("dkakunsi@gmail.com");
-		kontak.setTelepon("089669926194");
-		pegawai2.setKontak(kontak);
+		pegawai.setEmail("dkakunsi@gmail.com");
+		pegawai.setTelepon("083247643198");
 		
 		pegawaiService.simpan(pegawai2);
 		

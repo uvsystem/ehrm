@@ -10,7 +10,7 @@ public interface UnitKerjaService {
 	void hapus(UnitKerja unitKerja);
 	void hapus(Long idUnitKerja);
 	
-	UnitKerja get(Long idUnitkerja);
+	UnitKerja get(Long idUnitKerja);
 	
 	List<SubUnitKerja> getSubUnitKerja(UnitKerja unitKerja);
 	List<SubUnitKerja> getSubUnitKerja(Long id);

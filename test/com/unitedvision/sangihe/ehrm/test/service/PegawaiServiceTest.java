@@ -19,7 +19,6 @@ import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.IdenticRelationshipException;
 import com.unitedvision.sangihe.ehrm.NullCollectionException;
-import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.duk.repository.PendudukRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.Eselon;
 import com.unitedvision.sangihe.ehrm.simpeg.Jabatan;
@@ -84,11 +83,8 @@ public class PegawaiServiceTest {
 		pegawai.setPassword("dkakunsi");
 		pegawai.setTanggalLahir(DateUtil.getDate("12-05-1991"));
 		pegawai.setUnitKerja(unitKerja);
-		
-		Kontak kontak = new Kontak();
-		kontak.setEmail("deddy.kakunsi@gmail.com");
-		kontak.setTelepon("083247643198");
-		pegawai.setKontak(kontak);
+		pegawai.setEmail("deddy.kakunsi@gmail.com");
+		pegawai.setTelepon("083247643198");
 		
 		pegawaiService.simpan(pegawai);
 		assertEquals(countPegawai + 1, pegawaiRepository.count());
@@ -136,11 +132,8 @@ public class PegawaiServiceTest {
 		pegawai.setNama("Deddy Christoper Kakunsi");
 		pegawai.setPassword("dkakunsi");
 		pegawai.setTanggalLahir(DateUtil.getDate("12-05-1991"));
-		
-		Kontak kontak = new Kontak();
-		kontak.setEmail("deddy.kakunsi@gmail.com");
-		kontak.setTelepon("083247643198");
-		pegawai.setKontak(kontak);
+		pegawai.setEmail("deddy.kakunsi@gmail.com");
+		pegawai.setTelepon("083247643198");
 		
 		pegawaiService.simpan(pegawai);
 	}
@@ -153,13 +146,23 @@ public class PegawaiServiceTest {
 		pegawai.setNama("Deddy Christoper Kakunsi");
 		pegawai.setPassword("dkakunsi");
 		pegawai.setTanggalLahir(DateUtil.getDate("12-05-1991"));
-		
-		Kontak kontak = new Kontak();
-		kontak.setEmail("deddy.kakunsi@gmail.com");
-		kontak.setTelepon("083247643198");
-		pegawai.setKontak(kontak);
+		pegawai.setEmail("deddy.kakunsi@gmail.com");
+		pegawai.setTelepon("083247643198");
 		
 		pegawaiService.simpan(pegawai);
+	}
+	
+	@Test
+	public void test_edit() {
+		pegawai.setNama("Deddy Kakunsi");
+		pegawai.setPassword("dking");
+		pegawai.setTelepon("083247643190");
+		
+		pegawaiService.simpan(pegawai);
+		
+		assertEquals("Deddy Kakunsi", pegawai.getNama());
+		assertEquals("7171070512910002", pegawai.getNik());
+		assertEquals("090213016", pegawai.getNip());
 	}
 	
 	@Test

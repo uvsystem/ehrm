@@ -5,9 +5,11 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ AbsenServiceTest.class, AplikasiServiceTest.class,
-		JabatanServiceTest.class, KalendarServiceTest.class,
-		PegawaiServiceTest.class, SppdServiceTest.class,
-		SuratTugasServiceTest.class, TokenServiceTest.class,
-		UnitKerjaServiceTest.class })
+@SuiteClasses({
+	AbsenServiceTest.class, AplikasiServiceTest.class,
+	JabatanServiceTest.class, KalendarServiceTest.class,
+	PegawaiServiceTest.class, SppdServiceTest.class,
+	SuratTugasServiceTest.class, TokenServiceTest.class,
+	UnitKerjaServiceTest.class
+})
 public class ServiceTest { }

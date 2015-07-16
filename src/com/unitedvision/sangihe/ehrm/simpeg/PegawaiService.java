@@ -9,6 +9,7 @@ import com.unitedvision.sangihe.ehrm.manajemen.Operator;
 public interface PegawaiService {
 
 	Pegawai simpan(Pegawai pegawai);
+	Pegawai simpan(Long idUnitKerja, Pegawai pegawai);
 
 	Pegawai mutasi(Pegawai pegawai, UnitKerja unitKerja) throws IdenticRelationshipException;
 	Pegawai mutasi(String nip, long idUnitKerja) throws IdenticRelationshipException;
@@ -24,9 +25,12 @@ public interface PegawaiService {
 
 	Pegawai getByNip(String nip);
 
+	List<Pegawai> getByUnitKerja(Long idUnitKerja);
 	List<Pegawai> get(UnitKerja unitKerja);
 	List<Pegawai> get(Pangkat pangkat);
 	List<Pegawai> get(Eselon eselon);
+
+	List<Pegawai> cari(String keyword);
 
 	List<RiwayatPangkat> getRiwayatPangkat(Pegawai pegawai);
 	List<RiwayatPangkat> getRiwayatPangkat(String nip);

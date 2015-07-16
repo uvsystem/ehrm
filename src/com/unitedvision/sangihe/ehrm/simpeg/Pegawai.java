@@ -18,10 +18,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.NullCollectionException;
 import com.unitedvision.sangihe.ehrm.absensi.Absen;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk;
-import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator;
 import com.unitedvision.sangihe.ehrm.manajemen.Token;
 import com.unitedvision.sangihe.ehrm.sppd.PemegangTugas;
@@ -52,6 +52,11 @@ public class Pegawai implements Pejabat {
 	public Pegawai() {
 		super();
 		penduduk = new Penduduk();
+	}
+
+	public Pegawai(UnitKerja unitKerja) {
+		this();
+		setUnitKerja(unitKerja);
 	}
 
 	@Id
@@ -104,6 +109,15 @@ public class Pegawai implements Pejabat {
 		this.password = password;
 	}
 
+	@Transient
+	public String getPasswordStr() {
+		return "****";
+	}
+	
+	public void setPasswordStr(String password) {
+		setPassword(password);
+	}
+
 	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<RiwayatPangkat> getDaftarPangkat() {
 		return daftarPangkat;
@@ -131,6 +145,7 @@ public class Pegawai implements Pejabat {
 		this.daftarOperator = daftarOperator;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
 	public List<PemegangTugas> getDaftarTugas() {
 		return daftarTugas;
@@ -150,7 +165,6 @@ public class Pegawai implements Pejabat {
 		this.daftarToken = daftarToken;
 	}
 
-	
 	/*
 	@JsonIgnore
 	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
@@ -228,8 +242,12 @@ public class Pegawai implements Pejabat {
 	}
 
 	@Transient
-	public Pangkat getPangkat() throws NullCollectionException {
-		return getPangkatTerakhir().getPangkat();
+	public Pangkat getPangkat() {
+		try {
+			return getPangkatTerakhir().getPangkat();
+		} catch (NullCollectionException e) {
+			return null;
+		}
 	}
 
 	@JsonIgnore
@@ -248,20 +266,32 @@ public class Pegawai implements Pejabat {
 	
 	@Override
 	@Transient
-	public Jabatan getJabatan() throws NullCollectionException {
-		return getJabatanTerakhir().getJabatan();
+	public Jabatan getJabatan() {
+		try {
+			return getJabatanTerakhir().getJabatan();
+		} catch (NullCollectionException e) {
+			return null;
+		}
 	}
 
 	@Override
 	@Transient
-	public Eselon getEselon() throws NullCollectionException {
-		return getJabatan().getEselon();
+	public Eselon getEselon() {
+		try {
+			return getJabatanTerakhir().getJabatan().getEselon();
+		} catch (NullCollectionException e) {
+			return null;
+		}
 	}
 
 	@Override
 	@Transient
-	public Date tanggalMulai() throws NullCollectionException {
-		return getJabatanTerakhir().getTanggalMulai();
+	public Date tanggalMulai() {
+		try {
+			return getJabatanTerakhir().getTanggalMulai();
+		} catch (NullCollectionException e) {
+			return null;
+		}
 	}
 
 	@Transient
@@ -282,6 +312,7 @@ public class Pegawai implements Pejabat {
 		penduduk.setNama(nama);
 	}
 
+	@JsonIgnore
 	@Transient
 	public Date getTanggalLahir() {
 		return penduduk.getTanggalLahir();
@@ -292,12 +323,43 @@ public class Pegawai implements Pejabat {
 	}
 
 	@Transient
-	public Kontak getKontak() {
-		return penduduk.getKontak();
+	public String getTanggalLahirStr() {
+		return DateUtil.toFormattedStringDate(getTanggalLahir(), "-");
 	}
 
-	public void setKontak(Kontak kontak) {
-		penduduk.setKontak(kontak);
+	public void setTanggalLahirStr(String tanggalLahir) {
+		Date date = DateUtil.getDate(tanggalLahir, "-");
+		
+		setTanggalLahir(date);
+	}
+	
+	@Transient
+	public String getEmail() {
+		return penduduk.getEmail();
+	}
+
+
+	public void setEmail(String email) {
+		penduduk.setEmail(email);
+	}
+
+	@Transient
+	public String getTelepon() {
+		return penduduk.getTelepon();
+	}
+
+	
+	public void setTelepon(String telepon) {
+		penduduk.setTelepon(telepon);
+	}
+	
+	@Transient
+	public Long getIdPenduduk() {
+		return penduduk.getId();
+	}
+	
+	public void setIdPenduduk(Long idPenduduk) {
+		penduduk.setId(idPenduduk);
 	}
 
 	@Override
@@ -382,6 +444,13 @@ public class Pegawai implements Pejabat {
 		} else if (!unitKerja.equals(other.unitKerja))
 			return false;
 		return true;
+	}
+
+	
+	@Override
+	public String toString() {
+		return "Pegawai [id=" + id + ", nip=" + nip + ", penduduk=" + penduduk
+				+ ", unitKerja=" + unitKerja + ", password=" + password + "]";
 	}
 	
 }

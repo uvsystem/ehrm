@@ -16,7 +16,6 @@ import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.OutOfDateEntityException;
 import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
-import com.unitedvision.sangihe.ehrm.duk.Penduduk.Kontak;
 import com.unitedvision.sangihe.ehrm.manajemen.Aplikasi;
 import com.unitedvision.sangihe.ehrm.manajemen.AplikasiService;
 import com.unitedvision.sangihe.ehrm.manajemen.Token;
@@ -71,11 +70,8 @@ public class TokenServiceTest {
 		pegawai.setPassword("dkakunsi");
 		pegawai.setTanggalLahir(DateUtil.getDate("12-05-1991"));
 		pegawai.setUnitKerja(unitKerja);
-		
-		Kontak kontak = new Kontak();
-		kontak.setEmail("deddy.kakunsi@gmail.com");
-		kontak.setTelepon("083247643198");
-		pegawai.setKontak(kontak);
+		pegawai.setEmail("deddy.kakunsi@gmail.com");
+		pegawai.setTelepon("083247643198");
 		pegawaiService.simpan(pegawai);
 		
 		aplikasiService.tambahOperator("090213016", "SIMPEG");

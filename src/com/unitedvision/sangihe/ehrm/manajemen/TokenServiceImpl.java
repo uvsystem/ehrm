@@ -2,6 +2,8 @@ package com.unitedvision.sangihe.ehrm.manajemen;
 
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +33,9 @@ public class TokenServiceImpl implements TokenService {
 	public Pegawai login(String username) {
 		Pegawai pegawai = pegawaiRepository.findByNip(username);
 		
-		List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
-		
-		pegawai.setDaftarOperator(daftarOperator);
+		try {
+			pegawai.setDaftarOperator(operatorRepository.findByPegawai(pegawai));
+		} catch(PersistenceException ex) {}
 		
 		return pegawai;
 	}

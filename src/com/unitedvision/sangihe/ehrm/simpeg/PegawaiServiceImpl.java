@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,14 @@ public class PegawaiServiceImpl implements PegawaiService {
 	@Transactional(readOnly = false)
 	public Pegawai simpan(Pegawai pegawai) {
 		return pegawaiRepository.save(pegawai);
+	}
+	
+	@Override
+	public Pegawai simpan(Long idUnitKerja, Pegawai pegawai) {
+		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
+		pegawai.setUnitKerja(unitKerja);
+
+		return simpan(pegawai);
 	}
 
 	@Override
@@ -156,11 +166,13 @@ public class PegawaiServiceImpl implements PegawaiService {
 	public Pegawai getByNip(String nip) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
-		List<RiwayatPangkat> daftarPangkat = riwayatPangkatRepository.findByPegawai(pegawai);
-		List<RiwayatJabatan> daftarJabatan = riwayatJabatanRepository.findByPegawai(pegawai);
-
-		pegawai.setDaftarPangkat(daftarPangkat);
-		pegawai.setDaftarJabatan(daftarJabatan);
+		try {
+			pegawai.setDaftarPangkat(riwayatPangkatRepository.findByPegawai(pegawai));
+		} catch(PersistenceException ex) { }
+		
+		try {
+			pegawai.setDaftarJabatan(riwayatJabatanRepository.findByPegawai(pegawai));
+		} catch(PersistenceException ex) { }
 		
 		return pegawai;
 	}
@@ -168,6 +180,13 @@ public class PegawaiServiceImpl implements PegawaiService {
 	@Override
 	public List<Pegawai> get(UnitKerja unitKerja) {
 		return pegawaiRepository.findByUnitKerja(unitKerja);
+	}
+
+	@Override
+	public List<Pegawai> getByUnitKerja(Long idUnitKerja) {
+		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
+		
+		return get(unitKerja);
 	}
 
 	@Override
@@ -215,5 +234,10 @@ public class PegawaiServiceImpl implements PegawaiService {
 		
 		return pegawai.getDaftarOperator();
 	}
-
+	
+	@Override
+	public List<Pegawai> cari(String keyword) {
+		return pegawaiRepository.findByNipContainingOrPenduduk_NamaContaining(keyword);
+	}
+	
 }

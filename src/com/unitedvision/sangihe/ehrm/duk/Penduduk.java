@@ -9,6 +9,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "penduduk")
@@ -22,6 +25,7 @@ public class Penduduk {
 	
 	public Penduduk() {
 		super();
+		kontak = new Kontak();
 	}
 
 	@Id
@@ -62,6 +66,7 @@ public class Penduduk {
 	}
 
 	@Embedded
+	@JsonIgnore
 	public Kontak getKontak() {
 		return kontak;
 	}
@@ -69,7 +74,27 @@ public class Penduduk {
 	public void setKontak(Kontak kontak) {
 		this.kontak = kontak;
 	}
-	
+
+	@Transient
+	public String getEmail() {
+		return kontak.getEmail();
+	}
+
+	@Transient
+	public void setEmail(String email) {
+		kontak.setEmail(email);
+	}
+
+	@Transient
+	public String getTelepon() {
+		return kontak.getTelepon();
+	}
+
+	@Transient
+	public void setTelepon(String telepon) {
+		kontak.setTelepon(telepon);
+	}
+
 	@Embeddable
 	public static class Kontak {
 		
@@ -177,4 +202,11 @@ public class Penduduk {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Penduduk [id=" + id + ", nik=" + nik + ", nama=" + nama
+				+ ", tanggalLahir=" + tanggalLahir + ", kontak=" + kontak + "]";
+	}
+	
 }

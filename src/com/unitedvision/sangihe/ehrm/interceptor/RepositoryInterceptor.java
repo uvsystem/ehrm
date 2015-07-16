@@ -39,7 +39,11 @@ public class RepositoryInterceptor {
 		
 		if (message.contains("username")) {
 			return "Username yang anda masukan sudah digunakan";
-		} else if (message.contains("nip")) {
+		} else if (message.contains("nomor_induk_kependudukan")) {
+			return "NIK yang anda masukan sudah digunakan";
+		} else if (message.contains("penduduk_pekerja")) {
+			return "Penduduk yang anda masukan sudah memiliki data pegawai";
+		} else if (message.contains("nomor_induk_pegawai")) {
 			return "NIP yang anda masukan sudah digunakan";
 		} else if (message.contains("nama")) {
 			return "Nama yang anda masukan sudah digunakan";

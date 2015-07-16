@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.unitedvision.sangihe.ehrm.simpeg.Eselon;
 import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
@@ -21,5 +22,8 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long> {
 
 	@Query("FROM RiwayatJabatan rj JOIN rj.pegawai pg WHERE rj.jabatan.eselon = ?1 AND rj.tanggalSelesai IS NULL")
 	List<Pegawai> findByJabatan_Eselon(Eselon eselon);
+
+	@Query("FROM Pegawai pg WHERE pg.nip LIKE CONCAT('%', :keyword, '%') OR pg.penduduk.nama LIKE CONCAT('%', :keyword, '%')")
+	List<Pegawai> findByNipContainingOrPenduduk_NamaContaining(@Param("keyword") String keyword);
 
 }
