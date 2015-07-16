@@ -41,6 +41,7 @@
 	<jstl.version>1.2</jstl.version>
 	<taglibs.version>1.1.2</taglibs.version>
 	<slf4j.version>1.7.7</slf4j.version>
+	<jayway.version>0.8.1</jayway.version>
   </properties>
   
   <dependencies>
@@ -192,6 +193,12 @@
 		<artifactId>spring-test</artifactId>
  		<version>${spring.version}</version>
     </dependency>
+	<dependency>
+	    <groupId>com.jayway.jsonpath</groupId>
+	    <artifactId>json-path-assert</artifactId>
+	    <version>${jayway.version}</version>
+	    <scope>test</scope>
+	</dependency>
   </dependencies>
 
 </project>

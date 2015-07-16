@@ -8,11 +8,13 @@ public interface UnitKerjaService {
 	UnitKerja tambahSubUnit(long idUnitKerja, UnitKerja unitKerja);
 	
 	void hapus(UnitKerja unitKerja);
-	void hapus(long idUnitKerja);
+	void hapus(Long idUnitKerja);
 	
-	UnitKerja get(long idUnitkerja);
-	UnitKerja get(String singkatan);
+	UnitKerja get(Long idUnitkerja);
 	
-	List<SubUnitKerja> get(UnitKerja unitKerja);
+	List<SubUnitKerja> getSubUnitKerja(UnitKerja unitKerja);
+	List<SubUnitKerja> getSubUnitKerja(Long id);
+	
+	List<UnitKerja> cari(String keyword);
 	
 }

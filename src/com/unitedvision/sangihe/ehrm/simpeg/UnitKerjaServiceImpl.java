@@ -49,23 +49,29 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void hapus(long idUnitKerja) {
+	public void hapus(Long idUnitKerja) {
 		unitKerjaRepository.delete(idUnitKerja);
 	}
 
 	@Override
-	public UnitKerja get(long idUnitkerja) {
+	public UnitKerja get(Long idUnitkerja) {
 		return unitKerjaRepository.findOne(idUnitkerja);
 	}
 
 	@Override
-	public UnitKerja get(String singkatan) {
-		return unitKerjaRepository.findBySingkatan(singkatan);
+	public List<SubUnitKerja> getSubUnitKerja(UnitKerja unitKerja) {
+		return subUnitKerjaRepository.findByUnitKerja(unitKerja);
+	}
+	
+	@Override
+	public List<SubUnitKerja> getSubUnitKerja(Long id) {
+		UnitKerja unitKerja = unitKerjaRepository.findOne(id);
+		
+		return getSubUnitKerja(unitKerja);
 	}
 
 	@Override
-	public List<SubUnitKerja> get(UnitKerja unitKerja) {
-		return subUnitKerjaRepository.findByUnitKerja(unitKerja);
+	public List<UnitKerja> cari(String keyword) {
+		return unitKerjaRepository.findByNamaContainingOrSingkatanContaining(keyword);
 	}
-
 }

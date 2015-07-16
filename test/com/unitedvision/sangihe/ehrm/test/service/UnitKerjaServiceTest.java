@@ -2,6 +2,8 @@ package com.unitedvision.sangihe.ehrm.test.service;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import javax.persistence.PersistenceException;
 
 import org.junit.Before;
@@ -65,13 +67,6 @@ public class UnitKerjaServiceTest {
 	}
 	
 	@Test
-	public void test_get_by_singkatan() {
-		UnitKerja unitKerja = unitKerjaService.get("SETDA");
-		
-		assertNotNull(unitKerja);
-	}
-	
-	@Test
 	public void test_tambah_sub_unit_kerja() {
 		SubUnitKerja subUnitKerja = new SubUnitKerja();
 		subUnitKerja.setNama("Pengelola Data Elektronik");
@@ -82,5 +77,12 @@ public class UnitKerjaServiceTest {
 		unitKerjaService.simpan(subUnitKerja);
 		
 		assertEquals(countSubUnitKerja + 1, subUnitKerjaRepository.count());
+	}
+	
+	@Test
+	public void test_search() {
+		List<UnitKerja> daftarUnitKerja = unitKerjaService.cari("Sek");
+		
+		assertNotEquals(0, daftarUnitKerja.size());
 	}
 }
