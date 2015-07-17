@@ -23,6 +23,8 @@ import com.unitedvision.sangihe.ehrm.duk.repository.PendudukRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.Eselon;
 import com.unitedvision.sangihe.ehrm.simpeg.Jabatan;
 import com.unitedvision.sangihe.ehrm.simpeg.JabatanService;
+import com.unitedvision.sangihe.ehrm.simpeg.NoJabatanException;
+import com.unitedvision.sangihe.ehrm.simpeg.NoPangkatException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.PegawaiService;
@@ -180,19 +182,17 @@ public class PegawaiServiceTest {
 	}
 	
 	@Test
-	public void test_promosi_pangkat() throws IdenticRelationshipException, NullCollectionException {
-		pegawaiService.promosi(pegawai.getNip(), Pangkat.IIIB, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
-		
-		pegawai = pegawaiService.getByNip(pegawai.getNip());
+	public void test_promosi_pangkat() throws IdenticRelationshipException, NullCollectionException, NoPangkatException {
+		pegawai = pegawaiService.promosi(pegawai.getNip(), Pangkat.IIIB, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
+
 		assertEquals(Pangkat.IIIB, pegawai.getPangkat());
 		assertEquals(countRiwayatPangkat + 2, riwayatPangkatRepository.count());
 	}
 	
 	@Test
-	public void test_promosi_jabatan() throws IdenticRelationshipException, NullCollectionException {
-		pegawaiService.promosi(pegawai.getNip(), jabatanKaSubBagDatabase, DateUtil.getDate("12-01-2014"), null, "002/SK/2015");
-		
-		pegawai = pegawaiService.getByNip(pegawai.getNip());
+	public void test_promosi_jabatan() throws IdenticRelationshipException, NullCollectionException, NoJabatanException {
+		pegawai = pegawaiService.promosi(pegawai.getNip(), jabatanKaSubBagDatabase, DateUtil.getDate("12-01-2014"), null, "002/SK/2015");
+
 		assertEquals(jabatanKaSubBagDatabase, pegawai.getJabatan());
 		assertEquals(countRiwayatJabatan + 2, riwayatJabatanRepository.count());
 	}

@@ -15,6 +15,10 @@ public class RiwayatJabatan extends Riwayat {
 	public RiwayatJabatan() {
 		super();
 	}
+	
+	public RiwayatJabatan(Detail detail) {
+		super(detail);
+	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "jabatan", nullable = false)

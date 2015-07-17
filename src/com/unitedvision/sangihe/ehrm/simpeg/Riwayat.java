@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
 
@@ -22,6 +23,17 @@ public abstract class Riwayat {
 	private Pegawai pegawai;
 	private Date tanggalMulai;
 	private Date tanggalSelesai;
+	
+	public Riwayat() {
+		super();
+	}
+	
+	public Riwayat(Detail detail) {
+		super();
+		setNomorSk(detail.getNomorSk());
+		setTanggalMulai(detail.getTanggalMulai());
+		setTanggalSelesai(detail.getTanggalSelesai());
+	}
 
 	@Id
 	@GeneratedValue
@@ -48,6 +60,7 @@ public abstract class Riwayat {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "pegawai")
+	@JsonBackReference
 	public Pegawai getPegawai() {
 		return pegawai;
 	}
@@ -83,14 +96,64 @@ public abstract class Riwayat {
 
 	@Transient
 	public String getTanggalSelesaiStr() {
-		return DateUtil.toFormattedStringDate(tanggalSelesai, "-");
+		if (!isCurrent())
+			return DateUtil.toFormattedStringDate(tanggalSelesai, "-");
+		return "belum selesai";
 	}
 
 	@Transient
 	public boolean isCurrent() {
 		if (tanggalSelesai == null)
-			return false;
+			return true;
 		return false;
+	}
+	
+	public static class Detail {
+		private String nomorSk;
+		private String tanggalMulaiStr;
+		private String tanggalSelesaiStr;
+
+		public String getNomorSk() {
+			return nomorSk;
+		}
+		
+		public void setNomorSk(String nomorSk) {
+			this.nomorSk = nomorSk;
+		}
+
+		public String getTanggalMulaiStr() {
+			return tanggalMulaiStr;
+		}
+		
+		@JsonIgnore
+		public Date getTanggalMulai() {
+			return DateUtil.getDate(tanggalMulaiStr, "-");
+		}
+
+		public void setTanggalMulaiStr(String tanggalMulaiStr) {
+			this.tanggalMulaiStr = tanggalMulaiStr;
+		}
+
+		public String getTanggalSelesaiStr() {
+			return tanggalSelesaiStr;
+		}
+		
+		@JsonIgnore
+		public Date getTanggalSelesai() {
+			return DateUtil.getDate(tanggalSelesaiStr, "-");
+		}
+
+		public void setTanggalSelesaiStr(String tanggalSelesaiStr) {
+			this.tanggalSelesaiStr = tanggalSelesaiStr;
+		}
+
+		@Override
+		public String toString() {
+			return "Detail [nomorSk=" + nomorSk + ", tanggalMulaiStr="
+					+ tanggalMulaiStr + ", tanggalSelesaiStr="
+					+ tanggalSelesaiStr + "]";
+		}
+
 	}
 
 	@Override

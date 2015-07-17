@@ -21,6 +21,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.NullCollectionException;
 import com.unitedvision.sangihe.ehrm.absensi.TugasLuar;
+import com.unitedvision.sangihe.ehrm.simpeg.NoJabatanException;
+import com.unitedvision.sangihe.ehrm.simpeg.NoPangkatException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.SubUnitKerja;
@@ -240,7 +242,7 @@ public class Sppd {
 			return getPegawai().getNip();
 		}
 		
-		public String getPangkat() throws NullCollectionException {
+		public String getPangkat() throws NullCollectionException, NoPangkatException {
 			Pangkat pangkat = getPegawai().getPangkat();
 			String nama = pangkat.getNama();
 			String namaPangkat = pangkat.name();
@@ -248,7 +250,7 @@ public class Sppd {
 			return String.format("%s, %s", nama, namaPangkat);
 		}
 		
-		public String getJabatan() throws NullCollectionException {
+		public String getJabatan() throws NullCollectionException, NoJabatanException {
 			return getPegawai().getJabatan().getNama();
 		}
 		

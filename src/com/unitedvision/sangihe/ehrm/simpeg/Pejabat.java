@@ -6,8 +6,9 @@ import com.unitedvision.sangihe.ehrm.NullCollectionException;
 
 public interface Pejabat {
 
-	Jabatan getJabatan() throws NullCollectionException;
-	Eselon getEselon() throws NullCollectionException ;
-	Date tanggalMulai() throws NullCollectionException ;
+	Jabatan getJabatan() throws NullCollectionException, NoJabatanException;
+	Eselon getEselon() throws NullCollectionException, NoJabatanException;
+	String getNamaJabatan() throws NullCollectionException, NoJabatanException;
+	Date tanggalMulai() throws NullCollectionException, NoJabatanException;
 
 }

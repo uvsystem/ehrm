@@ -13,6 +13,10 @@ public class RiwayatPangkat extends Riwayat {
 	public RiwayatPangkat() {
 		super();
 	}
+	
+	public RiwayatPangkat(Detail detail) {
+		super(detail);
+	}
 
 	@Column(name = "pangkat", nullable = false)
 	public Pangkat getPangkat() {

@@ -229,7 +229,7 @@ public class Pegawai implements Pejabat {
 
 	@JsonIgnore
 	@Transient
-	public RiwayatPangkat getPangkatTerakhir() throws NullCollectionException {
+	public RiwayatPangkat getPangkatTerakhir() throws NullCollectionException, NoPangkatException {
 		if (getDaftarPangkat() == null)
 			throw new NullCollectionException();
 
@@ -238,11 +238,11 @@ public class Pegawai implements Pejabat {
 				return rp;
 		}
 		
-		throw new NullCollectionException();
+		throw new NoPangkatException("Tidak ada pangkat yang aktif");
 	}
 
 	@Transient
-	public Pangkat getPangkat() {
+	public Pangkat getPangkat() throws NoPangkatException {
 		try {
 			return getPangkatTerakhir().getPangkat();
 		} catch (NullCollectionException e) {
@@ -252,7 +252,7 @@ public class Pegawai implements Pejabat {
 
 	@JsonIgnore
 	@Transient
-	public RiwayatJabatan getJabatanTerakhir() throws NullCollectionException {
+	public RiwayatJabatan getJabatanTerakhir() throws NullCollectionException, NoJabatanException {
 		if (getDaftarJabatan() == null)
 			throw new NullCollectionException();
 
@@ -261,22 +261,28 @@ public class Pegawai implements Pejabat {
 				return rj;
 		}
 		
-		throw new NullCollectionException();
+		throw new NoJabatanException("Tidak ada jabatan yang aktif");
 	}
 	
 	@Override
+	@JsonIgnore
 	@Transient
-	public Jabatan getJabatan() {
+	public Jabatan getJabatan() throws NullCollectionException, NoJabatanException {
+		return getJabatanTerakhir().getJabatan();
+	}
+
+	@Transient
+	public String getNamaJabatan() throws NoJabatanException {
 		try {
-			return getJabatanTerakhir().getJabatan();
+			return getJabatan().getNama();
 		} catch (NullCollectionException e) {
 			return null;
 		}
 	}
-
+	
 	@Override
 	@Transient
-	public Eselon getEselon() {
+	public Eselon getEselon() throws NoJabatanException {
 		try {
 			return getJabatanTerakhir().getJabatan().getEselon();
 		} catch (NullCollectionException e) {
@@ -286,7 +292,7 @@ public class Pegawai implements Pejabat {
 
 	@Override
 	@Transient
-	public Date tanggalMulai() {
+	public Date tanggalMulai() throws NoJabatanException {
 		try {
 			return getJabatanTerakhir().getTanggalMulai();
 		} catch (NullCollectionException e) {

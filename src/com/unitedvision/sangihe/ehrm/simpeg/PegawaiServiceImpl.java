@@ -15,6 +15,8 @@ import com.unitedvision.sangihe.ehrm.NullCollectionException;
 import com.unitedvision.sangihe.ehrm.duk.repository.PendudukRepository;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator;
 import com.unitedvision.sangihe.ehrm.manajemen.repository.OperatorRepository;
+import com.unitedvision.sangihe.ehrm.simpeg.Riwayat.Detail;
+import com.unitedvision.sangihe.ehrm.simpeg.repository.JabatanRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.RiwayatJabatanRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.RiwayatPangkatRepository;
@@ -36,6 +38,8 @@ public class PegawaiServiceImpl implements PegawaiService {
 	private RiwayatJabatanRepository riwayatJabatanRepository;
 	@Autowired
 	private OperatorRepository operatorRepository;
+	@Autowired
+	private JabatanRepository jabatanRepository;
 	
 	@Override
 	@Transactional(readOnly = false)
@@ -72,21 +76,30 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 
 	@Override
+	public Pegawai mutasi(String nip, String kode) throws IdenticRelationshipException {
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		UnitKerja unitKerja = unitKerjaRepository.findBySingkatan(kode);
+		
+		return mutasi(pegawai, unitKerja);
+	}
+	
+	@Override
 	@Transactional(readOnly = false)
 	public Pegawai promosi(Pegawai pegawai, Pangkat pangkat, Date tanggalPromosi, Date tanggalSelesai, String nomorSk) throws IdenticRelationshipException {
 		List<RiwayatPangkat> list = new ArrayList<>();
-		RiwayatPangkat pangkatTerakhir;
 
 		try {
-			pangkatTerakhir = pegawai.getPangkatTerakhir();
+			if (tanggalSelesai != null)
+				throw new NoPangkatException();
 			
-			if (pangkat.equals(pangkatTerakhir.getPangkat()))
-				throw new IdenticRelationshipException("Unit kerja pegawai sudah sama");
+			RiwayatPangkat pangkatTerakhir = pegawai.getPangkatTerakhir();
+			if (pangkat.equals(pangkatTerakhir.getPangkat()) && tanggalPromosi.equals(pangkatTerakhir.getTanggalMulai()))
+				throw new IdenticRelationshipException("Pangkat pegawai sudah sama");
 			
 			pangkatTerakhir.setTanggalSelesai(tanggalPromosi);
 
 			list.add(pangkatTerakhir);
-		} catch (NullCollectionException e) { }
+		} catch (NullCollectionException | NoPangkatException e) { }
 
 		RiwayatPangkat riwayatPangkat = new RiwayatPangkat();
 		riwayatPangkat.setPegawai(pegawai);
@@ -99,7 +112,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 		
 		riwayatPangkatRepository.save(list);
 		
-		return pegawai;
+		return getByNip(pegawai.getNip());
 	}
 
 	@Override
@@ -109,22 +122,32 @@ public class PegawaiServiceImpl implements PegawaiService {
 		
 		return promosi(pegawai, pangkat, tanggalPromosi, tanggalSelesai, nomorSk);
 	}
+	
+	@Override
+	public Pegawai promosi(String nip, Pangkat pangkat, Detail detail) throws IdenticRelationshipException {
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		
+		return promosi(pegawai, pangkat, detail.getTanggalMulai(), detail.getTanggalSelesai(), detail.getNomorSk());
+	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public Pegawai promosi(Pegawai pegawai, Jabatan jabatan, Date tanggalPromosi, Date tanggalSelesai, String nomorSk) throws IdenticRelationshipException {
 		List<RiwayatJabatan> list = new ArrayList<>();
-		RiwayatJabatan jabatanTerakhir;
+
 		try {
-			jabatanTerakhir = pegawai.getJabatanTerakhir();
+			if (tanggalSelesai != null)
+				throw new NoJabatanException();
 			
-			if (jabatan.equals(pegawai.getJabatan()))
-				throw new IdenticRelationshipException("Unit kerja pegawai sudah sama");
+			RiwayatJabatan jabatanTerakhir = pegawai.getJabatanTerakhir();
+			if (jabatan.equals(pegawai.getJabatan()) && tanggalPromosi.equals(jabatanTerakhir.getTanggalMulai()))
+				throw new IdenticRelationshipException("Jabatan pegawai sudah sama");
 
 			jabatanTerakhir.setTanggalSelesai(tanggalPromosi);
-			
 			list.add(jabatanTerakhir);
-		} catch (NullCollectionException e) { }
+			
+			mutasi(pegawai, jabatan.getUnitKerja());
+		} catch (NoJabatanException | NullCollectionException | IdenticRelationshipException e) { }
 		
 		RiwayatJabatan riwayatJabatan = new RiwayatJabatan();
 		riwayatJabatan.setPegawai(pegawai);
@@ -137,7 +160,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 		
 		riwayatJabatanRepository.save(list);
 		
-		return pegawai;
+		return getByNip(pegawai.getNip());
 	}
 
 	@Override
@@ -148,6 +171,14 @@ public class PegawaiServiceImpl implements PegawaiService {
 		return promosi(pegawai, jabatan, tanggalPromosi, tanggalSelesai, nomorSk);
 	}
 
+	@Override
+	public Pegawai promosi(String nip, Long idJabatan, Detail detail) throws IdenticRelationshipException {
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		Jabatan jabatan = jabatanRepository.findOne(idJabatan);
+
+		return promosi(pegawai, jabatan, detail.getTanggalMulai(), detail.getTanggalSelesai(), detail.getNomorSk());
+	}
+	
 	@Override
 	@Transactional(readOnly = false)
 	public void hapus(Pegawai pegawai) {

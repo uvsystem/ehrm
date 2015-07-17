@@ -13,4 +13,6 @@ public interface UnitKerjaRepository extends JpaRepository<UnitKerja, Long> {
 	@Query("FROM UnitKerja uk WHERE uk.nama LIKE CONCAT('%', :keyword, '%') OR uk.singkatan LIKE CONCAT('%', :keyword, '%')")
 	List<UnitKerja> findByNamaContainingOrSingkatanContaining(@Param("keyword") String keyword);
 
+	UnitKerja findBySingkatan(String kode);
+
 }

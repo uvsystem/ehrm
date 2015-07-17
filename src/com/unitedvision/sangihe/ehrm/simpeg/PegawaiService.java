@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.unitedvision.sangihe.ehrm.IdenticRelationshipException;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator;
+import com.unitedvision.sangihe.ehrm.simpeg.Riwayat.Detail;
 
 public interface PegawaiService {
 
@@ -13,12 +14,15 @@ public interface PegawaiService {
 
 	Pegawai mutasi(Pegawai pegawai, UnitKerja unitKerja) throws IdenticRelationshipException;
 	Pegawai mutasi(String nip, long idUnitKerja) throws IdenticRelationshipException;
+	Pegawai mutasi(String nip, String kode) throws IdenticRelationshipException;
 
 	Pegawai promosi(Pegawai pegawai, Pangkat pangkat, Date tanggalPromosi, Date tanggalSelesai, String nomorSk) throws IdenticRelationshipException;
 	Pegawai promosi(String nip, Pangkat pangkat, Date tanggalPromosi, Date tanggalSelesai, String nomorSk) throws IdenticRelationshipException;
+	Pegawai promosi(String nip, Pangkat pangkat, Detail detail) throws IdenticRelationshipException;
 
 	Pegawai promosi(Pegawai pegawai, Jabatan jabatan, Date tanggalPromosi, Date tanggalSelesai, String nomorSk) throws IdenticRelationshipException;
 	Pegawai promosi(String nip, Jabatan jabatan, Date tanggalPromosi, Date tanggalSelesai, String nomorSk) throws IdenticRelationshipException;
+	Pegawai promosi(String nip, Long idJabatan, Detail detail) throws IdenticRelationshipException;
 
 	void hapus(Pegawai pegawai);
 	void hapus(String nip);
