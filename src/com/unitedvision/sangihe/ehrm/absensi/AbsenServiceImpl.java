@@ -23,6 +23,7 @@ import com.unitedvision.sangihe.ehrm.absensi.repository.TugasLuarRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
+import com.unitedvision.sangihe.ehrm.simpeg.repository.UnitKerjaRepository;
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
 import com.unitedvision.sangihe.ehrm.sppd.repository.SppdRepository;
 
@@ -46,6 +47,8 @@ public class AbsenServiceImpl implements AbsenService {
 	private SppdRepository sppdRepository;
 	@Autowired
 	private KalendarRepository kalendarRepository;
+	@Autowired
+	private UnitKerjaRepository unitKerjaRepository;
 	
 	/**
 	 * Ambil absen jika sudah ada, buat baru jika tidak ada.
@@ -309,48 +312,117 @@ public class AbsenServiceImpl implements AbsenService {
 	}
 
 	@Override
+	public List<Hadir> getHadir(String nip, Date tanggalAwal, Date tanggalAkhir) {
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		
+		return getHadir(pegawai, tanggalAwal, tanggalAkhir);
+	}
+	
+	@Override
 	public List<Hadir> getHadir(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) {
 		return hadirRepository.findByPegawai_UnitKerjaAndKalendar_TanggalBetween(unitKerja, tanggalAwal, tanggalAkhir);
 	}
 
+	@Override
+	public List<Hadir> getHadir(Long idUnitKerja, Date tanggalAwal, Date tanggalAkhir) {
+		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
+		
+		return getHadir(unitKerja, tanggalAwal, tanggalAkhir);
+	}
+	
 	@Override
 	public List<TugasLuar> getTugasLuar(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) {
 		return tugasLuarRepository.findByPegawaiAndKalendar_TanggalBetween(pegawai, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
+	public List<TugasLuar> getTugasLuar(String nip, Date tanggalAwal, Date tanggalAkhir) {
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+
+		return getTugasLuar(pegawai, tanggalAwal, tanggalAkhir);
+	}
+	
+	@Override
 	public List<TugasLuar> getTugasLuar(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) {
 		return tugasLuarRepository.findByPegawai_UnitKerjaAndKalendar_TanggalBetween(unitKerja, tanggalAkhir, tanggalAkhir);
 	}
 
+	@Override
+	public List<TugasLuar> getTugasLuar(Long idUnitKerja, Date tanggalAwal, Date tanggalAkhir) {
+		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
+		
+		return getTugasLuar(unitKerja, tanggalAwal, tanggalAkhir);
+	}
+	
 	@Override
 	public List<Sakit> getSakit(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) {
 		return sakitRepository.findByPegawaiAndKalendar_TanggalBetween(pegawai, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
+	public List<Sakit> getSakit(String nip, Date tanggalAwal, Date tanggalAkhir) {
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		
+		return getSakit(pegawai, tanggalAwal, tanggalAkhir);
+	}
+	
+	@Override
 	public List<Sakit> getSakit(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) {
 		return sakitRepository.findByPegawai_UnitKerjaAndKalendar_TanggalBetween(unitKerja, tanggalAwal, tanggalAkhir);
 	}
 
+	@Override
+	public List<Sakit> getSakit(Long idUnitKerja, Date tanggalAwal, Date tanggalAkhir) {
+		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
+		
+		return getSakit(unitKerja, tanggalAwal, tanggalAkhir);
+	}
+	
 	@Override
 	public List<Izin> getIzin(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) {
 		return izinRepository.findByPegawaiAndKalendar_TanggalBetween(pegawai, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
+	public List<Izin> getIzin(String nip, Date tanggalAwal, Date tanggalAkhir) {
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		
+		return getIzin(pegawai, tanggalAwal, tanggalAkhir);
+	}
+	
+	@Override
 	public List<Izin> getIzin(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) {
 		return izinRepository.findByPegawai_UnitKerjaAndKalendar_TanggalBetween(unitKerja, tanggalAwal, tanggalAkhir);
 	}
 
+	@Override
+	public List<Izin> getIzin(Long idUnitKerja, Date tanggalAwal, Date tanggalAkhir) {
+		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
+		
+		return getIzin(unitKerja, tanggalAwal, tanggalAkhir);
+	}
+	
 	@Override
 	public List<Cuti> getCuti(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir) {
 		return cutiRepository.findByPegawaiAndKalendar_TanggalBetween(pegawai, tanggalAwal, tanggalAkhir);
 	}
 
 	@Override
+	public List<Cuti> getCuti(String nip, Date tanggalAwal, Date tanggalAkhir) {
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		
+		return getCuti(pegawai, tanggalAwal, tanggalAkhir);
+	}
+	
+	@Override
 	public List<Cuti> getCuti(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir) {
 		return cutiRepository.findByPegawai_UnitKerjaAndKalendar_TanggalBetween(unitKerja, tanggalAwal, tanggalAkhir);
 	}
 
+	@Override
+	public List<Cuti> getCuti(Long idUnitKerja, Date tanggalAwal, Date tanggalAkhir) {
+		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
+		
+		return getCuti(unitKerja, tanggalAwal, tanggalAkhir);
+	}
 }

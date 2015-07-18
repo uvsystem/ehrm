@@ -71,18 +71,28 @@ public interface AbsenService {
 	Cuti tambahCuti(String nip, Date tanggal, String jenisCuti);
 	
 	List<Hadir> getHadir(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir);
+	List<Hadir> getHadir(String nip, Date tanggalAwal, Date tanggalAkhir);
 	List<Hadir> getHadir(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir);
+	List<Hadir> getHadir(Long idUnitKerja, Date tanggalAwal, Date tanggalAkhir);
 	
 	List<TugasLuar> getTugasLuar(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir);
+	List<TugasLuar> getTugasLuar(String nip, Date tanggalAwal, Date tanggalAkhir);
 	List<TugasLuar> getTugasLuar(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir);
+	List<TugasLuar> getTugasLuar(Long idUnitKerja, Date tanggalAwal, Date tanggalAkhir);
 	
 	List<Sakit> getSakit(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir);
+	List<Sakit> getSakit(String nip, Date tanggalAwal, Date tanggalAkhir);
 	List<Sakit> getSakit(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir);
+	List<Sakit> getSakit(Long idUnitKerja, Date tanggalAwal, Date tanggalAkhir);
 	
 	List<Izin> getIzin(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir);
+	List<Izin> getIzin(String nip, Date tanggalAwal, Date tanggalAkhir);
 	List<Izin> getIzin(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir);
+	List<Izin> getIzin(Long idUnitKerja, Date tanggalAwal, Date tanggalAkhir);
 	
 	List<Cuti> getCuti(Pegawai pegawai, Date tanggalAwal, Date tanggalAkhir);
+	List<Cuti> getCuti(String nip, Date tanggalAwal, Date tanggalAkhir);
 	List<Cuti> getCuti(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir);
+	List<Cuti> getCuti(Long idUnitKerja, Date tanggalAwal, Date tanggalAkhir);
 
 }
