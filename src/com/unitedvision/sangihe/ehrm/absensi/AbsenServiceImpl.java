@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.DateUtil;
+import com.unitedvision.sangihe.ehrm.absensi.Absen.Detail;
+import com.unitedvision.sangihe.ehrm.absensi.Hadir.Jenis;
 import com.unitedvision.sangihe.ehrm.absensi.repository.CutiRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.HadirRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.IzinRepository;
@@ -58,7 +60,7 @@ public class AbsenServiceImpl implements AbsenService {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 
 		if (tanggal == null)
-			tanggal = DateUtil.getNow();
+			tanggal = DateUtil.getDate();
 		
 		Hadir hadir;
 		
@@ -75,10 +77,43 @@ public class AbsenServiceImpl implements AbsenService {
 		
 		return hadir;
 	}
+	
+	private List<Hadir> createDaftarHadir(Jenis jenis, List<Detail> daftarAbsen) {
+		List<Hadir> daftarHadir = new ArrayList<>();
+		for (Detail detail : daftarAbsen) {
+
+			try {
+				
+				Hadir hadir = null;
+				
+				if (jenis.equals(Jenis.PAGI)) {
+					hadir = createPagi(detail.getNip(), detail.getTanggal(), detail.getJam());
+				} else if (jenis.equals(Jenis.PENGECEKAN_SATU)) {
+					hadir = createPengecekanSatu(detail.getNip(), detail.getTanggal(), detail.getJam());
+				} else if (jenis.equals(Jenis.PENGECEKAN_DUA)) {
+					hadir = createPengecekanDua(detail.getNip(), detail.getTanggal(), detail.getJam());
+				} else if (jenis.equals(Jenis.SORE)) {
+					hadir = createSore(detail.getNip(), detail.getTanggal(), detail.getJam());
+				} else {
+					throw new AbsenException("Lanjut");
+				}
+				
+				daftarHadir.add(hadir);
+			} catch(AbsenException e){ }
+		}
+		
+		return daftarHadir;
+	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public Hadir apelPagi(String nip, Date tanggal, Time jam) throws AbsenException {
+		Hadir hadir = createPagi(nip, tanggal, jam);
+		
+		return hadirRepository.save(hadir);
+	}
+	
+	private Hadir createPagi(String nip, Date tanggal, Time jam) throws AbsenException {
 
 		// Buat entitas absen hadir yang baru
 		Hadir hadir= getHadir(nip, tanggal);
@@ -91,13 +126,31 @@ public class AbsenServiceImpl implements AbsenService {
 			jam = DateUtil.getTime();
 		
 		hadir.setPagi(jam);
-		
-		return hadirRepository.save(hadir);
+
+		return hadir;
 	}
 
 	@Override
+	public List<Hadir> apelPagi(List<Detail> daftarAbsen) throws AbsenException {
+		List<Hadir> daftarHadir = createDaftarHadir(Jenis.PAGI, daftarAbsen);
+		
+		for (Hadir hadir : daftarHadir) {
+			System.out.println("TEST");
+			System.out.println(hadir);
+		}
+		
+		return hadirRepository.save(daftarHadir);
+	}
+	
+	@Override
 	@Transactional(readOnly = false)
 	public Hadir pengecekanSatu(String nip, Date tanggal, Time jam) throws AbsenException {
+		Hadir hadir = createPengecekanSatu(nip, tanggal, jam);
+		
+		return hadirRepository.save(hadir);
+	}
+	
+	private Hadir createPengecekanSatu(String nip, Date tanggal, Time jam) throws AbsenException {
 
 		Hadir hadir= getHadir(nip, tanggal);
 		
@@ -110,12 +163,25 @@ public class AbsenServiceImpl implements AbsenService {
 		
 		hadir.setPengecekanPertama(jam);
 		
-		return hadirRepository.save(hadir);
+		return hadir;
 	}
 
 	@Override
+	public List<Hadir> pengecekanSatu(List<Detail> daftarAbsen) throws AbsenException {
+		List<Hadir> daftarHadir = createDaftarHadir(Jenis.PENGECEKAN_SATU, daftarAbsen);
+		
+		return hadirRepository.save(daftarHadir);
+	}
+	
+	@Override
 	@Transactional(readOnly = false)
 	public Hadir pengecekanDua(String nip, Date tanggal, Time jam) throws AbsenException {
+		Hadir hadir = createPengecekanDua(nip, tanggal, jam);
+		
+		return hadirRepository.save(hadir);
+	}
+	
+	private Hadir createPengecekanDua(String nip, Date tanggal, Time jam) throws AbsenException {
 
 		Hadir hadir= getHadir(nip, tanggal);
 		
@@ -128,12 +194,25 @@ public class AbsenServiceImpl implements AbsenService {
 		
 		hadir.setPengecekanKedua(jam);
 		
-		return hadirRepository.save(hadir);
+		return hadir;
+	}
+
+	@Override
+	public List<Hadir> pengecekanDua(List<Detail> daftarAbsen) throws AbsenException {
+		List<Hadir> daftarHadir = createDaftarHadir(Jenis.PENGECEKAN_DUA, daftarAbsen);
+		
+		return hadirRepository.save(daftarHadir);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public Hadir apelSore(String nip, Date tanggal, Time jam) throws AbsenException {
+		Hadir hadir = createSore(nip, tanggal, jam);
+		
+		return hadirRepository.save(hadir);
+	}
+	
+	private Hadir createSore(String nip, Date tanggal, Time jam) throws AbsenException {
 
 		Hadir hadir= getHadir(nip, tanggal);
 		
@@ -146,7 +225,14 @@ public class AbsenServiceImpl implements AbsenService {
 		
 		hadir.setSore(jam);
 		
-		return hadirRepository.save(hadir);
+		return hadir;
+	}
+
+	@Override
+	public List<Hadir> apelSore(List<Detail> daftarAbsen) throws AbsenException {
+		List<Hadir> daftarHadir = createDaftarHadir(Jenis.SORE, daftarAbsen);
+		
+		return hadirRepository.save(daftarHadir);
 	}
 
 	@Override

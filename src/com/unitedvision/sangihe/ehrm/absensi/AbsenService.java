@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
+import com.unitedvision.sangihe.ehrm.absensi.Absen.Detail;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
@@ -21,6 +22,8 @@ public interface AbsenService {
 	 */
 	Hadir apelPagi(String nip, Date tanggal, Time jam) throws AbsenException;
 
+	List<Hadir> apelPagi(List<Detail> daftarAbsen) throws AbsenException;
+
 	/**
 	 * Isi absen pengecekan pertama.
 	 * @param nip Nomor Induk Pegawai
@@ -31,6 +34,8 @@ public interface AbsenService {
 	 * @throws EntityNotExistException 
 	 */
 	Hadir pengecekanSatu(String nip, Date tanggal, Time jam) throws AbsenException;
+
+	List<Hadir> pengecekanSatu(List<Detail> daftarAbsen) throws AbsenException;
 
 	/**
 	 * Isi absen pengecekan kedua.
@@ -43,6 +48,8 @@ public interface AbsenService {
 	 */
 	Hadir pengecekanDua(String nip, Date tanggal, Time jam) throws AbsenException;
 
+	List<Hadir> pengecekanDua(List<Detail> daftarAbsen) throws AbsenException;
+
 	/**
 	 * Isi absen sore.
 	 * @param nip Nomor Induk Pegawai
@@ -53,6 +60,8 @@ public interface AbsenService {
 	 * @throws EntityNotExistException 
 	 */
 	Hadir apelSore(String nip, Date tanggal, Time jam) throws AbsenException;
+
+	List<Hadir> apelSore(List<Detail> daftarAbsen) throws AbsenException;
 
 	TugasLuar tambahTugasLuar(String nip, Date tanggal, String nomorSppd);
 	List<TugasLuar> tambahTugasLuar(Sppd sppd);

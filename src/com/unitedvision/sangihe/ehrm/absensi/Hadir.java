@@ -9,6 +9,10 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("HADIR")
 public class Hadir extends Absen {
+	
+	public enum Jenis {
+		PAGI, PENGECEKAN_SATU, PENGECEKAN_DUA, SORE
+	}
 
 	private Time pagi;
 	private Time pengecekanPertama;
@@ -100,6 +104,13 @@ public class Hadir extends Absen {
 		} else if (!sore.equals(other.sore))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Hadir [Absen=" + super.toString() + ", pagi=" + pagi + ", pengecekanPertama="
+				+ pengecekanPertama + ", pengecekanKedua=" + pengecekanKedua
+				+ ", sore=" + sore + "]";
 	}
 
 }

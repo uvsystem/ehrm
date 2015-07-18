@@ -51,8 +51,10 @@ public class RepositoryInterceptor {
 			return "Singkatan yang anda masukan sudah digunakan";
 		} else if(message.contains("jabatan_unit")) {
 			return "Jabatan yang anda masukan sudah digunakan";
+		} else if(message.contains("absen_harian")) {
+			return "Absen sudah terdaftar";
 		} else {
-			return "Error";
+			return "Terdapat kesalahan";
 		}
 	}
 

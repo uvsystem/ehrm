@@ -79,7 +79,7 @@ public class TokenServiceTest {
 		token = tokenService.create("090213016");
 
 		String username = pegawai.getNip();
-		String code = DateUtil.codedString(DateUtil.getNow());
+		String code = DateUtil.codedString(DateUtil.getDate());
 		
 		assertEquals(String.format("%s-%s", username, code), token.getToken());
 		assertNotEquals("", token.getToken());
@@ -92,8 +92,8 @@ public class TokenServiceTest {
 		
 		assertNotEquals("", token.getToken());
 		assertEquals(StatusToken.AKTIF, token.getStatus());
-		assertEquals(DateUtil.getNow(), token.getTanggalBuat());
-		assertEquals(DateUtil.add(DateUtil.getNow(), 2), token.getTanggalExpire());
+		assertEquals(DateUtil.getDate(), token.getTanggalBuat());
+		assertEquals(DateUtil.add(DateUtil.getDate(), 2), token.getTanggalExpire());
 		assertNotEquals(0, token.getDaftarOperator());
 	}
 	

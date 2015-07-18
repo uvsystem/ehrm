@@ -64,7 +64,7 @@ public class TokenServiceImpl implements TokenService {
 		
 		Token token = new Token();
 		token.setPegawai(pegawai);
-		token.setTanggalBuat(DateUtil.getNow());
+		token.setTanggalBuat(DateUtil.getDate());
 		token.setStatus(StatusToken.AKTIF);
 		token.generateExpireDate();
 		token.generateToken();

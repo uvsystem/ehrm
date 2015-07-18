@@ -1,6 +1,7 @@
 package com.unitedvision.sangihe.ehrm.absensi;
 
 import java.sql.Date;
+import java.sql.Time;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -16,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 @Entity
@@ -76,6 +79,58 @@ public abstract class Absen {
 		this.pegawai = pegawai;
 	}
 
+	public static class Detail {
+		private String nip;
+		private String tanggalStr;
+		private String jamStr;
+
+		public Detail() {
+			super();
+		}
+		
+		public Detail(String nip, String tanggalStr, String jamStr) {
+			super();
+			this.nip = nip;
+			this.tanggalStr = tanggalStr;
+			this.jamStr = jamStr;
+		}
+		
+		public String getNip() {
+			return nip;
+		}
+
+		void setNip(String nip) {
+			this.nip = nip;
+		}
+		
+		public String getTanggalStr() {
+			return tanggalStr;
+		}
+		
+		@JsonIgnore
+		public Date getTanggal() {
+			return DateUtil.getDate(tanggalStr, "-");
+		}
+		
+		public void setTanggalStr(String tanggalStr) {
+			this.tanggalStr = tanggalStr;
+		}
+		
+		public String getJamStr() {
+			return jamStr;
+		}
+		
+		@JsonIgnore
+		public Time getJam() {
+			return DateUtil.getTime(jamStr, ":");
+		}
+		
+		public void setJamStr(String jamStr) {
+			this.jamStr = jamStr;
+		}
+		
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -110,4 +165,11 @@ public abstract class Absen {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Absen [id=" + id + ", kalendar=" + kalendar + ", pegawai="
+				+ pegawai + "]";
+	}
+
 }

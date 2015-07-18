@@ -8,10 +8,9 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
 
 /**
- * Utility class to working with java.util.Date and java.util.Calendar.
+ * Utility class to working with java.sql.Date and java.sql.Time.
  * 
  * @author Deddy Christoper Kakunsi
  *
@@ -24,28 +23,27 @@ public class DateUtil {
 	public static final long DAY_IN_MILIS = 86400000L;
 	
 	public final static String DEFAULT_DELIMETER = "-";
-	
-	public static long toMilis(int year, int month, int day) {
-		LocalDate epoch = LocalDate.of(EPOCH_YEAR, EPOCH_MONTH, EPOCH_DAY);
-		
-		int lastDay = getLastDay(month, year);
-		
-		if (day > lastDay) {
-			month += 1;
-			day -= lastDay;
-		}
-		
-		LocalDate created = LocalDate.of(year, month, day);
 
-		long p = ChronoUnit.DAYS.between(epoch, created);
-
-		return p * DAY_IN_MILIS;
-	}
 	
+	//Time Utility
+	/**
+	 * Buat object java.sql.Time dari waktu saat ini.
+	 * @return
+	 */
 	public static Time getTime() {
 		LocalTime localTime = getNowLocalTime();
 		
 		return toTime(localTime);
+	}
+	
+	public static int[] createArray(Time time) {
+		int[] arrOfTime = new int[3];
+		
+		arrOfTime[0] = getHour(time);
+		arrOfTime[1] = getMinute(time);
+		arrOfTime[2] = getSecond(time);
+		
+		return arrOfTime;
 	}
 	
 	public static Time getTime(int hour, int minute, int second) {
@@ -54,6 +52,11 @@ public class DateUtil {
 		return toTime(localTime);
 	}
 
+	/**
+	 * Ubah java.lang.String menjadi java.util.Time.
+	 * @param timeString format = hh:mm:ss
+	 * @return
+	 */
 	public static Time getTime(String timeString) {
 		if (timeString == null || timeString.equals(""))
 			return null;
@@ -63,6 +66,12 @@ public class DateUtil {
 		return toTime(localTime);
 	}
 
+	/**
+	 * Ubah java.lang.String menjadi java.util.Time.
+	 * @param timeString format = hh:mm:ss
+	 * @param delim pemisah antara jam, menit, dan detik
+	 * @return
+	 */
 	public static Time getTime(String timeString, String delim) {
 		if (timeString == null || timeString.equals(""))
 			return null;
@@ -71,51 +80,70 @@ public class DateUtil {
 		
 		return toTime(localTime);
 	}
+	
+	public static LocalTime getLocalTime(ZoneId zoneId) {
+		return LocalTime.now(DEFAULT_ZONE_ID);
+	}
 
-	public static Date getNow() {
-		LocalDate localDate = getNowLocalDate();
-		
-		return toDate(localDate);
+	/**
+	 * The string must be "13:10:05".
+	 * @param timeString
+	 * @return
+	 */
+	public static LocalTime getLocalTime(String timeString) {
+		return getLocalTime(timeString, ":");
 	}
 	
-	public static Date getDate(int year, int month, int day) {
-		LocalDate localDate = getLocalDate(day, month, year);
-		
-		return toDate(localDate);
-	}
-
-	/**
-	 * Format mm/DD/YYYY
-	 * @param dateString
-	 * @return
-	 */
-	public static Date getDate(String dateString) {
-		if (dateString == null || dateString.equals(""))
+	public static LocalTime getLocalTime(String timeString, String delim) {
+		if (timeString == null || timeString.equals(""))
 			return null;
 		
-		LocalDate localDate = getLocalDate(dateString);
+		String elStr[] = timeString.split(delim);
 		
-		return toDate(localDate);
+		int second = 0;
+		if (elStr.length == 3)
+			second = Integer.parseInt(elStr[2]);
+		
+		return getLocalTime(Integer.parseInt(elStr[0]), getMonthInt(elStr[1]), second);
+	}
+	
+	public static LocalTime getLocalTime(int hour, int minute, int second) {
+		return LocalTime.of(hour, minute, second);
 	}
 
-	public static Date getDate(String dateString, String delim) {
-		if (dateString == null || dateString.equals(""))
-			return null;
+	public static LocalTime getNowLocalTime() {
+		return getLocalTime(DEFAULT_ZONE_ID);
+	}
+	
+	public static Time toTime(LocalTime localTime) {
+		return Time.valueOf(localTime);
+	}
+	
+	public static int getHour(Time time) {
+		LocalTime localTime = time.toLocalTime();
 		
-		LocalDate localDate = getLocalDate(dateString, delim);
+		return localTime.getHour();
+	}
+	
+	public static int getMinute(Time time) {
+		LocalTime localTime = time.toLocalTime();
 		
-		return toDate(localDate);
+		return localTime.getMinute();
+	}
+	
+	public static int getSecond(Time time) {
+		LocalTime localTime = time.toLocalTime();
+		
+		return localTime.getSecond();
 	}
 
+	//Date Utility
 	/**
-	 * Create date object.
-	 * @param year {@code int}
-	 * @param month {@code Month}
-	 * @param date {@code int}
+	 * Buat object java.sql.Date dari hari ini.
 	 * @return
 	 */
-	public static Date getDate(int year, Month month, int day) {
-		LocalDate localDate = getLocalDate(day, month, year);
+	public static Date getDate() {
+		LocalDate localDate = getNowLocalDate();
 		
 		return toDate(localDate);
 	}
@@ -129,15 +157,46 @@ public class DateUtil {
 		
 		return arrOfDate;
 	}
+
+	/**
+	 * Ubah java.lang.String menjadi java.sql.Date
+	 * @param dateString format = mm/DD/yyyy
+	 * @return
+	 */
+	public static Date getDate(String dateString) {
+		if (dateString == null || dateString.equals(""))
+			return null;
+		
+		LocalDate localDate = getLocalDate(dateString);
+		
+		return toDate(localDate);
+	}
+
+	/**
+	 * Ubah java.lang.String menjadi java.sql.Date.
+	 * @param dateString format = mm/DD/yyyy.
+	 * @param delim pemisah antar unit bulan, tanggal, dan tahun.
+	 * @return
+	 */
+	public static Date getDate(String dateString, String delim) {
+		if (dateString == null || dateString.equals(""))
+			return null;
+		
+		LocalDate localDate = getLocalDate(dateString, delim);
+		
+		return toDate(localDate);
+	}
 	
-	public static int[] createArray(Time time) {
-		int[] arrOfTime = new int[3];
+	public static Date getDate(int year, int month, int day) {
+		LocalDate localDate = getLocalDate(day, month, year);
 		
-		arrOfTime[0] = getHour(time);
-		arrOfTime[1] = getMinute(time);
-		arrOfTime[2] = getSecond(time);
+		return toDate(localDate);
+	}
+
+	public static Date getDate(int year, Month month, int day) {
+		LocalDate localDate = getLocalDate(day, month, year);
 		
-		return arrOfTime;
+		return toDate(localDate);
 	}
 
 	public static Date getFirstDate() {
@@ -171,10 +230,6 @@ public class DateUtil {
 		
 		return toDate(firstDate);
 	}
-
-	public static int getMonthInt(Calendar calendar) {
-		return calendar.get(Calendar.MONTH) + 1;
-	}
 	
 	public static int getLastDay(Month month, int year) {
 		int lastDate = month.maxLength();
@@ -183,13 +238,6 @@ public class DateUtil {
 			lastDate = 28;
 		
 		return lastDate;
-	}
-
-	public static int getLastDay(Calendar cal) {
-		Month month = getMonth(cal);
-		int year = getYear(cal);
-
-		return getLastDay(month, year);
 	}
 
 	/**
@@ -222,19 +270,6 @@ public class DateUtil {
 		
 		return month.getValue();
 	}
-	
-	/**
-	 * Return month in {@code Month} representation from {@code Calendar}.
-	 * @param calendar
-	 * @return month in {@code Month} representation
-	 */
-	public static Month getMonth(Calendar calendar) {
-		return Month.of(getMonthInt(calendar));
-	}
-
-	public static int getYear(Calendar calendar) {
-		return calendar.get(Calendar.YEAR);
-	}
 
 	public static int getYear(Date date) {
 		LocalDate localDate = date.toLocalDate();
@@ -246,24 +281,6 @@ public class DateUtil {
 		LocalDate localDate = date.toLocalDate();
 		
 		return localDate.getDayOfMonth();
-	}
-	
-	public static int getHour(Time time) {
-		LocalTime localTime = time.toLocalTime();
-		
-		return localTime.getHour();
-	}
-	
-	public static int getMinute(Time time) {
-		LocalTime localTime = time.toLocalTime();
-		
-		return localTime.getMinute();
-	}
-	
-	public static int getSecond(Time time) {
-		LocalTime localTime = time.toLocalTime();
-		
-		return localTime.getSecond();
 	}
 	
 	/**
@@ -366,46 +383,6 @@ public class DateUtil {
 	public static Date toDate(LocalDate localDate) {
 		return Date.valueOf(localDate);
 	}
-	
-	// LocalTime
-	public static LocalTime getLocalTime(ZoneId zoneId) {
-		return LocalTime.now(DEFAULT_ZONE_ID);
-	}
-
-	/**
-	 * The string must be "13:10:05".
-	 * @param timeString
-	 * @return
-	 */
-	public static LocalTime getLocalTime(String timeString) {
-		return getLocalTime(timeString, ":");
-		//return LocalTime.parse(timeString);
-	}
-	
-	public static LocalTime getLocalTime(String timeString, String delim) {
-		if (timeString == null || timeString.equals(""))
-			return null;
-		
-		String elStr[] = timeString.split(delim);
-		
-		int second = 0;
-		if (elStr.length == 3)
-			second = Integer.parseInt(elStr[2]);
-		
-		return getLocalTime(Integer.parseInt(elStr[0]), getMonthInt(elStr[1]), second);
-	}
-	
-	public static LocalTime getLocalTime(int hour, int minute, int second) {
-		return LocalTime.of(hour, minute, second);
-	}
-
-	public static LocalTime getNowLocalTime() {
-		return getLocalTime(DEFAULT_ZONE_ID);
-	}
-	
-	public static Time toTime(LocalTime localTime) {
-		return Time.valueOf(localTime);
-	}
 
 	public static boolean isFormatted(String dateString) {
 		// bulan-tanggal-tahun
@@ -480,5 +457,22 @@ public class DateUtil {
 		Time time = new Time(date.getTime());
 		
 		return String.format("%s%s", codedDate(date), codedTime(time));
+	}
+	
+	public static long toMilis(int year, int month, int day) {
+		LocalDate epoch = LocalDate.of(EPOCH_YEAR, EPOCH_MONTH, EPOCH_DAY);
+		
+		int lastDay = getLastDay(month, year);
+		
+		if (day > lastDay) {
+			month += 1;
+			day -= lastDay;
+		}
+		
+		LocalDate created = LocalDate.of(year, month, day);
+
+		long p = ChronoUnit.DAYS.between(epoch, created);
+
+		return p * DAY_IN_MILIS;
 	}
 }

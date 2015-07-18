@@ -57,4 +57,9 @@ public class Kalendar {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Kalendar [tanggal=" + tanggal + "]";
+	}
+
 }

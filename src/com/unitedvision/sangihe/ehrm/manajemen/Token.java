@@ -123,7 +123,7 @@ public class Token implements Serializable {
 	
 	public Token extend() {
 		if (isRenewable()) {
-			Date now = DateUtil.getNow();
+			Date now = DateUtil.getDate();
 			generateExpireDate(now);
 		}
 		
@@ -132,7 +132,7 @@ public class Token implements Serializable {
 
 	@Transient
 	public boolean isRenewable() {
-		Date today = DateUtil.getNow();
+		Date today = DateUtil.getDate();
 		int day = DateUtil.getDay(today);
 		int month = DateUtil.getMonthInt(today);
 		int year = DateUtil.getYear(today);

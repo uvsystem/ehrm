@@ -163,6 +163,8 @@ public class PegawaiControllerTest {
 			.andExpect(jsonPath("$.model.passwordStr").value("****"))
 			.andExpect(jsonPath("$.model.tanggalLahirStr").value("5-12-1991"))
 			.andExpect(jsonPath("$.model.email").value("deddy.kakunsi@gmail.com"))
+			.andExpect(jsonPath("$.model.pangkat").value("IIIA"))
+			.andExpect(jsonPath("$.model.namaJabatan").value("Kepala Bidang Monitoring dan Evaluasi"))
 			.andExpect(jsonPath("$.model.telepon").value("082347643198"));
 	}
 
