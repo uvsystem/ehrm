@@ -2,6 +2,7 @@ package com.unitedvision.sangihe.ehrm;
 
 import java.util.List;
 
+import com.unitedvision.sangihe.ehrm.absensi.Kalendar;
 import com.unitedvision.sangihe.ehrm.simpeg.Jabatan;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.SubUnitKerja;
@@ -41,6 +42,10 @@ public class ListEntityRestMessage<T> extends RestMessage {
 
 	public static ListEntityRestMessage<SubUnitKerja> createListSubUnitKerja(List<SubUnitKerja> daftarSubUnitKerja) {
 		return new ListEntityRestMessage<SubUnitKerja>(daftarSubUnitKerja);
+	}
+
+	public static ListEntityRestMessage<Kalendar> createListKalendar(List<Kalendar> daftarKalendar) {
+		return new ListEntityRestMessage<Kalendar>(daftarKalendar);
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.unitedvision.sangihe.ehrm;
 
+import com.unitedvision.sangihe.ehrm.absensi.Kalendar;
 import com.unitedvision.sangihe.ehrm.simpeg.Jabatan;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
@@ -36,4 +37,7 @@ public class EntityRestMessage<T> extends RestMessage {
 		return new EntityRestMessage<Pegawai>(pegawai);
 	}
 
+	public static EntityRestMessage<Kalendar> create(Kalendar kalendar) {
+		return new EntityRestMessage<Kalendar>(kalendar);
+	}
 }
