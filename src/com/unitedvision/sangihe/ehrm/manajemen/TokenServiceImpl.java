@@ -43,25 +43,27 @@ public class TokenServiceImpl implements TokenService {
 	@Override
 	public Token get(String token) throws OutOfDateEntityException, UnauthenticatedAccessException {
 		Token tokenObject = tokenRepository.findByToken(token);
-
-		Pegawai pegawai = tokenObject.getpegawai();
-		List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
-		pegawai.setDaftarOperator(daftarOperator);
 		
 		if (tokenObject.getStatus().equals(StatusToken.LOCKED))
 			throw new UnauthenticatedAccessException();
 
 		tokenObject.extend();
 		
-		return tokenRepository.save(tokenObject);
+		tokenRepository.save(tokenObject);
+		
+		try {
+			Pegawai pegawai = tokenObject.getpegawai();
+			List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
+			pegawai.setDaftarOperator(daftarOperator);
+			tokenObject.setPegawai(pegawai);
+		} catch(PersistenceException e){ }
+
+		return tokenObject;
 	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public Token create(Pegawai pegawai) {
-		List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
-		pegawai.setDaftarOperator(daftarOperator);
-		
 		Token token = new Token();
 		token.setPegawai(pegawai);
 		token.setTanggalBuat(DateUtil.getDate());
@@ -69,7 +71,15 @@ public class TokenServiceImpl implements TokenService {
 		token.generateExpireDate();
 		token.generateToken();
 		
-		return tokenRepository.save(token);
+		tokenRepository.save(token);
+
+		try {
+			List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
+			pegawai.setDaftarOperator(daftarOperator);
+			token.setPegawai(pegawai);
+		} catch(PersistenceException e){ }
+		
+		return token;
 	}
 	
 	@Override

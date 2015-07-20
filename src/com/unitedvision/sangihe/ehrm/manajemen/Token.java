@@ -113,10 +113,7 @@ public class Token implements Serializable {
 	}
 	
 	public String generateToken() {
-		String username = pegawai.getNip();
-		String code = DateUtil.codedString(tanggalBuat);
-		
-		token = String.format("%s-%s", username, code);
+		token = String.format("%d%s", pegawai.hashCode(), tanggalBuat.hashCode());
 		
 		return token;
 	}

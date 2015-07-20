@@ -2,6 +2,7 @@ package com.unitedvision.sangihe.ehrm;
 
 import com.unitedvision.sangihe.ehrm.absensi.Kalendar;
 import com.unitedvision.sangihe.ehrm.manajemen.Aplikasi;
+import com.unitedvision.sangihe.ehrm.manajemen.Token;
 import com.unitedvision.sangihe.ehrm.simpeg.Jabatan;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
@@ -44,5 +45,9 @@ public class EntityRestMessage<T> extends RestMessage {
 	
 	public static EntityRestMessage<Aplikasi> create(Aplikasi aplikasi) {
 		return new EntityRestMessage<Aplikasi>(aplikasi);
+	}
+	
+	public static EntityRestMessage<Token> create(Token token) {
+		return new EntityRestMessage<Token>(token);
 	}
 }
