@@ -6,8 +6,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.unitedvision.sangihe.ehrm.ApplicationException;
-import com.unitedvision.sangihe.ehrm.manajemen.Operator;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator.Role;
+import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 /**
  * Class that provides authentication mechanism based on Spring's {@code Authentication} class.
@@ -76,7 +76,7 @@ public class SpringAuthenticationBasedAuthorizationProvider extends Authorizatio
 	 * @return user in {@code Operator} type.
 	 * @throws ApplicationException 
 	 */
-	public Operator getOperator() throws ApplicationException {
-		return getUserDetails().getOperator();
+	public Pegawai getPegawai() throws ApplicationException {
+		return getUserDetails().getPegawai();
 	}
 }

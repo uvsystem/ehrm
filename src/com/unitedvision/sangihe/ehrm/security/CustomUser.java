@@ -5,22 +5,22 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import com.unitedvision.sangihe.ehrm.manajemen.Operator;
+import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 public class CustomUser extends User {
 	private static final long serialVersionUID = 1L;
-	private Operator operator;
+	private Pegawai pegawai;
 
-	public CustomUser(String username, String password, Operator operator, Collection<? extends GrantedAuthority> authorities) {
+	public CustomUser(String username, String password, Pegawai pegawai, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
-		this.operator = operator;
+		this.pegawai = pegawai;
 	}
 
-	public void setOperator(Operator operator) {
-		this.operator = operator;
+	public void setPegawai(Pegawai pegawai) {
+		this.pegawai = pegawai;
 	}
 	
-	public Operator getOperator() {
-		return operator;
+	public Pegawai getPegawai() {
+		return pegawai;
 	}
 }

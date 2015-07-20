@@ -99,8 +99,6 @@ public class Aplikasi {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((daftarOperator == null) ? 0 : daftarOperator.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((kode == null) ? 0 : kode.hashCode());
 		result = prime * result + ((nama == null) ? 0 : nama.hashCode());

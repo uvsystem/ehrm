@@ -35,6 +35,13 @@ public class Token implements Serializable {
 		LOCKED
 	}
 	
+	public Token() {
+		super();
+		setTanggalBuat(DateUtil.getDate());
+		generateExpireDate();
+		setStatus(StatusToken.AKTIF);
+	}
+	
 	@Id
 	public String getToken() {
 		return this.token;
@@ -104,39 +111,30 @@ public class Token implements Serializable {
 	}
 
 	public Date generateExpireDate(Date date) {
-		int day = DateUtil.getDay(date);
-		int month = DateUtil.getMonthInt(date);
-		int year = DateUtil.getYear(date);
+		setTanggalExpire(DateUtil.add(date, 2));
 		
-		tanggalExpire = DateUtil.getDate(year, month, (day + 2));
 		return tanggalExpire;
 	}
 	
 	public String generateToken() {
-		token = String.format("%d%s", pegawai.hashCode(), tanggalBuat.hashCode());
+		token = String.format("%d%d", pegawai.hashCode(), tanggalBuat.hashCode());
 		
 		return token;
 	}
 	
 	public Token extend() {
-		if (isRenewable()) {
-			Date now = DateUtil.getDate();
-			generateExpireDate(now);
-		}
+		if (isRenewable())
+			generateExpireDate(DateUtil.getDate());
 		
 		return this;
 	}
 
 	@Transient
 	public boolean isRenewable() {
-		Date today = DateUtil.getDate();
-		int day = DateUtil.getDay(today);
-		int month = DateUtil.getMonthInt(today);
-		int year = DateUtil.getYear(today);
+		Date hariIni = DateUtil.getDate();
+		Date besok = DateUtil.add(hariIni, 1);
 
-		Date tomorrow = DateUtil.getDate(year, month, (day + 1));
-
-		return DateUtil.equals(tanggalExpire, tomorrow);
+		return DateUtil.equals(tanggalExpire, besok);
 	}
 
 	@JsonIgnore
@@ -150,12 +148,8 @@ public class Token implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((pegawai == null) ? 0 : pegawai.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result
 				+ ((tanggalBuat == null) ? 0 : tanggalBuat.hashCode());
-		result = prime * result
-				+ ((tanggalExpire == null) ? 0 : tanggalExpire.hashCode());
-		result = prime * result + ((token == null) ? 0 : token.hashCode());
 		return result;
 	}
 

@@ -372,16 +372,6 @@ public class Pegawai implements Pejabat {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((daftarJabatan == null) ? 0 : daftarJabatan.hashCode());
-		result = prime * result
-				+ ((daftarOperator == null) ? 0 : daftarOperator.hashCode());
-		result = prime * result
-				+ ((daftarPangkat == null) ? 0 : daftarPangkat.hashCode());
-		result = prime * result
-				+ ((daftarToken == null) ? 0 : daftarToken.hashCode());
-		result = prime * result
-				+ ((daftarTugas == null) ? 0 : daftarTugas.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((nip == null) ? 0 : nip.hashCode());
 		result = prime * result

@@ -44,9 +44,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 			Pegawai pegawai = tokenService.login(username);
 			Operator operator = getOperator(pegawai);
 			
-			return new CustomUser(operator.getUsername(), operator.getPassword(), operator, getAuthorities(operator.getRole()));
+			return new CustomUser(operator.getUsername(), operator.getPassword(), pegawai, getAuthorities(operator.getRole()));
 		} catch (PersistenceException | UnauthenticatedAccessException e) {
-			throw new UsernameNotFoundException(e.getMessage());
+			throw new UsernameNotFoundException("Username atau password salah");
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Token token = tokenService.get(tokenString);
 		Operator operator = getOperator(token.getpegawai());
 		
-		return new CustomUser(operator.getUsername(), token.getToken(), operator, getAuthorities(operator.getRole()));
+		return new CustomUser(operator.getUsername(), token.getToken(), operator.getPegawai(), getAuthorities(operator.getRole()));
 	}
 
 	public static List<GrantedAuthority> getAuthorities(Role role) {

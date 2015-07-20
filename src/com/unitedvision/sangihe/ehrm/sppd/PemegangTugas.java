@@ -71,8 +71,6 @@ public class PemegangTugas {
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((pegawai == null) ? 0 : pegawai.hashCode());
 		result = prime * result + ((sppd == null) ? 0 : sppd.hashCode());
-		result = prime * result
-				+ ((suratTugas == null) ? 0 : suratTugas.hashCode());
 		return result;
 	}
 

@@ -379,10 +379,6 @@ public class Sppd {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((daftarAbsen == null) ? 0 : daftarAbsen.hashCode());
-		result = prime * result
-				+ ((daftarPengikut == null) ? 0 : daftarPengikut.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result
 				+ ((kegiatan == null) ? 0 : kegiatan.hashCode());

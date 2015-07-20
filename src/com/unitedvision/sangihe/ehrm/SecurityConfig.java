@@ -15,7 +15,7 @@ import com.unitedvision.sangihe.ehrm.security.CustomAuthenticationProvider;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("com.unitedvision.sangihe.absensi.security")
+@ComponentScan("com.unitedvision.sangihe.ehrm.security")
 @Import(ApplicationConfig.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	

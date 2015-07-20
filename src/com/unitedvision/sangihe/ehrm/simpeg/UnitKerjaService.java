@@ -17,4 +17,6 @@ public interface UnitKerjaService {
 	
 	List<UnitKerja> cari(String keyword);
 	
+	List<UnitKerja> get();
+	
 }

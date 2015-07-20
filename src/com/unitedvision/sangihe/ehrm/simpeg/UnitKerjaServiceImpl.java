@@ -74,4 +74,9 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 	public List<UnitKerja> cari(String keyword) {
 		return unitKerjaRepository.findByNamaContainingOrSingkatanContaining(keyword);
 	}
+	
+	@Override
+	public List<UnitKerja> get() {
+		return unitKerjaRepository.findAll();
+	}
 }

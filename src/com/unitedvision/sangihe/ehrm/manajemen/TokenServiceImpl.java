@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 import com.unitedvision.sangihe.ehrm.manajemen.Token.StatusToken;
 import com.unitedvision.sangihe.ehrm.manajemen.repository.OperatorRepository;
@@ -66,9 +65,6 @@ public class TokenServiceImpl implements TokenService {
 	public Token create(Pegawai pegawai) {
 		Token token = new Token();
 		token.setPegawai(pegawai);
-		token.setTanggalBuat(DateUtil.getDate());
-		token.setStatus(StatusToken.AKTIF);
-		token.generateExpireDate();
 		token.generateToken();
 		
 		tokenRepository.save(token);

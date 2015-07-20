@@ -213,10 +213,6 @@ public class SuratTugas {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime
-				* result
-				+ ((daftarPemegangTugas == null) ? 0 : daftarPemegangTugas
-						.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + jumlahHari;
 		result = prime * result + ((maksud == null) ? 0 : maksud.hashCode());

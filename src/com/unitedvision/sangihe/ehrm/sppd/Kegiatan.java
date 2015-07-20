@@ -66,8 +66,6 @@ public class Kegiatan {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((daftarSppd == null) ? 0 : daftarSppd.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((nama == null) ? 0 : nama.hashCode());
 		return result;

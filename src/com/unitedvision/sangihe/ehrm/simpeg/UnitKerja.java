@@ -89,7 +89,7 @@ public class UnitKerja {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "unitKerja", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "unitKerja", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	public List<SubUnitKerja> getDaftarSubUnit() {
 		return daftarSubUnit;
 	}
@@ -122,12 +122,6 @@ public class UnitKerja {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((daftarJabatan == null) ? 0 : daftarJabatan.hashCode());
-		result = prime * result
-				+ ((daftarPegawai == null) ? 0 : daftarPegawai.hashCode());
-		result = prime * result
-				+ ((daftarSubUnit == null) ? 0 : daftarSubUnit.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		result = prime * result + ((nama == null) ? 0 : nama.hashCode());
 		result = prime * result

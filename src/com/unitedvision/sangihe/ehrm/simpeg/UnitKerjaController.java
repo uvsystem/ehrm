@@ -55,5 +55,13 @@ public class UnitKerjaController {
 		
 		return ListEntityRestMessage.createListSubUnitKerja(daftarSubUnitKerja);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	public ListEntityRestMessage<UnitKerja> get() throws ApplicationException, PersistenceException {
+		List<UnitKerja> daftarUnitKerja = unitKerjaService.get();
+		
+		return ListEntityRestMessage.createListUnitKerja(daftarUnitKerja);
+	}
 
 }
