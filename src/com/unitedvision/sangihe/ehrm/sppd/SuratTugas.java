@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 @Entity
@@ -28,10 +29,11 @@ public class SuratTugas {
 	
 	private long id;
 	private Date tanggal;
-	private String nomor;
-	private int jumlahHari;
 	private Status status;
 	
+	private String nomor;
+	private int jumlahHari;
+
 	/**
 	 * Daerah Tujuan Tugas
 	 */
@@ -43,6 +45,16 @@ public class SuratTugas {
 	public SuratTugas() {
 		super();
 		daftarPemegangTugas = new ArrayList<>();
+		tanggal = DateUtil.getDate();
+		status = Status.PENDING;
+	}
+
+	public SuratTugas(Message message) {
+		this();
+		nomor = message.getNomor();
+		jumlahHari = message.getJumlahHari();
+		tujuan = message.getTujuan();
+		maksud = message.getMaksud();
 	}
 
 	@Id
@@ -140,6 +152,61 @@ public class SuratTugas {
 	public void removePemegangTugas(PemegangTugas pemegangTugas) {
 		pemegangTugas.setSuratTugas(null);
 		this.daftarPemegangTugas.remove(pemegangTugas);
+	}
+
+	public static class Message {
+
+		private List<String> daftarPegawai;
+		private String nomor;
+		private Integer jumlahHari;
+		private String tujuan;
+		private String maksud;
+		
+		public Message() {
+			super();
+			daftarPegawai = new ArrayList<>();
+		}
+		
+		public List<String> getDaftarPegawai() {
+			return daftarPegawai;
+		}
+		
+		public void setDaftarPegawai(List<String> daftarPegawai) {
+			this.daftarPegawai = daftarPegawai;
+		}
+
+		public String getNomor() {
+			return nomor;
+		}
+
+		public void setNomor(String nomor) {
+			this.nomor = nomor;
+		}
+
+		public Integer getJumlahHari() {
+			return jumlahHari;
+		}
+
+		public void setJumlahHari(Integer jumlahHari) {
+			this.jumlahHari = jumlahHari;
+		}
+
+		public String getTujuan() {
+			return tujuan;
+		}
+
+		public void setTujuan(String tujuan) {
+			this.tujuan = tujuan;
+		}
+
+		public String getMaksud() {
+			return maksud;
+		}
+
+		public void setMaksud(String maksud) {
+			this.maksud = maksud;
+		}
+
 	}
 
 	@Override

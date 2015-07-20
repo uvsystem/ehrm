@@ -26,4 +26,6 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long> {
 	@Query("FROM Pegawai pg WHERE pg.nip LIKE CONCAT('%', :keyword, '%') OR pg.penduduk.nama LIKE CONCAT('%', :keyword, '%')")
 	List<Pegawai> findByNipContainingOrPenduduk_NamaContaining(@Param("keyword") String keyword);
 
+	List<Pegawai> findByNipIn(List<String> daftarPegawai);
+
 }

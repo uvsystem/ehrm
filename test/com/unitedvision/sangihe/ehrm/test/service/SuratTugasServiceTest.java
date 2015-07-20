@@ -76,6 +76,7 @@ public class SuratTugasServiceTest {
 		pegawaiService.simpan(pegawai);
 		
 		suratTugas = new SuratTugas();
+		suratTugas.setNomor("001-STG-01-2015");
 		suratTugas.setJumlahHari(3);
 		suratTugas.setMaksud("Konsultasi Teknis Pengembangan Rencana Induk TIK");
 		suratTugas.setTujuan("Manado");
@@ -127,5 +128,12 @@ public class SuratTugasServiceTest {
 
 		assertEquals(1, suratTugas.getDaftarPemegangTugas().size());
 		assertEquals(Status.DITOLAK, suratTugas.getStatus());
+	}
+	
+	@Test
+	public void test_get_pending() {
+		List<SuratTugas> daftarSuratTugas = suratTugasService.getByStatus(SuratTugas.Status.PENDING);
+		
+		assertNotEquals(0, daftarSuratTugas.size());
 	}
 }

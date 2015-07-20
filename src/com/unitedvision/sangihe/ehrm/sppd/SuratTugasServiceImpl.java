@@ -1,11 +1,14 @@
 package com.unitedvision.sangihe.ehrm.sppd;
 
+import java.sql.Date;
+import java.time.Month;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
 import com.unitedvision.sangihe.ehrm.sppd.SuratTugas.Status;
@@ -38,6 +41,13 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 	}
 
 	@Override
+	public SuratTugas simpanWithNip(SuratTugas suratTugas, List<String> daftarPegawai) {
+		List<Pegawai> daftarPemegangTugas = pegawaiRepository.findByNipIn(daftarPegawai);
+		
+		return simpan(suratTugas, daftarPemegangTugas);
+	}
+	
+	@Override
 	@Transactional(readOnly = false)
 	public SuratTugas izinkanPengajuan(SuratTugas suratTugas) {
 		suratTugas.setStatus(Status.DITERIMA);
@@ -47,12 +57,28 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 
 	@Override
 	@Transactional(readOnly = false)
+	public SuratTugas izinkanPengajuan(String nomor) {
+		SuratTugas suratTugas = get(nomor);
+		
+		return izinkanPengajuan(suratTugas);
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
 	public SuratTugas tolakPengajuan(SuratTugas suratTugas) {
 		suratTugas.setStatus(Status.DITOLAK);
 		
 		return suratTugasRepository.save(suratTugas);
 	}
 
+	@Override
+	@Transactional(readOnly = false)
+	public SuratTugas tolakPengajuan(String nomor) {
+		SuratTugas suratTugas = get(nomor);
+		
+		return tolakPengajuan(suratTugas);
+	}
+	
 	@Override
 	@Transactional(readOnly = false)
 	public SuratTugas tambahPegawai(SuratTugas suratTugas, Pegawai pegawai) {
@@ -104,6 +130,16 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
 		return getByPegawai(pegawai);
+	}
+	
+	@Override
+	public List<SuratTugas> getByStatus(Status status) {
+		Date sekarang = DateUtil.getDate();
+
+		int tahun = DateUtil.getYear(sekarang) - 2;
+		Date duaTahunLalu = DateUtil.getDate(tahun, Month.JANUARY, 1);
+
+		return suratTugasRepository.findByStatusAndTanggalBetween(status, duaTahunLalu, sekarang);
 	}
 
 }
