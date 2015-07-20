@@ -75,8 +75,39 @@ public class AbsenControllerTest {
 		kalendarService.tambah(DateUtil.getDate(2015, Month.JANUARY, 5));
 		kalendarService.tambah(DateUtil.getDate(2015, Month.JULY, 17));
 		kalendarService.tambah(DateUtil.getDate(2015, Month.JULY, 18));
+		kalendarService.tambah(DateUtil.getDate());
 	}
 
+	@Test
+	public void test_absen_hadir() throws Exception {
+		this.mockMvc.perform(
+				post(String.format("/absen/%s/hadir", pegawai.getNip()))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"tanggalStr\": \"01-01-2015\", \"pagiStr\": \"07:00:00\", \"cek1Str\": \"11:00:00\", \"cek2Str\": \"13:00:00\", \"soreStr\": \"16:00:00\"}")
+			)
+			.andExpect(jsonPath("$.message").value("Berhasil"))
+			.andExpect(jsonPath("$.tipe").value("SUCCESS"));
+	}
+
+	@Test
+	public void test_absen_hadir_duplicate() throws Exception {
+		this.mockMvc.perform(
+				post(String.format("/absen/%s/hadir", pegawai.getNip()))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"tanggalStr\": \"01-01-2015\", \"pagiStr\": \"07:00:00\", \"cek1Str\": \"11:00:00\", \"cek2Str\": \"13:00:00\", \"soreStr\": \"16:00:00\"}")
+			)
+			.andExpect(jsonPath("$.message").value("Berhasil"))
+			.andExpect(jsonPath("$.tipe").value("SUCCESS"));
+
+		this.mockMvc.perform(
+				post(String.format("/absen/%s/hadir", pegawai.getNip()))
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"tanggalStr\": \"01-01-2015\", \"pagiStr\": \"07:00:00\", \"cek1Str\": \"11:00:00\", \"cek2Str\": \"13:00:00\", \"soreStr\": \"16:00:00\"}")
+			)
+			.andExpect(jsonPath("$.message").value("Absen sudah terdaftar"))
+			.andExpect(jsonPath("$.tipe").value("ERROR"));
+	}
+	
 	@Test
 	public void test_absen_pagi_simple() throws Exception {
 		this.mockMvc.perform(

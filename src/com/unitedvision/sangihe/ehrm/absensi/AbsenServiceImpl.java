@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.DateUtil;
-import com.unitedvision.sangihe.ehrm.absensi.Absen.Detail;
+import com.unitedvision.sangihe.ehrm.absensi.Hadir.Detail;
 import com.unitedvision.sangihe.ehrm.absensi.Hadir.Jenis;
 import com.unitedvision.sangihe.ehrm.absensi.repository.CutiRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.HadirRepository;
@@ -49,6 +49,21 @@ public class AbsenServiceImpl implements AbsenService {
 	private KalendarRepository kalendarRepository;
 	@Autowired
 	private UnitKerjaRepository unitKerjaRepository;
+
+	@Override
+	public Hadir hadir(String nip, Detail detail) throws AbsenException {
+		Hadir hadir = getHadir(nip, detail.getTanggal());
+		
+		if (hadir.getId() != 0)
+			throw new AbsenException("Absen sudah terdaftar");
+		
+		hadir.setPagi(detail.getPagi());
+		hadir.setPengecekanPertama(detail.pengecekanPertama());
+		hadir.setPengecekanKedua(detail.getPengecekanKedua());
+		hadir.setSore(detail.getSore());
+		
+		return hadirRepository.save(hadir);
+	}
 	
 	/**
 	 * Ambil absen jika sudah ada, buat baru jika tidak ada.
@@ -81,9 +96,9 @@ public class AbsenServiceImpl implements AbsenService {
 		return hadir;
 	}
 	
-	private List<Hadir> createDaftarHadir(Jenis jenis, List<Detail> daftarAbsen) {
+	private List<Hadir> createDaftarHadir(Jenis jenis, List<Absen.Detail> daftarAbsen) {
 		List<Hadir> daftarHadir = new ArrayList<>();
-		for (Detail detail : daftarAbsen) {
+		for (Absen.Detail detail : daftarAbsen) {
 
 			try {
 				
@@ -134,7 +149,7 @@ public class AbsenServiceImpl implements AbsenService {
 	}
 
 	@Override
-	public List<Hadir> apelPagi(List<Detail> daftarAbsen) throws AbsenException {
+	public List<Hadir> apelPagi(List<Absen.Detail> daftarAbsen) throws AbsenException {
 		List<Hadir> daftarHadir = createDaftarHadir(Jenis.PAGI, daftarAbsen);
 		
 		for (Hadir hadir : daftarHadir) {
@@ -170,7 +185,7 @@ public class AbsenServiceImpl implements AbsenService {
 	}
 
 	@Override
-	public List<Hadir> pengecekanSatu(List<Detail> daftarAbsen) throws AbsenException {
+	public List<Hadir> pengecekanSatu(List<Absen.Detail> daftarAbsen) throws AbsenException {
 		List<Hadir> daftarHadir = createDaftarHadir(Jenis.PENGECEKAN_SATU, daftarAbsen);
 		
 		return hadirRepository.save(daftarHadir);
@@ -201,7 +216,7 @@ public class AbsenServiceImpl implements AbsenService {
 	}
 
 	@Override
-	public List<Hadir> pengecekanDua(List<Detail> daftarAbsen) throws AbsenException {
+	public List<Hadir> pengecekanDua(List<Absen.Detail> daftarAbsen) throws AbsenException {
 		List<Hadir> daftarHadir = createDaftarHadir(Jenis.PENGECEKAN_DUA, daftarAbsen);
 		
 		return hadirRepository.save(daftarHadir);
@@ -232,7 +247,7 @@ public class AbsenServiceImpl implements AbsenService {
 	}
 
 	@Override
-	public List<Hadir> apelSore(List<Detail> daftarAbsen) throws AbsenException {
+	public List<Hadir> apelSore(List<Absen.Detail> daftarAbsen) throws AbsenException {
 		List<Hadir> daftarHadir = createDaftarHadir(Jenis.SORE, daftarAbsen);
 		
 		return hadirRepository.save(daftarHadir);

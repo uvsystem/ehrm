@@ -24,6 +24,14 @@ public class AbsenController {
 	@Autowired
 	private AbsenService absenService;
 
+	@RequestMapping(method = RequestMethod.POST, value = "/{nip}/hadir")
+	@ResponseBody
+	public RestMessage hadir(@PathVariable String nip, @RequestBody Hadir.Detail detail) throws ApplicationException, PersistenceException {
+		absenService.hadir(nip, detail);
+		
+		return RestMessage.success();
+	}
+
 	@RequestMapping(method = RequestMethod.POST, value = "/{nip}/pagi")
 	@ResponseBody
 	public RestMessage pagi(@PathVariable String nip) throws ApplicationException, PersistenceException {

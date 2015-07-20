@@ -1,10 +1,14 @@
 package com.unitedvision.sangihe.ehrm.absensi;
 
+import java.sql.Date;
 import java.sql.Time;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unitedvision.sangihe.ehrm.DateUtil;
 
 @Entity
 @DiscriminatorValue("HADIR")
@@ -57,6 +61,81 @@ public class Hadir extends Absen {
 
 	public void setSore(Time sore) {
 		this.sore = sore;
+	}
+	
+	public static class Detail {
+
+		private String tanggalStr;
+		private String pagiStr;
+		private String cek1Str;
+		private String cek2Str;
+		private String soreStr;
+		
+		public String getTanggalStr() {
+			return tanggalStr;
+		}
+
+		public void setTanggalStr(String tanggalStr) {
+			this.tanggalStr = tanggalStr;
+		}
+
+		public String getPagiStr() {
+			return pagiStr;
+		}
+
+		public void setPagiStr(String pagiStr) {
+			this.pagiStr = pagiStr;
+		}
+
+		public String getCek1Str() {
+			return cek1Str;
+		}
+
+		public void setCek1Str(String cek1Str) {
+			this.cek1Str = cek1Str;
+		}
+
+		public String getCek2Str() {
+			return cek2Str;
+		}
+
+		public void setCek2Str(String cek2Str) {
+			this.cek2Str = cek2Str;
+		}
+
+		public String getSoreStr() {
+			return soreStr;
+		}
+
+		public void setSoreStr(String soreStr) {
+			this.soreStr = soreStr;
+		}
+
+		@JsonIgnore
+		public Date getTanggal() {
+			return DateUtil.getDate(tanggalStr, "-");
+		}
+
+		@JsonIgnore
+		public Time getPagi() {
+			return DateUtil.getTime(pagiStr, ":");
+		}
+
+		@JsonIgnore
+		public Time pengecekanPertama() {
+			return DateUtil.getTime(cek1Str, ":");
+		}
+
+		@JsonIgnore
+		public Time getPengecekanKedua() {
+			return DateUtil.getTime(cek2Str, ":");
+		}
+
+		@JsonIgnore
+		public Time getSore() {
+			return DateUtil.getTime(soreStr, ":");
+		}
+		
 	}
 
 	@Override

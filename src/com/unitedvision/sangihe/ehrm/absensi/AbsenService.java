@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
-import com.unitedvision.sangihe.ehrm.absensi.Absen.Detail;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
@@ -22,7 +21,7 @@ public interface AbsenService {
 	 */
 	Hadir apelPagi(String nip, Date tanggal, Time jam) throws AbsenException;
 
-	List<Hadir> apelPagi(List<Detail> daftarAbsen) throws AbsenException;
+	List<Hadir> apelPagi(List<Absen.Detail> daftarAbsen) throws AbsenException;
 
 	/**
 	 * Isi absen pengecekan pertama.
@@ -35,7 +34,7 @@ public interface AbsenService {
 	 */
 	Hadir pengecekanSatu(String nip, Date tanggal, Time jam) throws AbsenException;
 
-	List<Hadir> pengecekanSatu(List<Detail> daftarAbsen) throws AbsenException;
+	List<Hadir> pengecekanSatu(List<Absen.Detail> daftarAbsen) throws AbsenException;
 
 	/**
 	 * Isi absen pengecekan kedua.
@@ -48,7 +47,7 @@ public interface AbsenService {
 	 */
 	Hadir pengecekanDua(String nip, Date tanggal, Time jam) throws AbsenException;
 
-	List<Hadir> pengecekanDua(List<Detail> daftarAbsen) throws AbsenException;
+	List<Hadir> pengecekanDua(List<Absen.Detail> daftarAbsen) throws AbsenException;
 
 	/**
 	 * Isi absen sore.
@@ -61,11 +60,12 @@ public interface AbsenService {
 	 */
 	Hadir apelSore(String nip, Date tanggal, Time jam) throws AbsenException;
 
-	List<Hadir> apelSore(List<Detail> daftarAbsen) throws AbsenException;
+	List<Hadir> apelSore(List<Absen.Detail> daftarAbsen) throws AbsenException;
 
 	TugasLuar tambahTugasLuar(String nip, Date tanggal, String nomorSppd);
 	List<TugasLuar> tambahTugasLuar(Sppd sppd);
 
+	Hadir hadir(String nip, Hadir.Detail detail) throws AbsenException;
 	Sakit tambahSakit(String nip, Date tanggal, String penyakit);
 	Izin tambahIzin(String nip, Date tanggal, String alasan);
 	Cuti tambahCuti(String nip, Date tanggal, String jenisCuti);
