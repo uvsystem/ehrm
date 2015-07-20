@@ -29,7 +29,8 @@ public interface AplikasiService {
 	
 	void hapus(Operator operator);
 
-	List<Operator> get(Aplikasi aplikasi);
+	List<Operator> get(Aplikasi aplikasi, Role role);
 	List<Operator> getOperator(String kode);
+	List<Operator> getAdmin(String kode);
 
 }

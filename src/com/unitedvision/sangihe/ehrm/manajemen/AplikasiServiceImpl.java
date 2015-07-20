@@ -111,15 +111,22 @@ public class AplikasiServiceImpl implements AplikasiService {
 	}
 
 	@Override
-	public List<Operator> get(Aplikasi aplikasi) {
-		return operatorRepository.findByAplikasi(aplikasi);
+	public List<Operator> get(Aplikasi aplikasi, Role role) {
+		return operatorRepository.findByAplikasiAndRole(aplikasi, role);
 	}
 
 	@Override
 	public List<Operator> getOperator(String kode) {
 		Aplikasi aplikasi = aplikasiRepository.findByKode(kode);
 		
-		return get(aplikasi);
+		return get(aplikasi, Operator.Role.OPERATOR);
+	}
+
+	@Override
+	public List<Operator> getAdmin(String kode) {
+		Aplikasi aplikasi = aplikasiRepository.findByKode(kode);
+		
+		return get(aplikasi, Operator.Role.ADMIN);
 	}
 
 }

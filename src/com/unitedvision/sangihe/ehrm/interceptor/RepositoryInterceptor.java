@@ -45,7 +45,7 @@ public class RepositoryInterceptor {
 			return "Penduduk yang anda masukan sudah memiliki data pegawai";
 		} else if (message.contains("nomor_induk_pegawai")) {
 			return "NIP yang anda masukan sudah digunakan";
-		} else if (message.contains("nama")) {
+		} else if (message.contains("nama_pegawai")) {
 			return "Nama yang anda masukan sudah digunakan";
 		} else if (message.contains("akronim")) {
 			return "Singkatan yang anda masukan sudah digunakan";
@@ -53,6 +53,12 @@ public class RepositoryInterceptor {
 			return "Jabatan yang anda masukan sudah digunakan";
 		} else if(message.contains("absen_harian")) {
 			return "Absen sudah terdaftar";
+		} else if(message.contains("kode_aplikasi")) {
+			return "Kode aplikasi sudah terdaftar";
+		} else if(message.contains("nama_aplikasi")) {
+			return "Nama aplikasi sudah terdaftar";
+		} else if(message.contains("url_aplikasi")) {
+			return "URL aplikasi sudah terdaftar";
 		} else {
 			return "Terdapat kesalahan";
 		}

@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
@@ -41,6 +42,7 @@ public class Operator {
 		this.id = id;
 	}
 
+	@JsonBackReference("aplikasiReference")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "aplikasi")
 	public Aplikasi getAplikasi() {
@@ -51,6 +53,7 @@ public class Operator {
 		this.aplikasi = aplikasi;
 	}
 
+	@JsonBackReference("pegawaiReference")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "pegawai")
 	public Pegawai getPegawai() {

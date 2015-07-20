@@ -3,6 +3,8 @@ package com.unitedvision.sangihe.ehrm;
 import java.util.List;
 
 import com.unitedvision.sangihe.ehrm.absensi.Kalendar;
+import com.unitedvision.sangihe.ehrm.manajemen.Aplikasi;
+import com.unitedvision.sangihe.ehrm.manajemen.Operator;
 import com.unitedvision.sangihe.ehrm.simpeg.Jabatan;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.SubUnitKerja;
@@ -56,6 +58,14 @@ public class ListEntityRestMessage<T> extends RestMessage {
 
 	public static ListEntityRestMessage<Sppd> createListSppd(List<Sppd> daftarSppd) {
 		return new ListEntityRestMessage<Sppd>(daftarSppd);
+	}
+
+	public static ListEntityRestMessage<Aplikasi> createListAplikasi(List<Aplikasi> daftarAplikasi) {
+		return new ListEntityRestMessage<Aplikasi>(daftarAplikasi);
+	}
+
+	public static ListEntityRestMessage<Operator> createListOperator(List<Operator> daftarOperator) {
+		return new ListEntityRestMessage<Operator>(daftarOperator);
 	}
 
 }

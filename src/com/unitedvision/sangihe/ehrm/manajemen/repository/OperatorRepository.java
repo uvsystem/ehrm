@@ -12,6 +12,6 @@ public interface OperatorRepository extends JpaRepository<Operator, Long> {
 
 	List<Operator> findByPegawai(Pegawai pegawai);
 
-	List<Operator> findByAplikasi(Aplikasi aplikasi);
+	List<Operator> findByAplikasiAndRole(Aplikasi aplikasi, Operator.Role role);
 
 }

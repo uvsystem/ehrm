@@ -9,6 +9,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	JabatanControllerTest.class, UnitKerjaControllerTest.class,
 	PegawaiControllerTest.class, KalendarControllerTest.class,
 	AbsenControllerTest.class, SuratTugasControllerTest.class,
-	SppdControllerTest.class
+	SppdControllerTest.class, AplikasiControllerTest.class
 })
 public class ControllerTest { }
