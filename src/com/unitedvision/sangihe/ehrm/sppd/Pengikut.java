@@ -11,6 +11,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unitedvision.sangihe.ehrm.DateUtil;
+
 @Entity
 @Table(name = "pengikut")
 public class Pengikut {
@@ -24,6 +28,13 @@ public class Pengikut {
 	public Pengikut() {
 		super();
 	}
+	
+	public Pengikut(Message message) {
+		super();
+		setNama(message.getNama());
+		setTanggalLahir(message.getTanggalLahir());
+		setKeterangan(message.getKeterangan());
+	}
 
 	@Id
 	@GeneratedValue
@@ -35,6 +46,7 @@ public class Pengikut {
 		this.id = id;
 	}
 
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "sppd")
 	public Sppd getSppd() {
@@ -72,6 +84,43 @@ public class Pengikut {
 		this.keterangan = keterangan;
 	}
 
+	public static class Message {
+		
+		private String nama;
+		private String tanggalLahirStr;
+		private String keterangan;
+
+		@JsonIgnore
+		public Date getTanggalLahir() {
+			return DateUtil.getDate(tanggalLahirStr, "-");
+		}
+		
+		public String getNama() {
+			return nama;
+		}
+		
+		public void setNama(String nama) {
+			this.nama = nama;
+		}
+		
+		public String getTanggalLahirStr() {
+			return tanggalLahirStr;
+		}
+		
+		public void setTanggalLahirStr(String tanggalLahirStr) {
+			this.tanggalLahirStr = tanggalLahirStr;
+		}
+		
+		public String getKeterangan() {
+			return keterangan;
+		}
+		
+		public void setKeterangan(String keterangan) {
+			this.keterangan = keterangan;
+		}
+
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

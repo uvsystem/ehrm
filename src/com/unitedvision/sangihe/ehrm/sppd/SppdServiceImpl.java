@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unitedvision.sangihe.ehrm.absensi.AbsenService;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
+import com.unitedvision.sangihe.ehrm.sppd.Sppd.Message;
+import com.unitedvision.sangihe.ehrm.sppd.repository.PemegangTugasRepository;
 import com.unitedvision.sangihe.ehrm.sppd.repository.SppdRepository;
 
 @Service
@@ -21,6 +23,8 @@ public class SppdServiceImpl implements SppdService {
 	private SppdRepository sppdRepository;
 	@Autowired
 	private PegawaiRepository pegawaiRepository;
+	@Autowired
+	private PemegangTugasRepository pemegangTugasRepository;
 	
 	@Override
 	@Transactional(readOnly = false)
@@ -32,6 +36,13 @@ public class SppdServiceImpl implements SppdService {
 		return sppd;
 	}
 
+	@Override
+	public Sppd simpan(String nip, String nomor, Message message) {
+		PemegangTugas pemegangTugas = pemegangTugasRepository.findByPegawai_NipAndSuratTugas_Nomor(nip, nomor);
+		
+		return simpan(new Sppd(message, pemegangTugas));
+	}
+	
 	@Override
 	@Transactional(readOnly = false)
 	public Sppd tambahPengikut(Sppd sppd, Pengikut pengikut) {
@@ -51,9 +62,17 @@ public class SppdServiceImpl implements SppdService {
 	@Override
 	@Transactional(readOnly = false)
 	public Sppd tambahPengikut(Sppd sppd, List<Pengikut> daftarPengikut) {
-		sppd.setDaftarPengikut(daftarPengikut);
+		for (Pengikut pengikut : daftarPengikut)
+			sppd.addPengikut(pengikut);
 		
 		return sppdRepository.save(sppd);
+	}
+	
+	@Override
+	public Sppd tambahPengikut(String nomor, Pengikut pengikut) {
+		Sppd sppd = get(nomor);
+		
+		return tambahPengikut(sppd, pengikut);
 	}
 
 	@Override

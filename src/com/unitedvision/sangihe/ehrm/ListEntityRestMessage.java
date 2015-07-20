@@ -7,6 +7,7 @@ import com.unitedvision.sangihe.ehrm.simpeg.Jabatan;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.SubUnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
+import com.unitedvision.sangihe.ehrm.sppd.Sppd;
 import com.unitedvision.sangihe.ehrm.sppd.SuratTugas;
 
 public class ListEntityRestMessage<T> extends RestMessage {
@@ -51,6 +52,10 @@ public class ListEntityRestMessage<T> extends RestMessage {
 
 	public static ListEntityRestMessage<SuratTugas> createListSuratTugas(List<SuratTugas> daftarSuratTugas) {
 		return new ListEntityRestMessage<SuratTugas>(daftarSuratTugas);
+	}
+
+	public static ListEntityRestMessage<Sppd> createListSppd(List<Sppd> daftarSppd) {
+		return new ListEntityRestMessage<Sppd>(daftarSppd);
 	}
 
 }

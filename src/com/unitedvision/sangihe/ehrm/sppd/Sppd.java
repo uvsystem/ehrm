@@ -52,6 +52,29 @@ public class Sppd {
 		super();
 		daftarPengikut = new ArrayList<>();
 	}
+	
+	public Sppd(Message message) {
+		this();
+		setAsal("Tahuna");
+		setNomor(message.getNomor());
+		setTingkat(message.getTingkat());
+		setNomorDpa(message.getNomorDpa());
+		setKodeRekening(message.getKodeRekening());
+		setModaTransportasi(message.getModaTransportasi());
+		setTanggalBerangkat(message.getTanggalBerangkat());
+		
+		for (Pengikut.Message pm : message.getDaftarPengikut()) {
+			Pengikut pengikut = new Pengikut(pm);
+			pengikut.setSppd(this);
+			
+			addPengikut(pengikut);
+		}
+	}
+	
+	public Sppd(Message message, PemegangTugas pemegangTugas) {
+		this(message);
+		setPemegangTugas(pemegangTugas);
+	}
 
 	@Id
 	@GeneratedValue
@@ -153,6 +176,8 @@ public class Sppd {
 	
 	@Transient
 	public String getNamaKegiatan() {
+		if (getKegiatan() == null)
+			return "tidak diatur";
 		return getKegiatan().getNama();
 	}
 
@@ -275,6 +300,79 @@ public class Sppd {
 			return DateUtil.toFormattedStringDate(getSuratTugas().getTanggal(), "-");
 		}
 
+	}
+	
+	public static class Message {
+		
+		private String nomor;
+		private String tanggalBerangkatStr;
+		private String modaTransportasi;
+		private String kodeRekening;
+		private String nomorDpa;
+		private String tingkat;
+		private List<Pengikut.Message> daftarPengikut;
+
+		@JsonIgnore
+		public Date getTanggalBerangkat() {
+			return DateUtil.getDate(tanggalBerangkatStr, "-");
+		}
+
+		public String getNomor() {
+			return nomor;
+		}
+
+		public void setNomor(String nomor) {
+			this.nomor = nomor;
+		}
+
+		public String getTanggalBerangkatStr() {
+			return tanggalBerangkatStr;
+		}
+
+		public void setTanggalBerangkatStr(String tanggalBerangkatStr) {
+			this.tanggalBerangkatStr = tanggalBerangkatStr;
+		}
+
+		public String getModaTransportasi() {
+			return modaTransportasi;
+		}
+
+		public void setModaTransportasi(String modaTransportasi) {
+			this.modaTransportasi = modaTransportasi;
+		}
+
+		public String getKodeRekening() {
+			return kodeRekening;
+		}
+
+		public void setKodeRekening(String kodeRekening) {
+			this.kodeRekening = kodeRekening;
+		}
+
+		public String getNomorDpa() {
+			return nomorDpa;
+		}
+
+		public void setNomorDpa(String nomorDpa) {
+			this.nomorDpa = nomorDpa;
+		}
+
+		public String getTingkat() {
+			return tingkat;
+		}
+
+		public void setTingkat(String tingkat) {
+			this.tingkat = tingkat;
+		}
+
+		public List<Pengikut.Message> getDaftarPengikut() {
+			return daftarPengikut;
+		}
+
+		public void setDaftarPengikut(List<Pengikut.Message> daftarPengikut) {
+			this.daftarPengikut = daftarPengikut;
+		}
+		
 	}
 
 	@Override

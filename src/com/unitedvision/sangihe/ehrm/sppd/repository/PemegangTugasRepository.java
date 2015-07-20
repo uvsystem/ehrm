@@ -6,4 +6,6 @@ import com.unitedvision.sangihe.ehrm.sppd.PemegangTugas;
 
 public interface PemegangTugasRepository extends JpaRepository<PemegangTugas, Long> {
 
+	PemegangTugas findByPegawai_NipAndSuratTugas_Nomor(String nip, String nomor);
+
 }
