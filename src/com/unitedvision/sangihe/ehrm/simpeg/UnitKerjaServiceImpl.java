@@ -57,6 +57,11 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 	public UnitKerja get(Long idUnitkerja) {
 		return unitKerjaRepository.findOne(idUnitkerja);
 	}
+	
+	@Override
+	public UnitKerja get(String kode) {
+		return unitKerjaRepository.findBySingkatan(kode);
+	}
 
 	@Override
 	public List<SubUnitKerja> getSubUnitKerja(UnitKerja unitKerja) {

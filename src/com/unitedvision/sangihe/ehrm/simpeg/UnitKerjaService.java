@@ -11,6 +11,7 @@ public interface UnitKerjaService {
 	void hapus(Long idUnitKerja);
 	
 	UnitKerja get(Long idUnitKerja);
+	UnitKerja get(String kode);
 	
 	List<SubUnitKerja> getSubUnitKerja(UnitKerja unitKerja);
 	List<SubUnitKerja> getSubUnitKerja(Long id);

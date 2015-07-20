@@ -15,7 +15,7 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long> {
 
 	Pegawai findByNip(String nip);
 
-	List<Pegawai> findByUnitKerja(UnitKerja unitKerja);
+	List<Pegawai> findByUnitKerjaIn(List<UnitKerja> daftarSubUnitKerja);
 
 	@Query("FROM RiwayatPangkat rp JOIN rp.pegawai pg WHERE rp.pangkat = ?1 AND rp.tanggalSelesai IS NULL")
 	List<Pegawai> findByPangkat(Pangkat pangkat);

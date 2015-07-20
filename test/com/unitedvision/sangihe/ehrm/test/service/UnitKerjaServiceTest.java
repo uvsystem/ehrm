@@ -48,10 +48,15 @@ public class UnitKerjaServiceTest {
 		unitKerja.setNama("Sekretariat Daerah");
 		unitKerja.setSingkatan("SETDA");
 		unitKerja.setTipe(TipeUnitKerja.SEKRETARIAT);
-		
 		unitKerjaService.simpan(unitKerja);
-		
 		assertEquals(countUnitKerja + 1, unitKerjaRepository.count());
+		
+		SubUnitKerja subUnitKerja = new SubUnitKerja(unitKerja);
+		subUnitKerja.setNama("Sub Unit");
+		subUnitKerja.setSingkatan("SUB");
+		subUnitKerja.setTipe(TipeUnitKerja.BAGIAN);
+		unitKerjaService.simpan(subUnitKerja);
+		assertEquals(countUnitKerja + 2, unitKerjaRepository.count());
 	}
 	
 	@Test(expected = PersistenceException.class)
@@ -76,7 +81,7 @@ public class UnitKerjaServiceTest {
 		
 		unitKerjaService.simpan(subUnitKerja);
 		
-		assertEquals(countSubUnitKerja + 1, subUnitKerjaRepository.count());
+		assertEquals(countSubUnitKerja + 2, subUnitKerjaRepository.count());
 	}
 	
 	@Test
@@ -84,5 +89,11 @@ public class UnitKerjaServiceTest {
 		List<UnitKerja> daftarUnitKerja = unitKerjaService.cari("Sek");
 		
 		assertNotEquals(0, daftarUnitKerja.size());
+	}
+	
+	@Test
+	public void test_get() {
+		UnitKerja unitKerja2 = unitKerjaService.get("SETDA");
+		assertNotNull(unitKerja2);
 	}
 }

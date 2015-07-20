@@ -2,6 +2,7 @@ package com.unitedvision.sangihe.ehrm.test.service;
 
 import static org.junit.Assert.*;
 
+import java.time.Month;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -28,6 +29,7 @@ import com.unitedvision.sangihe.ehrm.simpeg.NoPangkatException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.PegawaiService;
+import com.unitedvision.sangihe.ehrm.simpeg.SubUnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerjaService;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja.TipeUnitKerja;
@@ -72,7 +74,6 @@ public class PegawaiServiceTest {
 		unitKerja.setNama("Pengelolaan Data Elektronik");
 		unitKerja.setSingkatan("BPDE");
 		unitKerja.setTipe(TipeUnitKerja.BAGIAN);
-		
 		unitKerjaService.simpan(unitKerja);
 		
 		countPegawai = pegawaiRepository.count();
@@ -124,6 +125,23 @@ public class PegawaiServiceTest {
 		pegawaiService.promosi(pegawai, jabatanKaSubBagJaringan, DateUtil.getDate("12-01-2013"), null, "001/SK/2015");
 		
 		assertEquals(countRiwayatJabatan + 1, riwayatJabatanRepository.count());
+		
+		SubUnitKerja subUnitKerja = new SubUnitKerja(unitKerja);
+		subUnitKerja.setNama("SubUnit Pengelolaan Data Elektronik");
+		subUnitKerja.setSingkatan("SubUnit BPDE");
+		subUnitKerja.setTipe(TipeUnitKerja.BAGIAN);
+		unitKerjaService.simpan(subUnitKerja);
+		
+		Pegawai pegawai2 = new Pegawai();
+		pegawai2.setNik("7171070512910001");
+		pegawai2.setNip("090213015");
+		pegawai2.setNama("Debra Tiwow");
+		pegawai2.setPassword("dtiwow");
+		pegawai2.setTanggalLahir(DateUtil.getDate(1992, Month.JANUARY, 10));
+		pegawai2.setUnitKerja(subUnitKerja);
+		pegawai2.setEmail("debra.tiwow@gmail.com");
+		pegawai2.setTelepon("083247643190");
+		pegawaiService.simpan(pegawai2);
 	}
 	
 	@Test(expected = PersistenceException.class)
@@ -213,9 +231,9 @@ public class PegawaiServiceTest {
 	
 	@Test
 	public void test_get_by_unit_kerja() {
-		List<Pegawai> list = pegawaiService.get(unitKerja);
+		List<Pegawai> list = pegawaiService.getByUnitKerja(unitKerja.getId());
 		
-		assertNotEquals(0, list.size());
+		assertEquals(2, list.size());
 	}
 
 	@Test

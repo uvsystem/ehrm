@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "unit_kerja")
 @DiscriminatorValue("SUB_SKPD")
@@ -23,6 +25,7 @@ public class SubUnitKerja extends UnitKerja {
 		this.setUnitKerja(unitKerja);
 	}
 
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parent", nullable = false)
 	public UnitKerja getUnitKerja() {
