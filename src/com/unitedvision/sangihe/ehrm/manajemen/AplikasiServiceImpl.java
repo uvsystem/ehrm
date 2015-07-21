@@ -77,6 +77,11 @@ public class AplikasiServiceImpl implements AplikasiService {
 		
 		return tambahAdmin(pegawai, aplikasi);
 	}
+	
+	@Override
+	public void hapusAdmin(String kode, String nip) {
+		operatorRepository.deleteByPegawai_NipAndAplikasi_Kode(nip, kode);
+	}
 
 	@Override
 	@Transactional(readOnly = false)
@@ -96,6 +101,11 @@ public class AplikasiServiceImpl implements AplikasiService {
 	}
 
 	@Override
+	public void hapusOperator(String kode, String nip) {
+		operatorRepository.deleteByPegawai_NipAndAplikasi_Kode(nip, kode);
+	}
+	
+	@Override
 	@Transactional(readOnly = false)
 	public Operator promosi(long idOperator, Role role) {
 		Operator operator= operatorRepository.findOne(idOperator);
@@ -111,22 +121,28 @@ public class AplikasiServiceImpl implements AplikasiService {
 	}
 
 	@Override
-	public List<Operator> get(Aplikasi aplikasi, Role role) {
-		return operatorRepository.findByAplikasiAndRole(aplikasi, role);
-	}
-
-	@Override
 	public List<Operator> getOperator(String kode) {
-		Aplikasi aplikasi = aplikasiRepository.findByKode(kode);
-		
-		return get(aplikasi, Operator.Role.OPERATOR);
+		return operatorRepository.findByAplikasi_KodeAndRole(kode, Operator.Role.OPERATOR);
 	}
 
 	@Override
 	public List<Operator> getAdmin(String kode) {
-		Aplikasi aplikasi = aplikasiRepository.findByKode(kode);
-		
-		return get(aplikasi, Operator.Role.ADMIN);
+		return operatorRepository.findByAplikasi_KodeAndRole(kode, Operator.Role.ADMIN);
+	}
+
+	@Override
+	public void hapusOperator(Long idOperator) {
+		operatorRepository.delete(idOperator);
+	}
+
+	@Override
+	public List<Operator> get(Pegawai pegawai) {
+		return operatorRepository.findByPegawai(pegawai);
+	}
+
+	@Override
+	public List<Operator> getByPegawai(String nip) {
+		return operatorRepository.findByPegawai_Nip(nip);
 	}
 
 }

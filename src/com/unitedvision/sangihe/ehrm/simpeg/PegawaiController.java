@@ -27,10 +27,15 @@ public class PegawaiController {
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT}, value = "/{idUnitKerja}")
 	@ResponseBody
 	public RestMessage save(@RequestBody Pegawai pegawai, @PathVariable Long idUnitKerja) throws ApplicationException, PersistenceException {
-		System.out.println("DEBUG:");
-		System.out.println(pegawai.toString());
-		
 		pegawaiService.simpan(idUnitKerja, pegawai);
+		
+		return RestMessage.success();
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{nip}")
+	@ResponseBody
+	public RestMessage delete(@PathVariable String nip) throws ApplicationException, PersistenceException {
+		pegawaiService.hapus(nip);
 		
 		return RestMessage.success();
 	}
@@ -75,12 +80,28 @@ public class PegawaiController {
 		return EntityRestMessage.create(pegawai);
 	}
 	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{nip}/pangkat/{pangkat}")
+	@ResponseBody
+	public RestMessage deleteRiwayatPangkat(@PathVariable String nip, @PathVariable Pangkat pangkat) throws ApplicationException, PersistenceException {
+		pegawaiService.hapusRiwayatPangkat(nip, pangkat);
+		
+		return RestMessage.success();
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/{nip}/jabatan/{idJabatan}")
 	@ResponseBody
 	public EntityRestMessage<Pegawai> promosiJabatan(@PathVariable String nip, @PathVariable Long idJabatan, @RequestBody Riwayat.Detail detail) throws ApplicationException, PersistenceException {
 		Pegawai pegawai = pegawaiService.promosi(nip, idJabatan, detail);
 		
 		return EntityRestMessage.create(pegawai);
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{nip}/jabatan/{idJabatan}")
+	@ResponseBody
+	public RestMessage hapusRiwayatJabatan(@PathVariable String nip, @PathVariable Long idJabatan) throws ApplicationException, PersistenceException {
+		pegawaiService.hapusRiwayatJabatan(nip, idJabatan);
+
+		return RestMessage.success();
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/pangkat/{pangkat}")

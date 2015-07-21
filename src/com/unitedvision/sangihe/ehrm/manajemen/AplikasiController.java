@@ -31,6 +31,14 @@ public class AplikasiController {
 		
 		return RestMessage.success();
 	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	@ResponseBody
+	public RestMessage hapusAplikasi(@PathVariable Long id) throws ApplicationException, PersistenceException {
+		aplikasiService.hapus(id);
+		
+		return RestMessage.success();
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{kode}")
 	@ResponseBody
@@ -55,14 +63,6 @@ public class AplikasiController {
 
 		return RestMessage.success();
 	}
-	
-	@RequestMapping(method = RequestMethod.POST, value = "/{kode}/admin/{nip}")
-	@ResponseBody
-	public RestMessage tambahAdmin(@PathVariable String kode, @PathVariable String nip) throws ApplicationException, PersistenceException {
-		aplikasiService.tambahAdmin(nip, kode);
-		
-		return RestMessage.success();
-	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{kode}/operator")
 	@ResponseBody
@@ -72,11 +72,35 @@ public class AplikasiController {
 		return ListEntityRestMessage.createListOperator(daftarOperator);
 	}
 
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{kode}/operator/{nip}")
+	@ResponseBody
+	public RestMessage hapusOperator(@PathVariable String kode, @PathVariable String nip) throws ApplicationException, PersistenceException {
+		aplikasiService.hapusOperator(kode, nip);
+		
+		return RestMessage.success();
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/{kode}/admin/{nip}")
+	@ResponseBody
+	public RestMessage tambahAdmin(@PathVariable String kode, @PathVariable String nip) throws ApplicationException, PersistenceException {
+		aplikasiService.tambahAdmin(nip, kode);
+		
+		return RestMessage.success();
+	}
+
 	@RequestMapping(method = RequestMethod.GET, value = "/{kode}/admin")
 	@ResponseBody
 	public ListEntityRestMessage<Operator> getAdmin(@PathVariable String kode) throws ApplicationException, PersistenceException {
 		List<Operator> daftarOperator = aplikasiService.getAdmin(kode);
 		
 		return ListEntityRestMessage.createListOperator(daftarOperator);
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{kode}/pegawai/{nip}")
+	@ResponseBody
+	public RestMessage hapusAdmin(@PathVariable String kode, @PathVariable String nip) throws ApplicationException, PersistenceException {
+		aplikasiService.hapusAdmin(kode, nip);
+		
+		return RestMessage.success();
 	}
 }

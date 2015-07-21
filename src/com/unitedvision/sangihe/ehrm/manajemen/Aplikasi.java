@@ -68,7 +68,7 @@ public class Aplikasi {
 		this.url = url;
 	}
 
-	@OneToMany(mappedBy = "aplikasi", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "aplikasi", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	public List<Operator> getDaftarOperator() {
 		return daftarOperator;
 	}

@@ -40,6 +40,14 @@ public class JabatanController {
 		return EntityRestMessage.create(jabatan);
 	}
 	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	@ResponseBody
+	public RestMessage delete(@PathVariable Long id) throws ApplicationException, PersistenceException {
+		jabatanService.hapus(id);
+		
+		return RestMessage.success();
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/satker/{idUnitKerja}")
 	@ResponseBody
 	public ListEntityRestMessage<Jabatan> findByUnitKerja(@PathVariable Long idUnitKerja) throws ApplicationException, PersistenceException {

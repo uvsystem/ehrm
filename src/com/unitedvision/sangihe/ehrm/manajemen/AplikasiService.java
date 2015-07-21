@@ -13,7 +13,6 @@ public interface AplikasiService {
 	void hapus(long idAplikasi);
 
 	Aplikasi get(long idAplikasi);
-
 	Aplikasi getByKode(String kode);
 
 	List<Aplikasi> get(String kode);
@@ -22,15 +21,23 @@ public interface AplikasiService {
 	Aplikasi tambahAdmin(Pegawai pegawai, Aplikasi aplikasi);
 	Aplikasi tambahAdmin(String nip, String kodeAplikasi);
 
+	List<Operator> getAdmin(String kode);
+
+	void hapusOperator(String kode, String nip);
+
 	Aplikasi tambahOperator(Pegawai pegawai, Aplikasi aplikasi);
 	Aplikasi tambahOperator(String nip, String kodeAplikasi);
+
+	List<Operator> getOperator(String kode);
+
+	void hapusAdmin(String kode, String nip);
 	
 	Operator promosi(long idOperator, Role role);
 	
 	void hapus(Operator operator);
+	void hapusOperator(Long idOperator);
 
-	List<Operator> get(Aplikasi aplikasi, Role role);
-	List<Operator> getOperator(String kode);
-	List<Operator> getAdmin(String kode);
+	List<Operator> get(Pegawai pegawai);
+	List<Operator> getByPegawai(String nip);
 
 }

@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unitedvision.sangihe.ehrm.IdenticRelationshipException;
 import com.unitedvision.sangihe.ehrm.NullCollectionException;
 import com.unitedvision.sangihe.ehrm.duk.repository.PendudukRepository;
-import com.unitedvision.sangihe.ehrm.manajemen.Operator;
-import com.unitedvision.sangihe.ehrm.manajemen.repository.OperatorRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.Riwayat.Detail;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.JabatanRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
@@ -38,8 +36,6 @@ public class PegawaiServiceImpl implements PegawaiService {
 	@Autowired
 	private RiwayatJabatanRepository riwayatJabatanRepository;
 	@Autowired
-	private OperatorRepository operatorRepository;
-	@Autowired
 	private JabatanRepository jabatanRepository;
 	@Autowired
 	private SubUnitKerjaRepository subUnitKerjaRepository;
@@ -56,6 +52,67 @@ public class PegawaiServiceImpl implements PegawaiService {
 		pegawai.setUnitKerja(unitKerja);
 
 		return simpan(pegawai);
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public void hapus(Pegawai pegawai) {
+		pegawaiRepository.delete(pegawai);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void hapus(String nip) {
+		pegawaiRepository.deleteByNip(nip);
+	}
+
+	@Override
+	public Pegawai getByNip(String nip) {
+		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		
+		try {
+			pegawai.setDaftarPangkat(riwayatPangkatRepository.findByPegawai(pegawai));
+		} catch(PersistenceException ex) { }
+		
+		try {
+			pegawai.setDaftarJabatan(riwayatJabatanRepository.findByPegawai(pegawai));
+		} catch(PersistenceException ex) { }
+		
+		return pegawai;
+	}
+
+	@Override
+	public List<Pegawai> get(UnitKerja unitKerja) {
+		List<UnitKerja> daftarUnitKerja = new ArrayList<>();
+		try {
+			for (SubUnitKerja subUnitKerja : subUnitKerjaRepository.findByUnitKerja(unitKerja))
+				daftarUnitKerja.add(subUnitKerja);
+		} catch (PersistenceException e) { }
+		daftarUnitKerja.add(unitKerja);
+		
+		return pegawaiRepository.findByUnitKerjaIn(daftarUnitKerja);
+	}
+
+	@Override
+	public List<Pegawai> getByUnitKerja(Long idUnitKerja) {
+		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
+
+		return get(unitKerja);
+	}
+
+	@Override
+	public List<Pegawai> get(Pangkat pangkat) {
+		return pegawaiRepository.findByPangkat(pangkat);
+	}
+
+	@Override
+	public List<Pegawai> get(Eselon eselon) {
+		return pegawaiRepository.findByJabatan_Eselon(eselon);
+	}
+	
+	@Override
+	public List<Pegawai> cari(String keyword) {
+		return pegawaiRepository.findByNipContainingOrPenduduk_NamaContaining(keyword);
 	}
 
 	@Override
@@ -132,6 +189,26 @@ public class PegawaiServiceImpl implements PegawaiService {
 		
 		return promosi(pegawai, pangkat, detail.getTanggalMulai(), detail.getTanggalSelesai(), detail.getNomorSk());
 	}
+	
+	@Override
+	public void hapusRiwayatPangkat(Long idRiwayatPangkat) {
+		riwayatPangkatRepository.delete(idRiwayatPangkat);
+	}
+	
+	@Override
+	public void hapusRiwayatPangkat(String nip, Pangkat pangkat) {
+		riwayatPangkatRepository.deleteByPegawai_NipAndPangkat(nip, pangkat);
+	}
+
+	@Override
+	public List<RiwayatPangkat> getRiwayatPangkat(Pegawai pegawai) {
+		return riwayatPangkatRepository.findByPegawai(pegawai);
+	}
+
+	@Override
+	public List<RiwayatPangkat> getRiwayatPangkat(String nip) {
+		return riwayatPangkatRepository.findByPegawai_Nip(nip);
+	}
 
 	@Override
 	@Transactional(readOnly = false)
@@ -183,73 +260,13 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 	
 	@Override
-	@Transactional(readOnly = false)
-	public void hapus(Pegawai pegawai) {
-		pegawaiRepository.delete(pegawai);
+	public void hapusRiwayatJabatan(Long idRiwayatJabatan) {
+		riwayatJabatanRepository.delete(idRiwayatJabatan);
 	}
-
+	
 	@Override
-	@Transactional(readOnly = false)
-	public void hapus(String nip) {
-		Pegawai pegawai = getByNip(nip);
-
-		hapus(pegawai);
-	}
-
-	@Override
-	public Pegawai getByNip(String nip) {
-		Pegawai pegawai = pegawaiRepository.findByNip(nip);
-		
-		try {
-			pegawai.setDaftarPangkat(riwayatPangkatRepository.findByPegawai(pegawai));
-		} catch(PersistenceException ex) { }
-		
-		try {
-			pegawai.setDaftarJabatan(riwayatJabatanRepository.findByPegawai(pegawai));
-		} catch(PersistenceException ex) { }
-		
-		return pegawai;
-	}
-
-	@Override
-	public List<Pegawai> get(UnitKerja unitKerja) {
-		List<UnitKerja> daftarUnitKerja = new ArrayList<>();
-		try {
-			for (SubUnitKerja subUnitKerja : subUnitKerjaRepository.findByUnitKerja(unitKerja))
-				daftarUnitKerja.add(subUnitKerja);
-		} catch (PersistenceException e) { }
-		daftarUnitKerja.add(unitKerja);
-		
-		return pegawaiRepository.findByUnitKerjaIn(daftarUnitKerja);
-	}
-
-	@Override
-	public List<Pegawai> getByUnitKerja(Long idUnitKerja) {
-		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
-		
-		return get(unitKerja);
-	}
-
-	@Override
-	public List<Pegawai> get(Pangkat pangkat) {
-		return pegawaiRepository.findByPangkat(pangkat);
-	}
-
-	@Override
-	public List<Pegawai> get(Eselon eselon) {
-		return pegawaiRepository.findByJabatan_Eselon(eselon);
-	}
-
-	@Override
-	public List<RiwayatPangkat> getRiwayatPangkat(Pegawai pegawai) {
-		return riwayatPangkatRepository.findByPegawai(pegawai);
-	}
-
-	@Override
-	public List<RiwayatPangkat> getRiwayatPangkat(String nip) {
-		Pegawai pegawai = getByNip(nip);
-		
-		return getRiwayatPangkat(pegawai);
+	public void hapusRiwayatJabatan(String nip, Long idJabatan) {
+		riwayatJabatanRepository.deleteByPegawai_NipAndJabatan_Id(nip, idJabatan);
 	}
 
 	@Override
@@ -259,26 +276,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 
 	@Override
 	public List<RiwayatJabatan> getRiwayatJabatan(String nip) {
-		Pegawai pegawai = getByNip(nip);
-		
-		return getRiwayatJabatan(pegawai);
-	}
-
-	@Override
-	public List<Operator> get(Pegawai pegawai) {
-		return operatorRepository.findByPegawai(pegawai);
-	}
-
-	@Override
-	public List<Operator> get(String nip) {
-		Pegawai pegawai = getByNip(nip);
-		
-		return pegawai.getDaftarOperator();
-	}
-	
-	@Override
-	public List<Pegawai> cari(String keyword) {
-		return pegawaiRepository.findByNipContainingOrPenduduk_NamaContaining(keyword);
+		return riwayatJabatanRepository.findByPegawai_Nip(nip);
 	}
 	
 }

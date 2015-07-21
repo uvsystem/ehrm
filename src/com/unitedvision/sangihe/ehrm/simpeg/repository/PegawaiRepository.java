@@ -3,6 +3,7 @@ package com.unitedvision.sangihe.ehrm.simpeg.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -15,6 +16,7 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long> {
 
 	Pegawai findByNip(String nip);
 
+	List<Pegawai> findByUnitKerja_Id(Long idUnitKerja);
 	List<Pegawai> findByUnitKerjaIn(List<UnitKerja> daftarSubUnitKerja);
 
 	@Query("FROM RiwayatPangkat rp JOIN rp.pegawai pg WHERE rp.pangkat = ?1 AND rp.tanggalSelesai IS NULL")
@@ -27,5 +29,9 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long> {
 	List<Pegawai> findByNipContainingOrPenduduk_NamaContaining(@Param("keyword") String keyword);
 
 	List<Pegawai> findByNipIn(List<String> daftarPegawai);
+
+	@Modifying
+	@Query("DELETE FROM Pegawai p WHERE p.nip = ?1")
+	void deleteByNip(String nip);
 
 }
