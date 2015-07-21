@@ -52,8 +52,7 @@ public class TokenServiceImpl implements TokenService {
 		
 		try {
 			Pegawai pegawai = tokenObject.getpegawai();
-			List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
-			pegawai.setDaftarOperator(daftarOperator);
+			pegawai.setDaftarOperator(operatorRepository.findByPegawai(pegawai));
 			tokenObject.setPegawai(pegawai);
 		} catch(PersistenceException e){ }
 
