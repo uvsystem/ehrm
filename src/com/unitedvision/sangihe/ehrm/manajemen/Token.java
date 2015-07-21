@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
+import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 import java.sql.Date;
@@ -122,11 +123,13 @@ public class Token implements Serializable {
 		return token;
 	}
 	
-	public Token extend() {
-		if (isRenewable())
+	public Token extend() throws UnauthenticatedAccessException {
+		if (isRenewable()) {
 			generateExpireDate(DateUtil.getDate());
+			return this;
+		}
 		
-		return this;
+		throw new UnauthenticatedAccessException();
 	}
 
 	@Transient
