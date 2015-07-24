@@ -2,16 +2,22 @@ package com.unitedvision.sangihe.ehrm.duk;
 
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.unitedvision.sangihe.ehrm.DateUtil;
+import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 @Entity
 @Table(name = "penduduk")
@@ -22,6 +28,7 @@ public class Penduduk {
 	private String nama;
 	private Date tanggalLahir;
 	private Kontak kontak;
+	private Pegawai pegawai;
 	
 	public Penduduk() {
 		super();
@@ -56,6 +63,7 @@ public class Penduduk {
 		this.nama = nama;
 	}
 
+	@JsonIgnore
 	@Column(name = "tanggal_lahir", nullable = false)
 	public Date getTanggalLahir() {
 		return tanggalLahir;
@@ -63,6 +71,15 @@ public class Penduduk {
 
 	public void setTanggalLahir(Date tanggalLahir) {
 		this.tanggalLahir = tanggalLahir;
+	}
+	
+	@Transient
+	public String getTanggalLahirStr() {
+		return DateUtil.toStringDate(tanggalLahir, "-");
+	}
+	
+	public void setTanggalLahirStr(String tanggalLahirStr) {
+		setTanggalLahir(DateUtil.getDate(tanggalLahirStr, "-"));
 	}
 
 	@Embedded
@@ -73,6 +90,16 @@ public class Penduduk {
 
 	public void setKontak(Kontak kontak) {
 		this.kontak = kontak;
+	}
+
+	@JsonBackReference
+	@OneToOne(mappedBy = "penduduk", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	public Pegawai getPegawai() {
+		return pegawai;
+	}
+
+	public void setPegawai(Pegawai pegawai) {
+		this.pegawai = pegawai;
 	}
 
 	@Transient

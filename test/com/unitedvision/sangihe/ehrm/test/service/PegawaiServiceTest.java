@@ -62,6 +62,7 @@ public class PegawaiServiceTest {
 	private JabatanRepository jabatanRepository;
 
 	private long countPegawai;
+	private long countPenduduk;
 	private long countRiwayatPangkat;
 	private long countRiwayatJabatan;
 	private Pegawai pegawai;
@@ -77,7 +78,7 @@ public class PegawaiServiceTest {
 		unitKerjaService.simpan(unitKerja);
 		
 		countPegawai = pegawaiRepository.count();
-		long countPenduduk = pendudukRepository.count();
+		countPenduduk = pendudukRepository.count();
 		
 		pegawai = new Pegawai();
 		pegawai.setNik("7171070512910002");
@@ -142,6 +143,9 @@ public class PegawaiServiceTest {
 		pegawai2.setEmail("debra.tiwow@gmail.com");
 		pegawai2.setTelepon("083247643190");
 		pegawaiService.simpan(pegawai2);
+		
+		assertEquals(countPegawai + 2, pegawaiRepository.count());
+		assertEquals(countPenduduk + 2, pendudukRepository.count());
 	}
 	
 	@Test(expected = PersistenceException.class)
@@ -250,5 +254,19 @@ public class PegawaiServiceTest {
 		assertNotNull(pegawai);
 		assertNotEquals(0, pegawai.getDaftarPangkat().size());
 		assertNotEquals(0, pegawai.getDaftarJabatan().size());
+	}
+	
+	@Test
+	public void test_hapus() {
+		pegawaiService.hapus(pegawai);
+		assertEquals(countPegawai + 1, pegawaiRepository.count());
+		assertEquals(countPenduduk + 1, pendudukRepository.count());
+	}
+	
+	@Test
+	public void test_hapus_by_nip() {
+		pegawaiService.hapus(pegawai.getNip());
+		assertEquals(countPegawai + 1, pegawaiRepository.count());
+		assertEquals(countPenduduk + 1, pendudukRepository.count());
 	}
 }

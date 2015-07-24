@@ -33,7 +33,7 @@ public class TokenServiceImpl implements TokenService {
 		Pegawai pegawai = pegawaiRepository.findByNip(username);
 		
 		try {
-			pegawai.setDaftarOperator(operatorRepository.findByPegawai(pegawai));
+			pegawai.setListOperator(operatorRepository.findByPegawai(pegawai));
 		} catch(PersistenceException ex) {}
 		
 		return pegawai;
@@ -52,7 +52,7 @@ public class TokenServiceImpl implements TokenService {
 		
 		try {
 			Pegawai pegawai = tokenObject.getpegawai();
-			pegawai.setDaftarOperator(operatorRepository.findByPegawai(pegawai));
+			pegawai.setListOperator(operatorRepository.findByPegawai(pegawai));
 			tokenObject.setPegawai(pegawai);
 		} catch(PersistenceException e){ }
 
@@ -70,7 +70,7 @@ public class TokenServiceImpl implements TokenService {
 
 		try {
 			List<Operator> daftarOperator = operatorRepository.findByPegawai(pegawai);
-			pegawai.setDaftarOperator(daftarOperator);
+			pegawai.setListOperator(daftarOperator);
 			token.setPegawai(pegawai);
 		} catch(PersistenceException e){ }
 		
@@ -94,4 +94,8 @@ public class TokenServiceImpl implements TokenService {
 		return tokenRepository.save(tokenObject);
 	}
 
+	@Override
+	public void hapus() {
+		tokenRepository.deleteAll();
+	}
 }

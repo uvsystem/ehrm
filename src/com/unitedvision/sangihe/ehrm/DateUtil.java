@@ -22,7 +22,7 @@ public class DateUtil {
 	
 	public static final long DAY_IN_MILIS = 86400000L;
 	
-	public final static String DEFAULT_DELIMETER = "-";
+	public static final String DEFAULT_DELIMETER = "-";
 
 	
 	//Time Utility
@@ -407,10 +407,28 @@ public class DateUtil {
 		return String.format("%s-%s-%s", arrStr[2], arrStr[0], arrStr[1]);
 	}
 	
+	/**
+	 * Format: dd/MM/yyyy.
+	 * @param date
+	 * @param delim
+	 * @return
+	 */
 	public static String toFormattedStringDate(Date date, String delim) {
 		int[] arrOfDate = createArray(date);
 		
 		return String.format("%d%s%d%s%d", arrOfDate[0], delim, arrOfDate[1], delim, arrOfDate[2]);
+	}
+	
+	/**
+	 * Convert java.sql.Date menjadi java.lang.String.
+	 * @param date
+	 * @param delim
+	 * @return String date with format: mm/DD/yyyy
+	 */
+	public static String toStringDate(Date date, String delim) {
+		int[] arrOfDate = createArray(date);
+		
+		return String.format("%d%s%d%s%d", arrOfDate[1], delim, arrOfDate[0], delim, arrOfDate[2]);
 	}
 
 	public static String toFormattedStringTime(Time time, String delim) {

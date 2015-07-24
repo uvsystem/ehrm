@@ -7,9 +7,15 @@ import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 public interface TokenService {
 
 	Token get(String token) throws OutOfDateEntityException, UnauthenticatedAccessException;
+
 	Token create(Pegawai pegawai);
+	
 	Token create(String nip);
+	
 	Token lock(String token);
+	
+	void hapus();
+	
 	Pegawai login(String username);
 
 }

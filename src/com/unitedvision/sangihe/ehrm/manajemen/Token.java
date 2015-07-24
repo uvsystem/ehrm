@@ -10,6 +10,7 @@ import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class Token implements Serializable {
 	private StatusToken status;
 	private Date tanggalBuat;
 	private Date tanggalExpire;
+	private Time time;
 	
 	private Pegawai pegawai;
 
@@ -41,6 +43,7 @@ public class Token implements Serializable {
 		setTanggalBuat(DateUtil.getDate());
 		generateExpireDate();
 		setStatus(StatusToken.AKTIF);
+		time = DateUtil.getTime();
 	}
 	
 	@Id
@@ -73,7 +76,7 @@ public class Token implements Serializable {
 	
 	@Transient
 	public String getTanggalStr() {
-		return DateUtil.toFormattedStringDate(tanggalBuat, "/");
+		return DateUtil.toStringDate(tanggalBuat, "-");
 	}
 	
 	public void setTanggalStr(String tanggalStr) { }
@@ -91,7 +94,7 @@ public class Token implements Serializable {
 	
 	@Transient
 	public String getExpireStr() {
-		return DateUtil.toFormattedStringDate(tanggalExpire, "/");
+		return DateUtil.toStringDate(tanggalExpire, "-");
 	}
 
 	public void setExpireDate(Date expire) { }
@@ -134,10 +137,7 @@ public class Token implements Serializable {
 
 	@Transient
 	public boolean isRenewable() {
-		Date hariIni = DateUtil.getDate();
-		Date besok = DateUtil.add(hariIni, 1);
-
-		return DateUtil.equals(tanggalExpire, besok);
+		return tanggalExpire.after(DateUtil.getDate());
 	}
 
 	@JsonIgnore
@@ -153,6 +153,8 @@ public class Token implements Serializable {
 		result = prime * result + ((pegawai == null) ? 0 : pegawai.hashCode());
 		result = prime * result
 				+ ((tanggalBuat == null) ? 0 : tanggalBuat.hashCode());
+		result = prime * result
+				+ ((time == null) ? 0 : time.hashCode());
 		return result;
 	}
 

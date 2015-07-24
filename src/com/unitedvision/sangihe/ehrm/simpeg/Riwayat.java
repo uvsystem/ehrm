@@ -81,7 +81,7 @@ public abstract class Riwayat {
 
 	@Transient
 	public String getTanggalMulaiStr() {
-		return DateUtil.toFormattedStringDate(tanggalMulai, "-");
+		return DateUtil.toStringDate(tanggalMulai, "-");
 	}
 	
 	@JsonIgnore
@@ -97,7 +97,7 @@ public abstract class Riwayat {
 	@Transient
 	public String getTanggalSelesaiStr() {
 		if (!isCurrent())
-			return DateUtil.toFormattedStringDate(tanggalSelesai, "-");
+			return DateUtil.toStringDate(tanggalSelesai, "-");
 		return "belum selesai";
 	}
 

@@ -220,7 +220,7 @@ public class Sppd {
 
 	@Transient
 	public String getBerangkat() {
-		return DateUtil.toFormattedStringDate(tanggalBerangkat, "-");
+		return DateUtil.toStringDate(tanggalBerangkat, "-");
 	}
 
 	public void setBerangkat(String berangkat) {
@@ -235,7 +235,7 @@ public class Sppd {
 
 	@Transient
 	public String getKembali() {
-		return DateUtil.toFormattedStringDate(getTanggalKembali(), "-");
+		return DateUtil.toStringDate(getTanggalKembali(), "-");
 	}
 
 	public void setKembali(String kembali) {
@@ -297,7 +297,7 @@ public class Sppd {
 		}
 		
 		public String getTanggalSuratTugas() {
-			return DateUtil.toFormattedStringDate(getSuratTugas().getTanggal(), "-");
+			return DateUtil.toStringDate(getSuratTugas().getTanggal(), "-");
 		}
 
 	}

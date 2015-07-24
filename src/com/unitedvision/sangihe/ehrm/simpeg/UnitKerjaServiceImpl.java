@@ -49,8 +49,8 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void hapus(Long idUnitKerja) {
-		unitKerjaRepository.delete(idUnitKerja);
+	public void hapus(String kode) {
+		unitKerjaRepository.deleteBySingkatan(kode);
 	}
 
 	@Override

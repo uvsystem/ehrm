@@ -35,20 +35,19 @@ public class Pegawai implements Pejabat {
 	private Penduduk penduduk;
 	private UnitKerja unitKerja;
 	private String password;
-
+	
 	private List<RiwayatPangkat> daftarPangkat = new ArrayList<>();
 	private List<RiwayatJabatan> daftarJabatan = new ArrayList<>();
 	private List<Operator> daftarOperator = new ArrayList<>();
 	private List<Token> daftarToken = new ArrayList<>();
 	private List<PemegangTugas> daftarTugas = new ArrayList<>();
-
 	private List<Absen> daftarAbsen = new ArrayList<>();
-	//private List<Hadir> daftarHadir = new ArrayList<>();
-	//private List<TugasLuar> daftarTugasLuar = new ArrayList<>();
-	//private List<Sakit> daftarSakit = new ArrayList<>();
-	//private List<Izin> daftarIzin = new ArrayList<>();
-	//private List<Cuti> daftarCuti = new ArrayList<>();
 	
+	private List<RiwayatPangkat> listPangkat = new ArrayList<>();
+	private List<RiwayatJabatan> listJabatan = new ArrayList<>();
+	private List<Operator> listOperator = new ArrayList<>();
+	private List<Absen> listAbsen = new ArrayList<>();
+
 	public Pegawai() {
 		super();
 		penduduk = new Penduduk();
@@ -118,6 +117,7 @@ public class Pegawai implements Pejabat {
 		setPassword(password);
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<RiwayatPangkat> getDaftarPangkat() {
 		return daftarPangkat;
@@ -127,6 +127,17 @@ public class Pegawai implements Pejabat {
 		this.daftarPangkat = daftarPangkat;
 	}
 
+	@Transient
+	public List<RiwayatPangkat> getListPangkat() {
+		return listPangkat;
+	}
+
+	public void setListPangkat(List<RiwayatPangkat> daftarPangkat) {
+		this.listPangkat = daftarPangkat;
+		this.daftarPangkat = daftarPangkat;
+	}
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<RiwayatJabatan> getDaftarJabatan() {
 		return daftarJabatan;
@@ -136,6 +147,17 @@ public class Pegawai implements Pejabat {
 		this.daftarJabatan = daftarJabatan;
 	}
 
+	@Transient
+	public List<RiwayatJabatan> getListJabatan() {
+		return listJabatan;
+	}
+
+	public void setListJabatan(List<RiwayatJabatan> daftarJabatan) {
+		this.listJabatan = daftarJabatan;
+		this.daftarJabatan = daftarJabatan;
+	}
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<Operator> getDaftarOperator() {
 		return daftarOperator;
@@ -143,6 +165,36 @@ public class Pegawai implements Pejabat {
 
 	public void setDaftarOperator(List<Operator> daftarOperator) {
 		this.daftarOperator = daftarOperator;
+	}
+
+	@Transient
+	public List<Operator> getListOperator() {
+		return listOperator;
+	}
+
+	public void setListOperator(List<Operator> daftarOperator) {
+		this.listOperator = daftarOperator;
+		this.daftarOperator = daftarOperator;
+	}
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
+	public List<Absen> getDaftarAbsen() {
+		return daftarAbsen;
+	}
+
+	public void setDaftarAbsen(List<Absen> daftarAbsen) {
+		this.daftarAbsen = daftarAbsen;
+	}
+
+	@Transient
+	public List<Absen> getListAbsen() {
+		return listAbsen;
+	}
+
+	public void setListAbsen(List<Absen> daftarAbsen) {
+		this.listAbsen = daftarAbsen;
+		this.daftarAbsen = daftarAbsen;
 	}
 
 	@JsonIgnore
@@ -156,7 +208,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	public List<Token> getDaftarToken() {
 		return daftarToken;
 	}
@@ -165,75 +217,13 @@ public class Pegawai implements Pejabat {
 		this.daftarToken = daftarToken;
 	}
 
-	/*
-	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
-	public List<Hadir> getDaftarHadir() {
-		return daftarHadir;
-	}
-
-	public void setDaftarHadir(List<Hadir> daftarHadir) {
-		this.daftarHadir = daftarHadir;
-	}
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
-	public List<TugasLuar> getDaftarTugasLuar() {
-		return daftarTugasLuar;
-	}
-
-	public void setDaftarTugasLuar(List<TugasLuar> daftarTugasLuar) {
-		this.daftarTugasLuar = daftarTugasLuar;
-	}
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
-	public List<Sakit> getDaftarSakit() {
-		return daftarSakit;
-	}
-
-	public void setDaftarSakit(List<Sakit> daftarSakit) {
-		this.daftarSakit = daftarSakit;
-	}
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
-	public List<Izin> getDaftarIzin() {
-		return daftarIzin;
-	}
-
-	public void setDaftarIzin(List<Izin> daftarIzin) {
-		this.daftarIzin = daftarIzin;
-	}
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
-	public List<Cuti> getDaftarCuti() {
-		return daftarCuti;
-	}
-
-	public void setDaftarCuti(List<Cuti> daftarCuti) {
-		this.daftarCuti = daftarCuti;
-	}
-	*/
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
-	public List<Absen> getDaftarAbsen() {
-		return daftarAbsen;
-	}
-
-	public void setDaftarAbsen(List<Absen> daftarAbsen) {
-		this.daftarAbsen = daftarAbsen;
-	}
-
 	@JsonIgnore
 	@Transient
 	public RiwayatPangkat getPangkatTerakhir() throws NullCollectionException, NoPangkatException {
-		if (getDaftarPangkat() == null)
+		if (listPangkat == null)
 			throw new NullCollectionException();
 
-		for (RiwayatPangkat rp : daftarPangkat) {
+		for (RiwayatPangkat rp : listPangkat) {
 			if (rp.getTanggalSelesai() == null)
 				return rp;
 		}
@@ -242,10 +232,10 @@ public class Pegawai implements Pejabat {
 	}
 
 	@Transient
-	public Pangkat getPangkat() throws NoPangkatException {
+	public Pangkat getPangkat() {
 		try {
 			return getPangkatTerakhir().getPangkat();
-		} catch (NullCollectionException e) {
+		} catch (NullCollectionException | NoPangkatException e) {
 			return null;
 		}
 	}
@@ -253,10 +243,10 @@ public class Pegawai implements Pejabat {
 	@JsonIgnore
 	@Transient
 	public RiwayatJabatan getJabatanTerakhir() throws NullCollectionException, NoJabatanException {
-		if (getDaftarJabatan() == null)
+		if (listJabatan == null)
 			throw new NullCollectionException();
 
-		for (RiwayatJabatan rj : daftarJabatan) {
+		for (RiwayatJabatan rj : listJabatan) {
 			if (rj.getTanggalSelesai() == null)
 				return rj;
 		}
@@ -272,30 +262,40 @@ public class Pegawai implements Pejabat {
 	}
 
 	@Transient
-	public String getNamaJabatan() throws NoJabatanException {
+	public String getNamaJabatan() {
 		try {
 			return getJabatan().getNama();
-		} catch (NullCollectionException e) {
+		} catch (NullCollectionException | NoJabatanException e) {
 			return null;
 		}
 	}
 	
 	@Override
 	@Transient
-	public Eselon getEselon() throws NoJabatanException {
+	public Eselon getEselon() {
 		try {
-			return getJabatanTerakhir().getJabatan().getEselon();
+			return getJabatan().getEselon();
+		} catch (NullCollectionException | NoJabatanException e) {
+			return null;
+		}
+	}
+
+	@JsonIgnore
+	@Override
+	@Transient
+	public Date getTanggalMenjabat() throws NoJabatanException {
+		try {
+			return getJabatanTerakhir().getTanggalMulai();
 		} catch (NullCollectionException e) {
 			return null;
 		}
 	}
 
-	@Override
 	@Transient
-	public Date tanggalMulai() throws NoJabatanException {
+	public String getTanggalMenjabatStr() {
 		try {
-			return getJabatanTerakhir().getTanggalMulai();
-		} catch (NullCollectionException e) {
+			return DateUtil.toStringDate(getTanggalMenjabat(), "-");
+		} catch (NoJabatanException e) {
 			return null;
 		}
 	}
@@ -330,7 +330,7 @@ public class Pegawai implements Pejabat {
 
 	@Transient
 	public String getTanggalLahirStr() {
-		return DateUtil.toFormattedStringDate(getTanggalLahir(), "-");
+		return DateUtil.toStringDate(getTanggalLahir(), "-");
 	}
 
 	public void setTanggalLahirStr(String tanggalLahir) {
@@ -344,7 +344,6 @@ public class Pegawai implements Pejabat {
 		return penduduk.getEmail();
 	}
 
-
 	public void setEmail(String email) {
 		penduduk.setEmail(email);
 	}
@@ -354,7 +353,6 @@ public class Pegawai implements Pejabat {
 		return penduduk.getTelepon();
 	}
 
-	
 	public void setTelepon(String telepon) {
 		penduduk.setTelepon(telepon);
 	}
@@ -367,7 +365,7 @@ public class Pegawai implements Pejabat {
 	public void setIdPenduduk(Long idPenduduk) {
 		penduduk.setId(idPenduduk);
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

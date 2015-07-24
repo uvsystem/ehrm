@@ -32,6 +32,8 @@
   	<spring.version>4.0.7.RELEASE</spring.version>
   	<spring-security.version>3.2.5.RELEASE</spring-security.version>
   	<spring-data-jpa.version>1.7.1.RELEASE</spring-data-jpa.version>
+  	<spring-data-redis.version>1.5.1.RELEASE</spring-data-redis.version>
+  	<spring-data-mongodb.version>1.7.1.RELEASE</spring-data-mongodb.version>
   	<jackson.version>2.4.2</jackson.version>
   	<itext.version>2.1.7</itext.version>
   	<mysql.version>5.1.26</mysql.version>
@@ -76,6 +78,20 @@
         <groupId>org.springframework.data</groupId>
         <artifactId>spring-data-jpa</artifactId>
         <version>${spring-data-jpa.version}</version>
+    </dependency>
+
+	<!-- Dependencies for Spring Data MongoDB -->
+    <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-mongodb</artifactId>
+        <version>${spring-data-mongodb.version}</version>
+    </dependency>
+
+	<!-- Dependencies for Spring Data Redis -->    
+    <dependency>
+        <groupId>org.springframework.data</groupId>
+        <artifactId>spring-data-redis</artifactId>
+        <version>${spring-data-redis.version}</version>
     </dependency>
 
 	<!-- Dependencies for Spring support -->    

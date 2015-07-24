@@ -63,7 +63,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 	@Override
 	@Transactional(readOnly = false)
 	public void hapus(String nip) {
-		pegawaiRepository.deleteByNip(nip);
+		hapus(getByNip(nip));
 	}
 
 	@Override
@@ -71,11 +71,11 @@ public class PegawaiServiceImpl implements PegawaiService {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
 		try {
-			pegawai.setDaftarPangkat(riwayatPangkatRepository.findByPegawai(pegawai));
+			pegawai.setListPangkat(riwayatPangkatRepository.findByPegawai(pegawai));
 		} catch(PersistenceException ex) { }
 		
 		try {
-			pegawai.setDaftarJabatan(riwayatJabatanRepository.findByPegawai(pegawai));
+			pegawai.setListJabatan(riwayatJabatanRepository.findByPegawai(pegawai));
 		} catch(PersistenceException ex) { }
 		
 		return pegawai;

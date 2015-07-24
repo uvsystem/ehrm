@@ -14,7 +14,7 @@ import com.unitedvision.sangihe.ehrm.EntityRestMessage;
 import com.unitedvision.sangihe.ehrm.RestMessage;
 
 @Controller
-@RequestMapping("token")
+@RequestMapping("/token")
 public class TokenController {
 
 	@Autowired
@@ -22,18 +22,18 @@ public class TokenController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/{nip}")
 	@ResponseBody
-	public RestMessage create(@PathVariable String nip) throws ApplicationException, PersistenceException {
-		tokenService.create(nip);
+	public EntityRestMessage<Token> create(@PathVariable String nip) throws ApplicationException, PersistenceException {
+		Token token = tokenService.create(nip);
 		
-		return RestMessage.success();
+		return EntityRestMessage.create(token);
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT, value = "/{kode}")
 	@ResponseBody
-	public RestMessage lock(@PathVariable String kode) throws ApplicationException, PersistenceException {
-		tokenService.lock(kode);
+	public EntityRestMessage<Token> lock(@PathVariable String kode) throws ApplicationException, PersistenceException {
+		Token token = tokenService.lock(kode);
 		
-		return RestMessage.success();
+		return EntityRestMessage.create(token);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/{kode}")
@@ -42,5 +42,13 @@ public class TokenController {
 		Token token = tokenService.get(kode);
 		
 		return EntityRestMessage.create(token);
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE)
+	@ResponseBody
+	public RestMessage delete() throws ApplicationException, PersistenceException {
+		tokenService.hapus();
+		
+		return RestMessage.success();
 	}
 }

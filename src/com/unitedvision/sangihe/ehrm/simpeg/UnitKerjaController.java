@@ -32,6 +32,14 @@ public class UnitKerjaController {
 		return RestMessage.success();
 	}
 	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{kode}")
+	@ResponseBody
+	public RestMessage delete(@PathVariable String kode) throws ApplicationException, PersistenceException {
+		unitKerjaService.hapus(kode);
+		
+		return RestMessage.success();
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	@ResponseBody
 	public EntityRestMessage<UnitKerja> findOne(@PathVariable Long id) throws ApplicationException, PersistenceException {
@@ -40,9 +48,17 @@ public class UnitKerjaController {
 		return EntityRestMessage.create(unitKerja);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/kode/{kode}")
+	@ResponseBody
+	public EntityRestMessage<UnitKerja> find(@PathVariable String kode) throws ApplicationException, PersistenceException {
+		UnitKerja unitKerja = unitKerjaService.get(kode);
+		
+		return EntityRestMessage.create(unitKerja);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/search/{keyword}")
 	@ResponseBody
-	public ListEntityRestMessage<UnitKerja> find(@PathVariable String keyword) throws ApplicationException, PersistenceException {
+	public ListEntityRestMessage<UnitKerja> cari(@PathVariable String keyword) throws ApplicationException, PersistenceException {
 		List<UnitKerja> daftarUnitKerja = unitKerjaService.cari(keyword);
 		
 		return ListEntityRestMessage.createListUnitKerja(daftarUnitKerja);

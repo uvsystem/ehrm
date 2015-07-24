@@ -11,4 +11,6 @@ public interface KalendarRepository extends JpaRepository<Kalendar, Date> {
 
 	List<Kalendar> findByTanggalBetween(Date awal, Date akhir);
 
+	List<Kalendar> countByTanggalBetween(Date awal, Date akhir);
+
 }

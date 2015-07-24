@@ -8,7 +8,7 @@ public interface UnitKerjaService {
 	UnitKerja tambahSubUnit(long idUnitKerja, UnitKerja unitKerja);
 	
 	void hapus(UnitKerja unitKerja);
-	void hapus(Long idUnitKerja);
+	void hapus(String kode);
 	
 	UnitKerja get(Long idUnitKerja);
 	UnitKerja get(String kode);

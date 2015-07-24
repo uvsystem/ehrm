@@ -9,6 +9,6 @@ public interface Pejabat {
 	Jabatan getJabatan() throws NullCollectionException, NoJabatanException;
 	Eselon getEselon() throws NullCollectionException, NoJabatanException;
 	String getNamaJabatan() throws NullCollectionException, NoJabatanException;
-	Date tanggalMulai() throws NullCollectionException, NoJabatanException;
+	Date getTanggalMenjabat() throws NullCollectionException, NoJabatanException;
 
 }
