@@ -83,6 +83,11 @@ public class Operator {
 	public String getPassword() {
 		return pegawai.getPassword();
 	}
+	
+	@Transient
+	public String getKodeAplikasi() {
+		return aplikasi.getKode();
+	}
 
 	@Override
 	public int hashCode() {
