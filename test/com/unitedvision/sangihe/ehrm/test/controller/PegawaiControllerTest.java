@@ -161,7 +161,7 @@ public class PegawaiControllerTest {
 			.andExpect(jsonPath("$.model.nik").value("7171070512910002"))
 			.andExpect(jsonPath("$.model.nama").value("Deddy Christoper Kakunsi"))
 			.andExpect(jsonPath("$.model.passwordStr").value("****"))
-			.andExpect(jsonPath("$.model.tanggalLahirStr").value("5-12-1991"))
+			.andExpect(jsonPath("$.model.tanggalLahirStr").value("12-5-1991"))
 			.andExpect(jsonPath("$.model.email").value("deddy.kakunsi@gmail.com"))
 			.andExpect(jsonPath("$.model.pangkat").value("IIIA"))
 			.andExpect(jsonPath("$.model.namaJabatan").value("Kepala Bidang Monitoring dan Evaluasi"))
