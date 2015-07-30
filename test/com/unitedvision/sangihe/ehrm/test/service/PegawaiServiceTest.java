@@ -29,7 +29,6 @@ import com.unitedvision.sangihe.ehrm.simpeg.NoPangkatException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.PegawaiService;
-import com.unitedvision.sangihe.ehrm.simpeg.SubUnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerjaService;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja.TipeUnitKerja;
@@ -127,7 +126,7 @@ public class PegawaiServiceTest {
 		
 		assertEquals(countRiwayatJabatan + 1, riwayatJabatanRepository.count());
 		
-		SubUnitKerja subUnitKerja = new SubUnitKerja(unitKerja);
+		UnitKerja subUnitKerja = new UnitKerja(unitKerja);
 		subUnitKerja.setNama("SubUnit Pengelolaan Data Elektronik");
 		subUnitKerja.setSingkatan("SubUnit BPDE");
 		subUnitKerja.setTipe(TipeUnitKerja.BAGIAN);

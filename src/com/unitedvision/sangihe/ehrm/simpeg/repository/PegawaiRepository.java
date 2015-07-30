@@ -15,6 +15,8 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long> {
 
 	Pegawai findByNip(String nip);
 
+	@Query("FROM Pegawai p WHERE p.unitKerja = ?1 OR p.unitKerja.parent = ?1")
+	List<Pegawai> findByUnitKerja(UnitKerja unitKerja);
 	List<Pegawai> findByUnitKerja_Id(Long idUnitKerja);
 	List<Pegawai> findByUnitKerjaIn(List<UnitKerja> daftarSubUnitKerja);
 

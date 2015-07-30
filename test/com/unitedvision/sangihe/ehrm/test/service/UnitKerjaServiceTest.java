@@ -16,11 +16,9 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
-import com.unitedvision.sangihe.ehrm.simpeg.SubUnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerjaService;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja.TipeUnitKerja;
-import com.unitedvision.sangihe.ehrm.simpeg.repository.SubUnitKerjaRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.UnitKerjaRepository;
 
 @RunWith (SpringJUnit4ClassRunner.class)
@@ -33,8 +31,6 @@ public class UnitKerjaServiceTest {
 	private UnitKerjaService unitKerjaService;
 	@Autowired
 	private UnitKerjaRepository unitKerjaRepository;
-	@Autowired
-	private SubUnitKerjaRepository subUnitKerjaRepository;
 
 	private UnitKerja unitKerja;
 	private long countUnitKerja;
@@ -51,7 +47,7 @@ public class UnitKerjaServiceTest {
 		unitKerjaService.simpan(unitKerja);
 		assertEquals(countUnitKerja + 1, unitKerjaRepository.count());
 		
-		SubUnitKerja subUnitKerja = new SubUnitKerja(unitKerja);
+		UnitKerja subUnitKerja = new UnitKerja(unitKerja);
 		subUnitKerja.setNama("Sub Unit");
 		subUnitKerja.setSingkatan("SUB");
 		subUnitKerja.setTipe(TipeUnitKerja.BAGIAN);
@@ -73,15 +69,15 @@ public class UnitKerjaServiceTest {
 	
 	@Test
 	public void test_tambah_sub_unit_kerja() {
-		SubUnitKerja subUnitKerja = new SubUnitKerja();
+		UnitKerja subUnitKerja = new UnitKerja();
 		subUnitKerja.setNama("Pengelola Data Elektronik");
 		subUnitKerja.setSingkatan("BPDE");
 		subUnitKerja.setTipe(TipeUnitKerja.BAGIAN);
-		subUnitKerja.setUnitKerja(unitKerja);
+		subUnitKerja.setParent(unitKerja);
 		
 		unitKerjaService.simpan(subUnitKerja);
 		
-		assertEquals(countSubUnitKerja + 2, subUnitKerjaRepository.count());
+		assertEquals(countSubUnitKerja + 3, unitKerjaRepository.count());
 	}
 	
 	@Test

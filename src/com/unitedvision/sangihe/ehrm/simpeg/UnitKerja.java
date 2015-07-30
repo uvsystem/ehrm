@@ -4,28 +4,20 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "unit_kerja")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(
-	name = "discriminator",
-	discriminatorType = DiscriminatorType.STRING
-)
-@DiscriminatorValue("SKPD")
 public class UnitKerja {
 
 	public enum TipeUnitKerja {
@@ -42,8 +34,9 @@ public class UnitKerja {
 	private String nama;
 	private TipeUnitKerja tipe;
 	private String singkatan;
+	private UnitKerja parent;
 	
-	private List<SubUnitKerja> daftarSubUnit;
+	private List<UnitKerja> daftarSubUnit;
 	private List<Pegawai> daftarPegawai;
 	private List<Jabatan> daftarJabatan;
 	
@@ -51,6 +44,11 @@ public class UnitKerja {
 		super();
 	}
 	
+	public UnitKerja(UnitKerja unitKerja) {
+		super();
+		setParent(unitKerja);
+	}
+
 	@Id
 	@GeneratedValue
 	public long getId() {
@@ -59,6 +57,17 @@ public class UnitKerja {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "parent", nullable = false)
+	public UnitKerja getParent() {
+		return parent;
+	}
+
+	public void setParent(UnitKerja parent) {
+		this.parent = parent;
 	}
 
 	@Column(name = "nama", nullable = false)
@@ -89,12 +98,12 @@ public class UnitKerja {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "unitKerja", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	public List<SubUnitKerja> getDaftarSubUnit() {
+	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	public List<UnitKerja> getDaftarSubUnit() {
 		return daftarSubUnit;
 	}
 
-	public void setDaftarSubUnit(List<SubUnitKerja> daftarSubUnit) {
+	public void setDaftarSubUnit(List<UnitKerja> daftarSubUnit) {
 		this.daftarSubUnit = daftarSubUnit;
 	}
 

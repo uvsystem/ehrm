@@ -18,7 +18,6 @@ import com.unitedvision.sangihe.ehrm.simpeg.repository.JabatanRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.RiwayatJabatanRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.RiwayatPangkatRepository;
-import com.unitedvision.sangihe.ehrm.simpeg.repository.SubUnitKerjaRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.UnitKerjaRepository;
 
 @Service
@@ -37,8 +36,6 @@ public class PegawaiServiceImpl implements PegawaiService {
 	private RiwayatJabatanRepository riwayatJabatanRepository;
 	@Autowired
 	private JabatanRepository jabatanRepository;
-	@Autowired
-	private SubUnitKerjaRepository subUnitKerjaRepository;
 	
 	@Override
 	@Transactional(readOnly = false)
@@ -83,14 +80,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 
 	@Override
 	public List<Pegawai> get(UnitKerja unitKerja) {
-		List<UnitKerja> daftarUnitKerja = new ArrayList<>();
-		try {
-			for (SubUnitKerja subUnitKerja : subUnitKerjaRepository.findByUnitKerja(unitKerja))
-				daftarUnitKerja.add(subUnitKerja);
-		} catch (PersistenceException e) { }
-		daftarUnitKerja.add(unitKerja);
-		
-		return pegawaiRepository.findByUnitKerjaIn(daftarUnitKerja);
+		return pegawaiRepository.findByUnitKerja(unitKerja);
 	}
 
 	@Override

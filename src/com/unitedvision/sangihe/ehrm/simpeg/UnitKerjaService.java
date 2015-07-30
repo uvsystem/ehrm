@@ -13,8 +13,8 @@ public interface UnitKerjaService {
 	UnitKerja get(Long idUnitKerja);
 	UnitKerja get(String kode);
 	
-	List<SubUnitKerja> getSubUnitKerja(UnitKerja unitKerja);
-	List<SubUnitKerja> getSubUnitKerja(Long id);
+	List<UnitKerja> getSubUnitKerja(UnitKerja unitKerja);
+	List<UnitKerja> getSubUnitKerja(Long id);
 	
 	List<UnitKerja> cari(String keyword);
 	

@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.unitedvision.sangihe.ehrm.simpeg.SubUnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja.TipeUnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerjaService;
@@ -37,7 +36,7 @@ public class UnitKerjaControllerTest {
 	
 	private MockMvc mockMvc;
 	private UnitKerja unitKerja;
-	private SubUnitKerja subUnitKerja;
+	private UnitKerja subUnitKerja;
 	
 	@Before
 	public void setup() {
@@ -49,7 +48,7 @@ public class UnitKerjaControllerTest {
 		unitKerja.setSingkatan("BKD");
 		unitKerjaService.simpan(unitKerja);
 		
-		subUnitKerja = new SubUnitKerja(unitKerja);
+		subUnitKerja = new UnitKerja(unitKerja);
 		subUnitKerja.setTipe(TipeUnitKerja.BIDANG);
 		subUnitKerja.setNama("Data dan Informasi");
 		subUnitKerja.setSingkatan("DI-BKD");

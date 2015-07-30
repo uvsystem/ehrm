@@ -7,7 +7,6 @@ import com.unitedvision.sangihe.ehrm.manajemen.Aplikasi;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator;
 import com.unitedvision.sangihe.ehrm.simpeg.Jabatan;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
-import com.unitedvision.sangihe.ehrm.simpeg.SubUnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
 import com.unitedvision.sangihe.ehrm.sppd.SuratTugas;
@@ -42,10 +41,6 @@ public class ListEntityRestMessage<T> extends RestMessage {
 	
 	public static ListEntityRestMessage<Pegawai> createListPegawai(List<Pegawai> daftarPegawai) {
 		return new ListEntityRestMessage<Pegawai>(daftarPegawai);
-	}
-
-	public static ListEntityRestMessage<SubUnitKerja> createListSubUnitKerja(List<SubUnitKerja> daftarSubUnitKerja) {
-		return new ListEntityRestMessage<SubUnitKerja>(daftarSubUnitKerja);
 	}
 
 	public static ListEntityRestMessage<Kalendar> createListKalendar(List<Kalendar> daftarKalendar) {

@@ -25,7 +25,6 @@ import com.unitedvision.sangihe.ehrm.simpeg.NoJabatanException;
 import com.unitedvision.sangihe.ehrm.simpeg.NoPangkatException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
-import com.unitedvision.sangihe.ehrm.simpeg.SubUnitKerja;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 
 @Entity
@@ -281,10 +280,6 @@ public class Sppd {
 		
 		public String getSatuanKerja() {
 			UnitKerja unitKerja = getPegawai().getUnitKerja();
-			
-			if (unitKerja instanceof SubUnitKerja)
-				return ((SubUnitKerja) unitKerja).getUnitKerja().getNama();
-			
 			return unitKerja.getNama();
 		}
 		

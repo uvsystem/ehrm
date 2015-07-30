@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unitedvision.sangihe.ehrm.simpeg.repository.SubUnitKerjaRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.UnitKerjaRepository;
 
 @Service
@@ -15,8 +14,6 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 
 	@Autowired
 	private UnitKerjaRepository unitKerjaRepository;
-	@Autowired
-	private SubUnitKerjaRepository subUnitKerjaRepository;
 	
 	@Override
 	@Transactional(readOnly = false)
@@ -26,17 +23,9 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public UnitKerja tambahSubUnit(long idUnitKerja, UnitKerja unitKerja) {
-		SubUnitKerja subUnitKerja;
-
-		if (unitKerja instanceof SubUnitKerja) {
-			subUnitKerja = (SubUnitKerja)unitKerja;
-		} else {
-			subUnitKerja = new SubUnitKerja(unitKerja);
-		}
-		
+	public UnitKerja tambahSubUnit(long idUnitKerja, UnitKerja subUnitKerja) {
 		UnitKerja parent = unitKerjaRepository.findOne(idUnitKerja);
-		subUnitKerja.setUnitKerja(parent);
+		subUnitKerja.setParent(parent);
 		
 		return unitKerjaRepository.save(subUnitKerja);
 	}
@@ -64,12 +53,12 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 	}
 
 	@Override
-	public List<SubUnitKerja> getSubUnitKerja(UnitKerja unitKerja) {
-		return subUnitKerjaRepository.findByUnitKerja(unitKerja);
+	public List<UnitKerja> getSubUnitKerja(UnitKerja unitKerja) {
+		return unitKerjaRepository.findByParent(unitKerja);
 	}
 	
 	@Override
-	public List<SubUnitKerja> getSubUnitKerja(Long id) {
+	public List<UnitKerja> getSubUnitKerja(Long id) {
 		UnitKerja unitKerja = unitKerjaRepository.findOne(id);
 		
 		return getSubUnitKerja(unitKerja);
