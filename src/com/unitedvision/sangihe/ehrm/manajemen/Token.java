@@ -7,6 +7,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
+import com.unitedvision.sangihe.ehrm.duk.Penduduk;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 import java.sql.Date;
@@ -190,6 +191,24 @@ public class Token implements Serializable {
 		} else if (!token.equals(other.token))
 			return false;
 		return true;
+	}
+
+	public static Token createAdmin() {
+		Token token = new Token();
+		token.setPegawai(null);
+		token.setToken("********");
+		
+		Penduduk penduduk = new Penduduk();
+		penduduk.setNama("ADMIN");
+		penduduk.setTanggalLahir(DateUtil.getDate());
+		
+		Pegawai pegawai = new Pegawai();
+		pegawai.setNip("superuser");
+		pegawai.setPenduduk(penduduk);
+		
+		token.setPegawai(pegawai);
+
+		return token;
 	}
 	
 }

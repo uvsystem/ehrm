@@ -1,6 +1,5 @@
 package com.unitedvision.sangihe.ehrm.absensi;
 
-import java.sql.Date;
 import java.sql.Time;
 
 import javax.persistence.Column;
@@ -65,19 +64,10 @@ public class Hadir extends Absen {
 	
 	public static class Detail {
 
-		private String tanggalStr;
 		private String pagiStr;
 		private String cek1Str;
 		private String cek2Str;
 		private String soreStr;
-		
-		public String getTanggalStr() {
-			return tanggalStr;
-		}
-
-		public void setTanggalStr(String tanggalStr) {
-			this.tanggalStr = tanggalStr;
-		}
 
 		public String getPagiStr() {
 			return pagiStr;
@@ -109,11 +99,6 @@ public class Hadir extends Absen {
 
 		public void setSoreStr(String soreStr) {
 			this.soreStr = soreStr;
-		}
-
-		@JsonIgnore
-		public Date getTanggal() {
-			return DateUtil.getDate(tanggalStr, "-");
 		}
 
 		@JsonIgnore

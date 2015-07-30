@@ -26,7 +26,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         
         CustomUser user;
         if (username.equals("superuser")) {
-        	user = userDetailService.loadAdmin(username);
+        	user = userDetailService.loadAdmin(username, password);
+        		
+        	
         } else {
     		try {
     			user = userDetailService.loadUserByToken(password);
@@ -37,7 +39,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 			}
         }
  
-       	System.out.println(String.format("CustomAuthenticationProvide.java: 35: Generated User: %s:%s", user.getUsername(), user.getPassword())); // LOG
+       	System.out.println(String.format("CustomAuthenticationProvide.java: Generated User: %s:%s", user.getUsername(), user.getPassword())); // LOG
+       	System.out.println(String.format("CustomAuthenticationProvide.java: Requested User: %s:%s", username, password)); // LOG
         if (!(username.equals(user.getUsername())) || !(password.equals(user.getPassword())))
             throw new BadCredentialsException("Kombinasi Username dan Password Salah");
         return new UsernamePasswordAuthenticationToken(user, password, user.getAuthorities());

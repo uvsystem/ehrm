@@ -64,7 +64,7 @@ public class UnitKerjaController {
 		return ListEntityRestMessage.createListUnitKerja(daftarUnitKerja);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/sub/{id}")
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}/sub")
 	@ResponseBody
 	public ListEntityRestMessage<SubUnitKerja> findSubUnit(@PathVariable Long id) throws ApplicationException, PersistenceException {
 		List<SubUnitKerja> daftarSubUnitKerja = unitKerjaService.getSubUnitKerja(id);

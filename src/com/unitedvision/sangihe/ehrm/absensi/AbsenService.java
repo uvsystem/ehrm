@@ -65,7 +65,7 @@ public interface AbsenService {
 	TugasLuar tambahTugasLuar(String nip, Date tanggal, String nomorSppd);
 	List<TugasLuar> tambahTugasLuar(Sppd sppd);
 
-	Hadir hadir(String nip, Hadir.Detail detail) throws AbsenException;
+	Hadir hadir(String nip, Date date, Hadir.Detail detail) throws AbsenException;
 	Sakit tambahSakit(String nip, Date tanggal, String penyakit);
 	Izin tambahIzin(String nip, Date tanggal, String alasan);
 	Cuti tambahCuti(String nip, Date tanggal, String jenisCuti);

@@ -51,8 +51,8 @@ public class AbsenServiceImpl implements AbsenService {
 	private UnitKerjaRepository unitKerjaRepository;
 
 	@Override
-	public Hadir hadir(String nip, Detail detail) throws AbsenException {
-		Hadir hadir = getHadir(nip, detail.getTanggal());
+	public Hadir hadir(String nip, Date tanggal, Detail detail) throws AbsenException {
+		Hadir hadir = getHadir(nip, tanggal);
 		
 		if (hadir.getId() != 0)
 			throw new AbsenException("Absen sudah terdaftar");
