@@ -18,6 +18,11 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 	@Override
 	@Transactional(readOnly = false)
 	public UnitKerja simpan(UnitKerja unitKerja) {
+		if (unitKerja.getIdParent() != 0) {
+			UnitKerja parent = get(unitKerja.getIdParent());
+			unitKerja.setParent(parent);
+		}
+		
 		return unitKerjaRepository.save(unitKerja);
 	}
 

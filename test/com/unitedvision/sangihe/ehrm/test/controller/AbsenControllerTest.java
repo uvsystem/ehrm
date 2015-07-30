@@ -81,9 +81,9 @@ public class AbsenControllerTest {
 	@Test
 	public void test_absen_hadir() throws Exception {
 		this.mockMvc.perform(
-				post(String.format("/absen/%s/hadir", pegawai.getNip()))
+				post(String.format("/absen/%s/hadir/01-01-2015", pegawai.getNip()))
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"tanggalStr\": \"01-01-2015\", \"pagiStr\": \"07:00:00\", \"cek1Str\": \"11:00:00\", \"cek2Str\": \"13:00:00\", \"soreStr\": \"16:00:00\"}")
+				.content("{\"pagiStr\": \"07:00:00\", \"cek1Str\": \"11:00:00\", \"cek2Str\": \"13:00:00\", \"soreStr\": \"16:00:00\"}")
 			)
 			.andExpect(jsonPath("$.message").value("Berhasil"))
 			.andExpect(jsonPath("$.tipe").value("SUCCESS"));
@@ -92,17 +92,17 @@ public class AbsenControllerTest {
 	@Test
 	public void test_absen_hadir_duplicate() throws Exception {
 		this.mockMvc.perform(
-				post(String.format("/absen/%s/hadir", pegawai.getNip()))
+				post(String.format("/absen/%s/hadir/01-01-2015", pegawai.getNip()))
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"tanggalStr\": \"01-01-2015\", \"pagiStr\": \"07:00:00\", \"cek1Str\": \"11:00:00\", \"cek2Str\": \"13:00:00\", \"soreStr\": \"16:00:00\"}")
+				.content("{\"pagiStr\": \"07:00:00\", \"cek1Str\": \"11:00:00\", \"cek2Str\": \"13:00:00\", \"soreStr\": \"16:00:00\"}")
 			)
 			.andExpect(jsonPath("$.message").value("Berhasil"))
 			.andExpect(jsonPath("$.tipe").value("SUCCESS"));
 
 		this.mockMvc.perform(
-				post(String.format("/absen/%s/hadir", pegawai.getNip()))
+				post(String.format("/absen/%s/hadir/01-01-2015", pegawai.getNip()))
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"tanggalStr\": \"01-01-2015\", \"pagiStr\": \"07:00:00\", \"cek1Str\": \"11:00:00\", \"cek2Str\": \"13:00:00\", \"soreStr\": \"16:00:00\"}")
+				.content("{\"pagiStr\": \"07:00:00\", \"cek1Str\": \"11:00:00\", \"cek2Str\": \"13:00:00\", \"soreStr\": \"16:00:00\"}")
 			)
 			.andExpect(jsonPath("$.message").value("Absen sudah terdaftar"))
 			.andExpect(jsonPath("$.tipe").value("ERROR"));

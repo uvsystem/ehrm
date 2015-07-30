@@ -73,7 +73,7 @@ public class UnitKerjaServiceTest {
 		subUnitKerja.setNama("Pengelola Data Elektronik");
 		subUnitKerja.setSingkatan("BPDE");
 		subUnitKerja.setTipe(TipeUnitKerja.BAGIAN);
-		subUnitKerja.setParent(unitKerja);
+		subUnitKerja.setIdParent(unitKerja.getId());
 		
 		unitKerjaService.simpan(subUnitKerja);
 		

@@ -60,6 +60,17 @@ public class UnitKerjaControllerTest {
 		this.mockMvc.perform(
 				post("/satker")
 				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"id\":\"0\", \"tipe\":\"DINAS\", \"nama\":\"Dinas Perikanan dan Kelautan\", \"singkatan\":\"DPK\", \"idParent\":\"" + unitKerja.getId() + "\"}")
+			)
+			.andExpect(jsonPath("$.message").value("Berhasil"))
+			.andExpect(jsonPath("$.tipe").value("SUCCESS"));
+	}
+	
+	@Test
+	public void test_tambah_sub_unit() throws Exception {
+		this.mockMvc.perform(
+				post("/satker")
+				.contentType(MediaType.APPLICATION_JSON)
 				.content("{\"id\":\"0\", \"tipe\":\"DINAS\", \"nama\":\"Dinas Perikanan dan Kelautan\", \"singkatan\":\"DPK\"}")
 			)
 			.andExpect(jsonPath("$.message").value("Berhasil"))
@@ -127,7 +138,7 @@ public class UnitKerjaControllerTest {
 	@Test
 	public void test_get_all_sub_unit_kerja() throws Exception {
 		this.mockMvc.perform(
-				get(String.format("/satker/sub/%d", unitKerja.getId()))
+				get(String.format("/satker/%d/sub", unitKerja.getId()))
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.message").value("Berhasil"))

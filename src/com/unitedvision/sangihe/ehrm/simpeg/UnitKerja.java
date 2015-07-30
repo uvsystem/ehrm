@@ -12,8 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -39,13 +39,13 @@ public class UnitKerja {
 	private List<UnitKerja> daftarSubUnit;
 	private List<Pegawai> daftarPegawai;
 	private List<Jabatan> daftarJabatan;
-	
+
 	public UnitKerja() {
 		super();
 	}
 	
 	public UnitKerja(UnitKerja unitKerja) {
-		super();
+		this();
 		setParent(unitKerja);
 	}
 
@@ -59,7 +59,6 @@ public class UnitKerja {
 		this.id = id;
 	}
 
-	@JsonBackReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parent", nullable = false)
 	public UnitKerja getParent() {
@@ -70,6 +69,19 @@ public class UnitKerja {
 		this.parent = parent;
 	}
 
+	@Transient
+	public Long getIdParent() {
+		if (parent == null)
+			return 0L;
+		return parent.getId();
+	}
+	
+	public void setIdParent(Long idParent) {
+		if (parent == null)
+			parent = new UnitKerja();
+		parent.setId(idParent);
+	}
+	
 	@Column(name = "nama", nullable = false)
 	public String getNama() {
 		return nama;
