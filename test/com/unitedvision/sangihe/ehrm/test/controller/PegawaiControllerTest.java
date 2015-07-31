@@ -69,8 +69,8 @@ public class PegawaiControllerTest {
 		unitKerjaService.simpan(bappeda);
 		
 		pegawai = new Pegawai(bappeda);
-		pegawai.setNik("7171070512910002");
-		pegawai.setNip("090213016");
+		pegawai.setNik("7171070512910003");
+		pegawai.setNip("090213017");
 		pegawai.setNama("Deddy Christoper Kakunsi");
 		pegawai.setPassword("dkakunsi");
 		pegawai.setTanggalLahir(DateUtil.getDate("12-05-1991"));

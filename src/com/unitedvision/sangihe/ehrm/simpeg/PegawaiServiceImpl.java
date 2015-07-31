@@ -40,10 +40,13 @@ public class PegawaiServiceImpl implements PegawaiService {
 	@Override
 	@Transactional(readOnly = false)
 	public Pegawai simpan(Pegawai pegawai) {
-		return pegawaiRepository.save(pegawai);
+		pegawai = pegawaiRepository.save(pegawai);
+		
+		return pegawai;
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Pegawai simpan(Long idUnitKerja, Pegawai pegawai) {
 		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
 		pegawai.setUnitKerja(unitKerja);
@@ -126,6 +129,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Pegawai mutasi(String nip, String kode) throws IdenticRelationshipException {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		UnitKerja unitKerja = unitKerjaRepository.findBySingkatan(kode);
@@ -174,6 +178,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Pegawai promosi(String nip, Pangkat pangkat, Detail detail) throws IdenticRelationshipException {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
@@ -242,6 +247,7 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Pegawai promosi(String nip, Long idJabatan, Detail detail) throws IdenticRelationshipException {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		Jabatan jabatan = jabatanRepository.findOne(idJabatan);

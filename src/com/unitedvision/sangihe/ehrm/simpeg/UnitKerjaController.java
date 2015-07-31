@@ -72,6 +72,14 @@ public class UnitKerjaController {
 		return ListEntityRestMessage.createListUnitKerja(daftarSubUnitKerja);
 	}
 	
+	@RequestMapping(method = RequestMethod.POST, value = "/{kode}/sub")
+	@ResponseBody
+	public RestMessage tambahSubUnit(@PathVariable String kode, @RequestBody UnitKerja subUnitKerja) throws ApplicationException, PersistenceException {
+		unitKerjaService.tambahSubUnit(kode, subUnitKerja);
+		
+		return RestMessage.success();
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public ListEntityRestMessage<UnitKerja> get() throws ApplicationException, PersistenceException {

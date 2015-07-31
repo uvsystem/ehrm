@@ -118,7 +118,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	public List<RiwayatPangkat> getDaftarPangkat() {
 		return daftarPangkat;
 	}
@@ -138,7 +138,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	public List<RiwayatJabatan> getDaftarJabatan() {
 		return daftarJabatan;
 	}
@@ -158,7 +158,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	public List<Operator> getDaftarOperator() {
 		return daftarOperator;
 	}
@@ -178,7 +178,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	public List<Absen> getDaftarAbsen() {
 		return daftarAbsen;
 	}
@@ -208,7 +208,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	public List<Token> getDaftarToken() {
 		return daftarToken;
 	}

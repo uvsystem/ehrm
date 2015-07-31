@@ -5,7 +5,7 @@ import java.util.List;
 public interface UnitKerjaService {
 
 	UnitKerja simpan(UnitKerja unitKerja);
-	UnitKerja tambahSubUnit(long idUnitKerja, UnitKerja unitKerja);
+	UnitKerja tambahSubUnit(String kode, UnitKerja unitKerja);
 	
 	void hapus(UnitKerja unitKerja);
 	void hapus(String kode);

@@ -41,8 +41,8 @@ public class UnitKerjaServiceTest {
 		countUnitKerja = unitKerjaRepository.count();
 		
 		unitKerja = new UnitKerja();
-		unitKerja.setNama("Sekretariat Daerah");
-		unitKerja.setSingkatan("SETDA");
+		unitKerja.setNama("Unit");
+		unitKerja.setSingkatan("UNIT");
 		unitKerja.setTipe(TipeUnitKerja.SEKRETARIAT);
 		unitKerjaService.simpan(unitKerja);
 		assertEquals(countUnitKerja + 1, unitKerjaRepository.count());
@@ -91,5 +91,13 @@ public class UnitKerjaServiceTest {
 	public void test_get() {
 		UnitKerja unitKerja2 = unitKerjaService.get("SETDA");
 		assertNotNull(unitKerja2);
+		assertEquals(unitKerja, unitKerja2);
+	}
+	
+	@Test
+	public void test_get_by_id() {
+		UnitKerja unitKerja2 = unitKerjaService.get(unitKerja.getId());
+		assertNotNull(unitKerja2);
+		assertEquals(unitKerja, unitKerja2);
 	}
 }

@@ -60,7 +60,7 @@ public class UnitKerja {
 	}
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "parent", nullable = false)
+	@JoinColumn(name = "parent")
 	public UnitKerja getParent() {
 		return parent;
 	}
@@ -130,7 +130,7 @@ public class UnitKerja {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "unitKerja", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "unitKerja", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<Jabatan> getDaftarJabatan() {
 		return daftarJabatan;
 	}

@@ -18,18 +18,13 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 	@Override
 	@Transactional(readOnly = false)
 	public UnitKerja simpan(UnitKerja unitKerja) {
-		if (unitKerja.getIdParent() != 0) {
-			UnitKerja parent = get(unitKerja.getIdParent());
-			unitKerja.setParent(parent);
-		}
-		
 		return unitKerjaRepository.save(unitKerja);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
-	public UnitKerja tambahSubUnit(long idUnitKerja, UnitKerja subUnitKerja) {
-		UnitKerja parent = unitKerjaRepository.findOne(idUnitKerja);
+	public UnitKerja tambahSubUnit(String kode, UnitKerja subUnitKerja) {
+		UnitKerja parent = get(kode);
 		subUnitKerja.setParent(parent);
 		
 		return unitKerjaRepository.save(subUnitKerja);
