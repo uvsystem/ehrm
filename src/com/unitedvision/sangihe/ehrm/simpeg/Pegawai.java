@@ -198,7 +198,7 @@ public class Pegawai implements Pejabat {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<PemegangTugas> getDaftarTugas() {
 		return daftarTugas;
 	}

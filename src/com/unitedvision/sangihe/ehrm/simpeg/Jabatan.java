@@ -84,7 +84,7 @@ public class Jabatan {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "jabatan", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+	@OneToMany(mappedBy = "jabatan", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	public List<RiwayatJabatan> getDaftarRiwayat() {
 		return daftarRiwayat;
 	}

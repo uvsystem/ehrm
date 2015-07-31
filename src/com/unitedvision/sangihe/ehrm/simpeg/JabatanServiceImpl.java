@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.JabatanRepository;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class JabatanServiceImpl implements JabatanService {
 
 	@Autowired
@@ -18,11 +18,13 @@ public class JabatanServiceImpl implements JabatanService {
 	private UnitKerjaService unitKerjaService;
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Jabatan simpan(Jabatan jabatan) {
 		return jabatanRepository.save(jabatan);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Jabatan simpan(Long idUnitKerja, Jabatan jabatan) {
 		UnitKerja unitKerja = unitKerjaService.get(idUnitKerja);
 		jabatan.setUnitKerja(unitKerja);
@@ -31,11 +33,13 @@ public class JabatanServiceImpl implements JabatanService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public void hapus(Jabatan jabatan) {
 		jabatanRepository.delete(jabatan);
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void hapus(Long idJabatan) {
 		jabatanRepository.delete(idJabatan);
 	}

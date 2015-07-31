@@ -39,6 +39,7 @@ public class KalendarServiceImpl implements KalendarService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void hapus(Date tanggal) {
 		kalendarRepository.delete(tanggal);
 	}

@@ -42,6 +42,15 @@ public class KalendarController {
 		
 		return EntityRestMessage.create(kalendar);
 	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{tanggal}")
+	@ResponseBody
+	public RestMessage hapus(@PathVariable String tanggal) throws ApplicationException, PersistenceException {
+		Date date = DateUtil.getDate(tanggal, "-");
+		kalendarService.hapus(date);
+		
+		return RestMessage.success();
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/{tanggal}/to/{akhir}")
 	@ResponseBody
