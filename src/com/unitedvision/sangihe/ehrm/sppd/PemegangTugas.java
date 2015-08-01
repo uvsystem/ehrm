@@ -1,5 +1,7 @@
 package com.unitedvision.sangihe.ehrm.sppd;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,9 +10,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.unitedvision.sangihe.ehrm.NullCollectionException;
+import com.unitedvision.sangihe.ehrm.simpeg.Eselon;
+import com.unitedvision.sangihe.ehrm.simpeg.NoJabatanException;
+import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
+import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 
 @Entity
 @Table(name = "pemegang_tugas")
@@ -64,6 +72,65 @@ public class PemegangTugas {
 
 	public void setSppd(Sppd sppd) {
 		this.sppd = sppd;
+	}
+
+	@Transient
+	public String getNip() {
+		return pegawai.getNip();
+	}
+
+	@Transient
+	public UnitKerja getUnitKerja() {
+		return pegawai.getUnitKerja();
+	}
+
+	@Transient
+	public Pangkat getPangkat() {
+		return pegawai.getPangkat();
+	}
+
+	@Transient
+	public String getJabatan() {
+		try {
+			return pegawai.getJabatan().getNama();
+		} catch (NoJabatanException | NullCollectionException e) {
+			return "tidak ada jabatan";
+		}
+	}
+
+	@Transient
+	public Eselon getEselon() {
+		return pegawai.getEselon();
+	}
+
+	@Transient
+	public String getNama() {
+		return pegawai.getNama();
+	}
+
+	@Transient
+	public String getNomor() {
+		return suratTugas.getNomor();
+	}
+
+	@Transient
+	public Date getTanggal() {
+		return suratTugas.getTanggal();
+	}
+
+	@Transient
+	public int getJumlahHari() {
+		return suratTugas.getJumlahHari();
+	}
+
+	@Transient
+	public String getTujuan() {
+		return suratTugas.getTujuan();
+	}
+
+	@Transient
+	public String getMaksud() {
+		return suratTugas.getMaksud();
 	}
 
 	@Override

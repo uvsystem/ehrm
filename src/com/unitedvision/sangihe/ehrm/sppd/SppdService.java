@@ -1,5 +1,6 @@
 package com.unitedvision.sangihe.ehrm.sppd;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
@@ -16,12 +17,16 @@ public interface SppdService {
 	Sppd tambahPengikut(Sppd sppd, List<Pengikut> daftarPengikut);
 
 	void hapus(Sppd sppd);
-	void hapus(long idSppd);
+	void hapus(Long id);
 
 	Sppd get(long idSppd);
 	Sppd get(String nomorSppd);
 
 	List<Sppd> getByPegawai(Pegawai pegawai);
 	List<Sppd> getByPegawai(String nip);
+	List<Sppd> getByTanggal(Date awal, Date akhir);
+	List<Sppd> getUnitKerja(String kode);
 
+	List<Sppd> cari(String kode);
+	
 }

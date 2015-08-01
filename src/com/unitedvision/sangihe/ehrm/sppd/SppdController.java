@@ -1,5 +1,6 @@
 package com.unitedvision.sangihe.ehrm.sppd;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unitedvision.sangihe.ehrm.ApplicationException;
+import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.ListEntityRestMessage;
 import com.unitedvision.sangihe.ehrm.RestMessage;
 
@@ -26,6 +28,7 @@ public class SppdController {
 	@RequestMapping(method = RequestMethod.POST, value = "/{nip}/suratTugas/{nomor}")
 	@ResponseBody
 	public RestMessage simpan(@PathVariable String nip, @PathVariable String nomor, @RequestBody Sppd.Message message) throws ApplicationException, PersistenceException {
+		nomor = nomor.replaceAll("-", "/");
 		sppdService.simpan(nip, nomor, message);
 
 		return RestMessage.success();
@@ -34,6 +37,7 @@ public class SppdController {
 	@RequestMapping(method = RequestMethod.POST, value = "/{nomor}/pengikut")
 	@ResponseBody
 	public RestMessage tambahPengikut(@PathVariable String nomor, @RequestBody Pengikut.Message message) throws ApplicationException, PersistenceException {
+		nomor = nomor.replaceAll("-", "/");
 		sppdService.tambahPengikut(nomor, new Pengikut(message));
 
 		return RestMessage.success();
@@ -45,5 +49,40 @@ public class SppdController {
 		List<Sppd> daftarSppd = sppdService.getByPegawai(nip);
 		
 		return ListEntityRestMessage.createListSppd(daftarSppd);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/awal/{awal}/akhir/{akhir}")
+	@ResponseBody
+	public ListEntityRestMessage<Sppd> get(@PathVariable String awal, @PathVariable String akhir) throws ApplicationException, PersistenceException {
+		Date tanggalAwal = DateUtil.getDate(awal, "-");
+		Date tanggalAkhir = DateUtil.getDate(akhir, "-");
+		
+		List<Sppd> daftarSppd = sppdService.getByTanggal(tanggalAwal, tanggalAkhir);
+		
+		return ListEntityRestMessage.createListSppd(daftarSppd);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/satker/{kode}")
+	@ResponseBody
+	public ListEntityRestMessage<Sppd> getByUnitKerja(@PathVariable String kode) throws ApplicationException, PersistenceException {
+		List<Sppd> daftarSppd = sppdService.getUnitKerja(kode);
+		
+		return ListEntityRestMessage.createListSppd(daftarSppd);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/search/{keyword}")
+	@ResponseBody
+	public ListEntityRestMessage<Sppd> search(@PathVariable String kode) throws ApplicationException, PersistenceException {
+		List<Sppd> daftarSppd = sppdService.cari(kode);
+		
+		return ListEntityRestMessage.createListSppd(daftarSppd);
+	}
+
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	@ResponseBody
+	public RestMessage delete(@PathVariable Long id) throws ApplicationException, PersistenceException {
+		sppdService.hapus(id);
+		
+		return RestMessage.success();
 	}
 }

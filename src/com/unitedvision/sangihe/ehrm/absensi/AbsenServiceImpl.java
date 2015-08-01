@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -299,9 +300,14 @@ public class AbsenServiceImpl implements AbsenService {
 	@Transactional(readOnly = false)
 	public List<TugasLuar> tambahTugasLuar(Sppd sppd) {
 		Date tanggalBerangkat = sppd.getTanggalBerangkat();
-		Date tanggalKembali = sppd.getTanggalKembali();
-		
-		List<Kalendar> daftarTanggal = kalendarRepository.findByTanggalBetween(tanggalBerangkat, tanggalKembali);
+
+		List<Kalendar> daftarTanggal;
+		try {
+			daftarTanggal = kalendarRepository.findByTanggalGreaterThanEqual(tanggalBerangkat, new PageRequest(1, sppd.getJumlahHari()));
+		} catch (PersistenceException e) {
+			throw new PersistenceException("Silahkan masukan tanggal pada modul kalendar");
+		}
+
 		List<TugasLuar> daftarTugasLuar = new ArrayList<>();
 		for (Kalendar kalendar : daftarTanggal) {
 			daftarTugasLuar.add(new TugasLuar(sppd, kalendar));
@@ -477,22 +483,37 @@ public class AbsenServiceImpl implements AbsenService {
 		try {
 			List<Hadir> hadir = getHadir(unitKerja, date, date);
 			absen.addAll(hadir);
-		} catch (PersistenceException e) { }
+		} catch (PersistenceException e) {
+			System.out.println(String.format("LOG: Tidak bisa mengambil data absen hadir. %s", e.getMessage()));
+		}
 		
 		try {
 			List<Sakit> sakit = getSakit(unitKerja, date, date);
 			absen.addAll(sakit);
-		} catch (PersistenceException e) { }
+		} catch (PersistenceException e) {
+			System.out.println(String.format("LOG: Tidak bisa mengambil data absen sakit. %s", e.getMessage()));
+		}
 
 		try {
 			List<Izin> izin = getIzin(unitKerja, date, date);
 			absen.addAll(izin);
-		} catch (PersistenceException e) { }
+		} catch (PersistenceException e) {
+			System.out.println(String.format("LOG: Tidak bisa mengambil data absen izin. %s", e.getMessage()));
+		}
 		
 		try {
 			List<Cuti> cuti = getCuti(unitKerja, date, date);
 			absen.addAll(cuti);
-		} catch (PersistenceException e) { }
+		} catch (PersistenceException e) {
+			System.out.println(String.format("LOG: Tidak bisa mengambil data absen cuti. %s", e.getMessage()));
+		}
+		
+		try {
+			List<TugasLuar> tugasLuar = getTugasLuar(unitKerja, date, date);
+			absen.addAll(tugasLuar);
+		} catch (PersistenceException e) {
+			System.out.println(String.format("LOG: Tidak bisa mengambil data absen tugas luar. %s", e.getMessage()));
+		}
 		
 		return absen;
 	}
@@ -524,22 +545,37 @@ public class AbsenServiceImpl implements AbsenService {
 		try {
 			List<Hadir> hadir = getHadir(pegawai, DateUtil.getFirstDate(), DateUtil.getLastDate());
 			absen.addAll(hadir);
-		} catch (PersistenceException e) { }
+		} catch (PersistenceException e) {
+			System.out.println(String.format("LOG: Tidak bisa mengambil data absen hadir. %s", e.getMessage()));
+		}
 		
 		try {
 			List<Sakit> sakit = getSakit(pegawai, DateUtil.getFirstDate(), DateUtil.getLastDate());
 			absen.addAll(sakit);
-		} catch (PersistenceException e) { }
+		} catch (PersistenceException e) {
+			System.out.println(String.format("LOG: Tidak bisa mengambil data absen sakit. %s", e.getMessage()));
+		}
 
 		try {
 			List<Izin> izin = getIzin(pegawai, DateUtil.getFirstDate(), DateUtil.getLastDate());
 			absen.addAll(izin);
-		} catch (PersistenceException e) { }
+		} catch (PersistenceException e) {
+			System.out.println(String.format("LOG: Tidak bisa mengambil data absen izin. %s", e.getMessage()));
+		}
 		
 		try {
 			List<Cuti> cuti = getCuti(pegawai, DateUtil.getFirstDate(), DateUtil.getLastDate());
 			absen.addAll(cuti);
-		} catch (PersistenceException e) { }
+		} catch (PersistenceException e) {
+			System.out.println(String.format("LOG: Tidak bisa mengambil data absen cuti. %s", e.getMessage()));
+		}
+		
+		try {
+			List<TugasLuar> tugasLuar = getTugasLuar(pegawai, DateUtil.getFirstDate(), DateUtil.getLastDate());
+			absen.addAll(tugasLuar);
+		} catch (PersistenceException e) {
+			System.out.println(String.format("LOG: Tidak bisa mengambil data absen tugas luar. %s", e.getMessage()));
+		}
 		
 		return absen;
 	}

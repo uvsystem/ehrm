@@ -1,11 +1,13 @@
 package com.unitedvision.sangihe.ehrm.sppd;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.absensi.AbsenService;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
@@ -37,10 +39,13 @@ public class SppdServiceImpl implements SppdService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public Sppd simpan(String nip, String nomor, Message message) {
 		PemegangTugas pemegangTugas = pemegangTugasRepository.findByPegawai_NipAndSuratTugas_Nomor(nip, nomor);
 		
-		return simpan(new Sppd(message, pemegangTugas));
+		Sppd sppd = new Sppd(message, pemegangTugas);
+		
+		return simpan(sppd);
 	}
 	
 	@Override
@@ -69,6 +74,7 @@ public class SppdServiceImpl implements SppdService {
 	}
 	
 	@Override
+	@Transactional(readOnly = false)
 	public Sppd tambahPengikut(String nomor, Pengikut pengikut) {
 		Sppd sppd = get(nomor);
 		
@@ -83,9 +89,9 @@ public class SppdServiceImpl implements SppdService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void hapus(long idSppd) {
-		sppdRepository.delete(idSppd);
-	}
+	public void hapus(Long id) {
+		sppdRepository.delete(id);
+	}	
 
 	@Override
 	public Sppd get(long idSppd) {
@@ -107,6 +113,26 @@ public class SppdServiceImpl implements SppdService {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
 		return getByPegawai(pegawai);
+	}
+
+	@Override
+	public List<Sppd> getByTanggal(Date awal, Date akhir) {
+		return sppdRepository.findByTanggalBerangkatBetween(awal, akhir);
+	}
+
+	@Override
+	public List<Sppd> getUnitKerja(String kode) {
+		int year = DateUtil.getYear();
+		Date awal = DateUtil.getFirstDate(year);
+		Date akhir = DateUtil.getLastDate(year);
+
+		return sppdRepository.findByPemegangTugas_Pegawai_UnitKerja_SingkatanAndTanggalBerangkatBetween(kode, awal, akhir);
+	}
+	
+	@Override
+	public List<Sppd> cari(String kode) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

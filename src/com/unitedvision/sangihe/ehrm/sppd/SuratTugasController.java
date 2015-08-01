@@ -67,6 +67,7 @@ public class SuratTugasController {
 	@RequestMapping(method = RequestMethod.PUT, value = "/{nomor}/terima")
 	@ResponseBody
 	public RestMessage terima(@PathVariable String nomor) throws ApplicationException, PersistenceException {
+		nomor = nomor.replaceAll("-", "/");
 		suratTugasService.izinkanPengajuan(nomor);
 		
 		return RestMessage.success();
@@ -75,6 +76,7 @@ public class SuratTugasController {
 	@RequestMapping(method = RequestMethod.PUT, value = "/{nomor}/tolak")
 	@ResponseBody
 	public RestMessage tolak(@PathVariable String nomor) throws ApplicationException, PersistenceException {
+		nomor = nomor.replaceAll("-", "/");
 		suratTugasService.tolakPengajuan(nomor);
 		
 		return RestMessage.success();

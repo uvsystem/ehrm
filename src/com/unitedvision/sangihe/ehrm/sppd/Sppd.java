@@ -19,13 +19,8 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
-import com.unitedvision.sangihe.ehrm.NullCollectionException;
 import com.unitedvision.sangihe.ehrm.absensi.TugasLuar;
-import com.unitedvision.sangihe.ehrm.simpeg.NoJabatanException;
-import com.unitedvision.sangihe.ehrm.simpeg.NoPangkatException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
-import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
-import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 
 @Entity
 @Table(name = "sppd")
@@ -61,12 +56,15 @@ public class Sppd {
 		setKodeRekening(message.getKodeRekening());
 		setModaTransportasi(message.getModaTransportasi());
 		setTanggalBerangkat(message.getTanggalBerangkat());
-		
-		for (Pengikut.Message pm : message.getDaftarPengikut()) {
-			Pengikut pengikut = new Pengikut(pm);
-			pengikut.setSppd(this);
-			
-			addPengikut(pengikut);
+		setId(message.getId());
+
+		if (message.getDaftarPengikut() != null) {
+			for (Pengikut.Message pm : message.getDaftarPengikut()) {
+				Pengikut pengikut = new Pengikut(pm);
+				pengikut.setSppd(this);
+				
+				addPengikut(pengikut);
+			}
 		}
 	}
 	
@@ -225,80 +223,58 @@ public class Sppd {
 	public void setBerangkat(String berangkat) {
 		tanggalBerangkat = DateUtil.getDate(berangkat);
 	}
-
-	@JsonIgnore
-	@Transient
-	public Date getTanggalKembali() {
-		return DateUtil.add(tanggalBerangkat, getJumlahHari() - 1);
-	}
-
-	@Transient
-	public String getKembali() {
-		return DateUtil.toStringDate(getTanggalKembali(), "-");
-	}
-
-	public void setKembali(String kembali) {
-		// do nothing
-	}
 	
 	@Transient
 	public int getJumlahHari() {
-		SuratTugas suratTugas = getPemegangTugas().getSuratTugas();
-		
-		return suratTugas.getJumlahHari();
+		return pemegangTugas.getJumlahHari();
+	}
+
+	@Transient
+	public String getNama() {
+		return pemegangTugas.getNama();
 	}
 	
-	public class Detail {
-
-		private Pegawai getPegawai() {
-			return pemegangTugas.getPegawai();
-		}
-		
-		private SuratTugas getSuratTugas() {
-			return pemegangTugas.getSuratTugas();
-		}
-		
-		public String getNama() {
-			return getPegawai().getNama();
-		}
-		
-		public String getNip() {
-			return getPegawai().getNip();
-		}
-		
-		public String getPangkat() throws NullCollectionException, NoPangkatException {
-			Pangkat pangkat = getPegawai().getPangkat();
-			String nama = pangkat.getNama();
-			String namaPangkat = pangkat.name();
-			
-			return String.format("%s, %s", nama, namaPangkat);
-		}
-		
-		public String getJabatan() throws NullCollectionException, NoJabatanException {
-			return getPegawai().getJabatan().getNama();
-		}
-		
-		public String getSatuanKerja() {
-			UnitKerja unitKerja = getPegawai().getUnitKerja();
-			return unitKerja.getNama();
-		}
-		
-		public String getMaksud() {
-			return getSuratTugas().getMaksud();
-		}
-		
-		public String getNomorSuratTugas() {
-			return getSuratTugas().getNomor();
-		}
-		
-		public String getTanggalSuratTugas() {
-			return DateUtil.toStringDate(getSuratTugas().getTanggal(), "-");
-		}
-
+	@Transient
+	public String getNip() {
+		return pemegangTugas.getNip();
+	}
+	
+	@Transient
+	public String getPangkat() {
+		Pangkat pangkat = pemegangTugas.getPangkat();
+		if (pangkat != null )
+			return pangkat.name();
+		return "";
+	}
+	
+	@Transient
+	public String getJabatan() {
+		return pemegangTugas.getJabatan();
+	}
+	
+	@Transient
+	public String getSatuanKerja() {
+		return pemegangTugas.getUnitKerja().getNama();
+	}
+	
+	@Transient
+	public String getMaksud() {
+		return pemegangTugas.getMaksud();
+	}
+	
+	@Transient
+	public String getNomorSuratTugas() {
+		return pemegangTugas.getNomor();
+	}
+	
+	@Transient
+	public String getTanggalSuratTugas() {
+		return DateUtil.toStringDate(pemegangTugas.getTanggal(), "-");
 	}
 	
 	public static class Message {
-		
+
+		private Long id;
 		private String nomor;
 		private String tanggalBerangkatStr;
 		private String modaTransportasi;
@@ -306,6 +282,14 @@ public class Sppd {
 		private String nomorDpa;
 		private String tingkat;
 		private List<Pengikut.Message> daftarPengikut;
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
 
 		@JsonIgnore
 		public Date getTanggalBerangkat() {
