@@ -89,7 +89,7 @@ public class SppdControllerTest {
 		List<Pegawai> daftarPegawai = new ArrayList<>();
 		daftarPegawai.add(pegawai);
 		
-		suratTugas = suratTugasService.simpan(suratTugas, daftarPegawai);
+		suratTugas = suratTugasService.ajukan(suratTugas, daftarPegawai);
 		
 		kalendarService.tambah(DateUtil.getDate(2015, Month.JANUARY, 1));
 		kalendarService.tambah(DateUtil.getDate(2015, Month.JANUARY, 2));

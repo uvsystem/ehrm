@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
 @Entity
@@ -35,6 +36,7 @@ public class PemegangTugas {
 		this.id = id;
 	}
 
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "surat_tugas", nullable = false)
 	public SuratTugas getSuratTugas() {

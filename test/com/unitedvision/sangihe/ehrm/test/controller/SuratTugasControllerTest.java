@@ -103,7 +103,7 @@ public class SuratTugasControllerTest {
 		List<Pegawai> daftarPegawai = new ArrayList<>();
 		daftarPegawai.add(pegawai);
 		
-		suratTugas= suratTugasService.simpan(suratTugas, daftarPegawai);
+		suratTugas= suratTugasService.ajukan(suratTugas, daftarPegawai);
 		
 		assertNotEquals(0, suratTugas.getId());
 	}

@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 
@@ -55,6 +54,7 @@ public class SuratTugas {
 		jumlahHari = message.getJumlahHari();
 		tujuan = message.getTujuan();
 		maksud = message.getMaksud();
+		id = message.getId();
 	}
 
 	@Id
@@ -121,7 +121,6 @@ public class SuratTugas {
 		this.status = status;
 	}
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "suratTugas", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	public List<PemegangTugas> getDaftarPemegangTugas() {
 		return daftarPemegangTugas;
@@ -156,6 +155,7 @@ public class SuratTugas {
 
 	public static class Message {
 
+		private Long id;
 		private List<String> daftarPegawai;
 		private String nomor;
 		private Integer jumlahHari;
@@ -167,6 +167,14 @@ public class SuratTugas {
 			daftarPegawai = new ArrayList<>();
 		}
 		
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
 		public List<String> getDaftarPegawai() {
 			return daftarPegawai;
 		}
@@ -264,6 +272,13 @@ public class SuratTugas {
 		} else if (!tujuan.equals(other.tujuan))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "SuratTugas [id=" + id + ", tanggal=" + tanggal + ", status="
+				+ status + ", nomor=" + nomor + ", jumlahHari=" + jumlahHari
+				+ ", tujuan=" + tujuan + ", maksud=" + maksud + "]";
 	}
 
 }

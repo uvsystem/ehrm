@@ -214,6 +214,12 @@ public class DateUtil {
 		
 		return toDate(firstDate);
 	}
+	
+	public static Date getFirstDate(int year) {
+		LocalDate firstDate = LocalDate.of(year, Month.JANUARY, 1);
+		
+		return toDate(firstDate);
+	}
 
 	public static Date getLastDate() {
 		LocalDate localDate = LocalDate.now();
@@ -227,6 +233,12 @@ public class DateUtil {
 	
 	public static Date getLastDate(Month month, int year) {
 		LocalDate firstDate = LocalDate.of(year, month, getLastDay(month, year));
+		
+		return toDate(firstDate);
+	}
+	
+	public static Date getLastDate(int year) {
+		LocalDate firstDate = LocalDate.of(year, Month.DECEMBER, 31);
 		
 		return toDate(firstDate);
 	}
@@ -275,6 +287,10 @@ public class DateUtil {
 		LocalDate localDate = date.toLocalDate();
 		
 		return localDate.getYear();
+	}
+	
+	public static int getYear() {
+		return getYear(getDate());
 	}
 
 	public static int getDay(Date date) {

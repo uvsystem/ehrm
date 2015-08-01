@@ -2,6 +2,7 @@ package com.unitedvision.sangihe.ehrm.sppd;
 
 import java.sql.Date;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,32 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 	
 	@Override
 	@Transactional(readOnly = false)
-	public SuratTugas simpan(SuratTugas suratTugas) {
+	public SuratTugas tambah(SuratTugas suratTugas) {
+		suratTugas.setStatus(Status.DITERIMA);
+		
+		return suratTugasRepository.save(suratTugas);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public SuratTugas tambah(SuratTugas suratTugas, List<Pegawai> daftarPegawai) {
+		suratTugas.addPemegangTugas(daftarPegawai);
+		suratTugas.setStatus(Status.DITERIMA);
+		
+		return suratTugasRepository.save(suratTugas);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public SuratTugas tambahWithNip(SuratTugas suratTugas, List<String> daftarPegawai) {
+		List<Pegawai> daftarPemegangTugas = pegawaiRepository.findByNipIn(daftarPegawai);
+		
+		return tambah(suratTugas, daftarPemegangTugas);
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public SuratTugas ajukan(SuratTugas suratTugas) {
 		suratTugas.setStatus(Status.PENDING);
 		
 		return suratTugasRepository.save(suratTugas);
@@ -33,7 +59,7 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 
 	@Override
 	@Transactional(readOnly = false)
-	public SuratTugas simpan(SuratTugas suratTugas, List<Pegawai> daftarPegawai) {
+	public SuratTugas ajukan(SuratTugas suratTugas, List<Pegawai> daftarPegawai) {
 		suratTugas.addPemegangTugas(daftarPegawai);
 		suratTugas.setStatus(Status.PENDING);
 		
@@ -41,10 +67,11 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 	}
 
 	@Override
-	public SuratTugas simpanWithNip(SuratTugas suratTugas, List<String> daftarPegawai) {
+	@Transactional(readOnly = false)
+	public SuratTugas ajukanWithNip(SuratTugas suratTugas, List<String> daftarPegawai) {
 		List<Pegawai> daftarPemegangTugas = pegawaiRepository.findByNipIn(daftarPegawai);
 		
-		return simpan(suratTugas, daftarPemegangTugas);
+		return ajukan(suratTugas, daftarPemegangTugas);
 	}
 	
 	@Override
@@ -140,6 +167,41 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 		Date duaTahunLalu = DateUtil.getDate(tahun, Month.JANUARY, 1);
 
 		return suratTugasRepository.findByStatusAndTanggalBetween(status, duaTahunLalu, sekarang);
+	}
+
+	@Override
+	public List<SuratTugas> get(Date tanggalAwal, Date tanggalAkhir) {
+		return suratTugasRepository.findByTanggalBetween(tanggalAwal, tanggalAkhir);
+	}
+
+	@Override
+	public List<SuratTugas> getBySatker(String kode) {
+		int year = DateUtil.getYear();
+		Date awal = DateUtil.getFirstDate(year);
+		Date akhir = DateUtil.getLastDate(year);
+
+		List<?> list =  suratTugasRepository.findBySatuanKerja(kode, awal, akhir);
+		List<SuratTugas> daftarSuratTugas = new ArrayList<>();
+		
+		for (Object inner : list) {
+			for (Object object: (Object[])inner) {
+				if (object instanceof SuratTugas)
+					daftarSuratTugas.add((SuratTugas)object);
+			}
+		}
+		
+		return daftarSuratTugas;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void hapus(Long id) {
+		suratTugasRepository.delete(id);
+	}
+
+	@Override
+	public List<SuratTugas> cari(String keyword) {
+		return suratTugasRepository.findByNomorContaining(keyword);
 	}
 
 }

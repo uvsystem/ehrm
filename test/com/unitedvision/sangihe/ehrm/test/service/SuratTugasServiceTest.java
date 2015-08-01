@@ -84,7 +84,7 @@ public class SuratTugasServiceTest {
 		List<Pegawai> daftarPegawai = new ArrayList<>();
 		daftarPegawai.add(pegawai);
 		
-		suratTugas= suratTugasService.simpan(suratTugas, daftarPegawai);
+		suratTugas= suratTugasService.ajukan(suratTugas, daftarPegawai);
 		List<PemegangTugas> list = suratTugas.getDaftarPemegangTugas();
 
 		assertNotEquals(0, list.size());

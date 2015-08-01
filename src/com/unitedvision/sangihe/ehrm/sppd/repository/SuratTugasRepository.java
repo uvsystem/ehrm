@@ -19,4 +19,11 @@ public interface SuratTugasRepository extends JpaRepository<SuratTugas, Long> {
 
 	List<SuratTugas> findByStatusAndTanggalBetween(Status status,Date sekarang, Date duaTahunLalu);
 
+	List<SuratTugas> findByTanggalBetween(Date tanggalAwal, Date tanggalAkhir);
+
+	@Query("FROM PemegangTugas pt JOIN pt.suratTugas st WHERE pt.pegawai.unitKerja.singkatan = ?1 AND st.tanggal BETWEEN ?2 AND ?3")
+	List<SuratTugas> findBySatuanKerja(String kode, Date awal, Date akhir);
+
+	List<SuratTugas> findByNomorContaining(String keyword);
+
 }
