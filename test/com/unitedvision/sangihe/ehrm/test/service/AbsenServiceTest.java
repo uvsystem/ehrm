@@ -66,15 +66,15 @@ public class AbsenServiceTest {
 	@Before
 	public void setup() {
 		UnitKerja unitKerja = new UnitKerja();
-		unitKerja.setNama("Pengelolaan Data Elektronik");
-		unitKerja.setSingkatan("BPDE");
+		unitKerja.setNama("Unit Kerja");
+		unitKerja.setSingkatan("UK");
 		unitKerja.setTipe(TipeUnitKerja.BAGIAN);
 		
 		unitKerjaService.simpan(unitKerja);
 
 		pegawai = new Pegawai();
-		pegawai.setNik("7171070512910002");
-		pegawai.setNip("090213016");
+		pegawai.setNik("7171070512910000");
+		pegawai.setNip("090213010");
 		pegawai.setNama("Deddy Christoper Kakunsi");
 		pegawai.setPassword("dkakunsi");
 		pegawai.setTanggalLahir(DateUtil.getDate("12-05-1991"));

@@ -102,6 +102,11 @@ public class PegawaiServiceImpl implements PegawaiService {
 	public List<Pegawai> get(Eselon eselon) {
 		return pegawaiRepository.findByJabatan_Eselon(eselon);
 	}
+
+	@Override
+	public List<Pegawai> get() {
+		return pegawaiRepository.findAll();
+	}
 	
 	@Override
 	public List<Pegawai> cari(String keyword) {

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
+import com.unitedvision.sangihe.ehrm.ApplicationException;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
@@ -94,5 +95,11 @@ public interface AbsenService {
 	List<Cuti> getCuti(String nip, Date tanggalAwal, Date tanggalAkhir);
 	List<Cuti> getCuti(UnitKerja unitKerja, Date tanggalAwal, Date tanggalAkhir);
 	List<Cuti> getCuti(Long idUnitKerja, Date tanggalAwal, Date tanggalAkhir);
+
+	List<Absen> find(String kode, Date date);
+
+	void hapus(Long id, String status) throws ApplicationException;
+
+	List<Absen> cari(String keyword);
 
 }

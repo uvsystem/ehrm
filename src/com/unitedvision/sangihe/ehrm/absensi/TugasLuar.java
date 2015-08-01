@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
 
@@ -58,5 +59,11 @@ public class TugasLuar extends Absen {
 		} else if (!sppd.equals(other.sppd))
 			return false;
 		return true;
+	}
+
+	@Override
+	@Transient
+	public String getTipe() {
+		return "TUGAS LUAR";
 	}
 }

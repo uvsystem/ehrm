@@ -3,6 +3,7 @@ package com.unitedvision.sangihe.ehrm.absensi;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("CUTI")
@@ -43,6 +44,12 @@ public class Cuti extends Absen {
 		} else if (!jenisCuti.equals(other.jenisCuti))
 			return false;
 		return true;
+	}
+
+	@Override
+	@Transient
+	public String getTipe() {
+		return "CUTI";
 	}
 
 }

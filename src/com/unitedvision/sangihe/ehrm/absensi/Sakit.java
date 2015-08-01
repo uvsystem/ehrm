@@ -3,6 +3,7 @@ package com.unitedvision.sangihe.ehrm.absensi;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("SAKIT")
@@ -43,6 +44,12 @@ public class Sakit extends Absen {
 		} else if (!penyakit.equals(other.penyakit))
 			return false;
 		return true;
+	}
+
+	@Override
+	@Transient
+	public String getTipe() {
+		return "SAKIT";
 	}
 
 }

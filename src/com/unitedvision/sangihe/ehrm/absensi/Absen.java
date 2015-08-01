@@ -172,4 +172,6 @@ public abstract class Absen {
 				+ pegawai + "]";
 	}
 
+	@Transient
+	public abstract String getTipe();
 }

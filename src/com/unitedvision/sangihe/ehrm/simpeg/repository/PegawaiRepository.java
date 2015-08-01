@@ -31,4 +31,7 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long> {
 
 	List<Pegawai> findByNipIn(List<String> daftarPegawai);
 
+	@Query("FROM Pegawai pg WHERE pg.nip = ?1 OR pg.penduduk.nama = ?1")
+	Pegawai findByNipOrPenduduk_Nama(String keyword);
+
 }

@@ -55,6 +55,14 @@ public class PegawaiController {
 		
 		return ListEntityRestMessage.createListPegawai(daftarPegawai);
 	}
+	
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	public ListEntityRestMessage<Pegawai> findAll() throws ApplicationException, PersistenceException {
+		List<Pegawai> daftarPegawai = pegawaiService.get();
+		
+		return ListEntityRestMessage.createListPegawai(daftarPegawai);
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/search/{keyword}")
 	@ResponseBody

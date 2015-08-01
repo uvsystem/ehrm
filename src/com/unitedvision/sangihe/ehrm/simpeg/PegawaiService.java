@@ -21,6 +21,8 @@ public interface PegawaiService {
 	List<Pegawai> get(Pangkat pangkat);
 	List<Pegawai> get(Eselon eselon);
 
+	List<Pegawai> get();
+
 	List<Pegawai> cari(String keyword);
 
 	Pegawai mutasi(Pegawai pegawai, UnitKerja unitKerja) throws IdenticRelationshipException;

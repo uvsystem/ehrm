@@ -3,6 +3,7 @@ package com.unitedvision.sangihe.ehrm.absensi;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue("IZIN")
@@ -42,6 +43,12 @@ public class Izin extends Absen {
 		} else if (!alasan.equals(other.alasan))
 			return false;
 		return true;
+	}
+
+	@Override
+	@Transient
+	public String getTipe() {
+		return "IZIN";
 	}
 
 }

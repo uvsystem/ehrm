@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unitedvision.sangihe.ehrm.ApplicationException;
 import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.absensi.Hadir.Detail;
 import com.unitedvision.sangihe.ehrm.absensi.Hadir.Jenis;
@@ -51,18 +52,41 @@ public class AbsenServiceImpl implements AbsenService {
 	private UnitKerjaRepository unitKerjaRepository;
 
 	@Override
+	@Transactional(readOnly = false)
 	public Hadir hadir(String nip, Date tanggal, Detail detail) throws AbsenException {
 		Hadir hadir = getHadir(nip, tanggal);
 		
-		if (hadir.getId() != 0)
-			throw new AbsenException("Absen sudah terdaftar");
-		
-		hadir.setPagi(detail.getPagi());
-		hadir.setPengecekanPertama(detail.pengecekanPertama());
-		hadir.setPengecekanKedua(detail.getPengecekanKedua());
-		hadir.setSore(detail.getSore());
-		
-		return hadirRepository.save(hadir);
+		if (hadir.getId() != 0) {
+			boolean perubahan = false;
+			
+			if (hadir.getPengecekanPertama() == null && detail.getPengecekanPertama() != null ) {
+				perubahan = true;
+				
+				hadir = pengecekanSatu(nip, tanggal, detail.getPengecekanPertama());
+			}
+
+			if (hadir.getPengecekanKedua() == null && detail.getPengecekanKedua() != null) {
+				perubahan = true;
+				hadir = pengecekanDua(nip, tanggal, detail.getPengecekanKedua());
+			}
+
+			if (hadir.getSore() == null && detail.getSore() != null) {
+				perubahan = true;
+				hadir = apelSore(nip, tanggal, detail.getSore());
+			}
+
+			if (!perubahan)
+				throw new AbsenException("Absen sudah terdaftar");
+			
+			return hadir;
+		} else {
+			hadir.setPagi(detail.getPagi());
+			hadir.setPengecekanPertama(detail.getPengecekanPertama());
+			hadir.setPengecekanKedua(detail.getPengecekanKedua());
+			hadir.setSore(detail.getSore());
+			
+			return hadirRepository.save(hadir);
+		}
 	}
 	
 	/**
@@ -149,6 +173,7 @@ public class AbsenServiceImpl implements AbsenService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public List<Hadir> apelPagi(List<Absen.Detail> daftarAbsen) throws AbsenException {
 		List<Hadir> daftarHadir = createDaftarHadir(Jenis.PAGI, daftarAbsen);
 		
@@ -185,6 +210,7 @@ public class AbsenServiceImpl implements AbsenService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public List<Hadir> pengecekanSatu(List<Absen.Detail> daftarAbsen) throws AbsenException {
 		List<Hadir> daftarHadir = createDaftarHadir(Jenis.PENGECEKAN_SATU, daftarAbsen);
 		
@@ -216,6 +242,7 @@ public class AbsenServiceImpl implements AbsenService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public List<Hadir> pengecekanDua(List<Absen.Detail> daftarAbsen) throws AbsenException {
 		List<Hadir> daftarHadir = createDaftarHadir(Jenis.PENGECEKAN_DUA, daftarAbsen);
 		
@@ -247,6 +274,7 @@ public class AbsenServiceImpl implements AbsenService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public List<Hadir> apelSore(List<Absen.Detail> daftarAbsen) throws AbsenException {
 		List<Hadir> daftarHadir = createDaftarHadir(Jenis.SORE, daftarAbsen);
 		
@@ -439,5 +467,80 @@ public class AbsenServiceImpl implements AbsenService {
 		UnitKerja unitKerja = unitKerjaRepository.findOne(idUnitKerja);
 		
 		return getCuti(unitKerja, tanggalAwal, tanggalAkhir);
+	}
+
+	@Override
+	public List<Absen> find(String kode, Date date) {
+		UnitKerja unitKerja = unitKerjaRepository.findBySingkatan(kode);
+		List<Absen> absen = new ArrayList<>();
+
+		try {
+			List<Hadir> hadir = getHadir(unitKerja, date, date);
+			absen.addAll(hadir);
+		} catch (PersistenceException e) { }
+		
+		try {
+			List<Sakit> sakit = getSakit(unitKerja, date, date);
+			absen.addAll(sakit);
+		} catch (PersistenceException e) { }
+
+		try {
+			List<Izin> izin = getIzin(unitKerja, date, date);
+			absen.addAll(izin);
+		} catch (PersistenceException e) { }
+		
+		try {
+			List<Cuti> cuti = getCuti(unitKerja, date, date);
+			absen.addAll(cuti);
+		} catch (PersistenceException e) { }
+		
+		return absen;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void hapus(Long id, String status) throws ApplicationException {
+		switch(status) {
+			case "HADIR": hadirRepository.delete(id);
+				break;
+			case "SAKIT": sakitRepository.delete(id);
+				break;
+			case "IZIN": izinRepository.delete(id);
+				break;
+			case "CUTI": cutiRepository.delete(id);
+				break;
+			case "TUGAS LUAR": tugasLuarRepository.delete(id);
+				break;
+			default:
+				throw new ApplicationException("Tipe absen tidak diketahui");
+		}
+	}
+
+	@Override
+	public List<Absen> cari(String keyword) {
+		Pegawai pegawai = pegawaiRepository.findByNipOrPenduduk_Nama(keyword);
+		List<Absen> absen = new ArrayList<>();
+
+		try {
+			List<Hadir> hadir = getHadir(pegawai, DateUtil.getFirstDate(), DateUtil.getLastDate());
+			absen.addAll(hadir);
+		} catch (PersistenceException e) { }
+		
+		try {
+			List<Sakit> sakit = getSakit(pegawai, DateUtil.getFirstDate(), DateUtil.getLastDate());
+			absen.addAll(sakit);
+		} catch (PersistenceException e) { }
+
+		try {
+			List<Izin> izin = getIzin(pegawai, DateUtil.getFirstDate(), DateUtil.getLastDate());
+			absen.addAll(izin);
+		} catch (PersistenceException e) { }
+		
+		try {
+			List<Cuti> cuti = getCuti(pegawai, DateUtil.getFirstDate(), DateUtil.getLastDate());
+			absen.addAll(cuti);
+		} catch (PersistenceException e) { }
+		
+		return absen;
 	}
 }

@@ -5,6 +5,7 @@ import java.sql.Time;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
@@ -107,7 +108,7 @@ public class Hadir extends Absen {
 		}
 
 		@JsonIgnore
-		public Time pengecekanPertama() {
+		public Time getPengecekanPertama() {
 			return DateUtil.getTime(cek1Str, ":");
 		}
 
@@ -175,6 +176,12 @@ public class Hadir extends Absen {
 		return "Hadir [Absen=" + super.toString() + ", pagi=" + pagi + ", pengecekanPertama="
 				+ pengecekanPertama + ", pengecekanKedua=" + pengecekanKedua
 				+ ", sore=" + sore + "]";
+	}
+
+	@Override
+	@Transient
+	public String getTipe() {
+		return "HADIR";
 	}
 
 }

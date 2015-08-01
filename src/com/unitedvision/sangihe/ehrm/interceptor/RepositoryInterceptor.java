@@ -59,6 +59,8 @@ public class RepositoryInterceptor {
 			return "Nama aplikasi sudah terdaftar";
 		} else if(message.contains("url_aplikasi")) {
 			return "URL aplikasi sudah terdaftar";
+		} else if(message.contains("kalendar")) {
+			return "Tanggal belum terdaftar sebagai hari kerja";
 		} else {
 			return "Terdapat kesalahan";
 		}

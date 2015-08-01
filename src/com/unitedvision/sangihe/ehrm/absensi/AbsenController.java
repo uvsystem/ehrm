@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unitedvision.sangihe.ehrm.ApplicationException;
 import com.unitedvision.sangihe.ehrm.DateUtil;
+import com.unitedvision.sangihe.ehrm.ListEntityRestMessage;
 import com.unitedvision.sangihe.ehrm.RestMessage;
 import com.unitedvision.sangihe.ehrm.absensi.Absen.Detail;
 
@@ -151,4 +152,29 @@ public class AbsenController {
 		
 		return RestMessage.success();
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/satker/{kode}/tanggal/{tanggal}")
+	@ResponseBody
+	public ListEntityRestMessage<Absen> get(@PathVariable String kode, @PathVariable String tanggal) throws ApplicationException, PersistenceException {
+		List<Absen> listAbsen = absenService.find(kode, DateUtil.getDate(tanggal, "-"));
+		
+		return ListEntityRestMessage.createListAbsen(listAbsen);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/search/{keyword}")
+	@ResponseBody
+	public ListEntityRestMessage<Absen> cari(@PathVariable String keyword) throws ApplicationException, PersistenceException {
+		List<Absen> listAbsen = absenService.cari(keyword);
+		
+		return ListEntityRestMessage.createListAbsen(listAbsen);
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}/status/{status}")
+	@ResponseBody
+	public RestMessage delete(@PathVariable Long id, @PathVariable String status) throws ApplicationException, PersistenceException {
+		absenService.hapus(id, status);
+		
+		return RestMessage.success();
+	}
+	
 }
