@@ -124,7 +124,7 @@ public class Sppd {
 	}
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "sppd", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "sppd", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	public List<TugasLuar> getDaftarAbsen() {
 		return daftarAbsen;
 	}
@@ -272,6 +272,7 @@ public class Sppd {
 		return DateUtil.toStringDate(pemegangTugas.getTanggal(), "-");
 	}
 	
+
 	public static class Message {
 
 		private Long id;

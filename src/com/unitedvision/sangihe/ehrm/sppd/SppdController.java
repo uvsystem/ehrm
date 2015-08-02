@@ -72,8 +72,8 @@ public class SppdController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/search/{keyword}")
 	@ResponseBody
-	public ListEntityRestMessage<Sppd> search(@PathVariable String kode) throws ApplicationException, PersistenceException {
-		List<Sppd> daftarSppd = sppdService.cari(kode);
+	public ListEntityRestMessage<Sppd> search(@PathVariable String keyword) throws ApplicationException, PersistenceException {
+		List<Sppd> daftarSppd = sppdService.cari(keyword);
 		
 		return ListEntityRestMessage.createListSppd(daftarSppd);
 	}

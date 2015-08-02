@@ -27,14 +27,48 @@ public class DateUtilTest {
 	
 	@Test
 	public void test_get_date_from_string() {
-		String tanggalStr = "01-02-2015";
+		String tanggalStr = "01-05-2015";
 		
 		Date date = DateUtil.getDate(tanggalStr, "-");
-		Date comparer = DateUtil.getDate(2015, Month.JANUARY, 2);
+		Date comparer = DateUtil.getDate(2015, Month.JANUARY, 5);
 		
 		assertEquals(date.getTime(), comparer.getTime());
 		assertEquals(2015, DateUtil.getYear(date));
 		assertEquals(Month.JANUARY, DateUtil.getMonth(date));
-		assertEquals(2, DateUtil.getDay(date));
+		assertEquals(5, DateUtil.getDay(date));
+	}
+	
+	@Test
+	public void test_toString() {
+		Date date = DateUtil.getDate(2015, Month.JANUARY, 5);
+
+		// format: mm/DD/yyyy
+		String fromDate = DateUtil.toStringDate(date, "-");
+		String comparer = "1-5-2015";
+		
+		assertEquals(fromDate, comparer);
+	}
+	
+	@Test
+	public void test_toFormattedString() {
+		Date date = DateUtil.getDate(2015, Month.JANUARY, 5);
+
+		// format: dd/MM/yyyy
+		String fromDate = DateUtil.toFormattedStringDate(date, "-");
+		String comparer = "5-1-2015";
+		
+		assertEquals(fromDate, comparer);
+	}
+	
+	@Test
+	public void test() {
+		String str = "1/5/2015";
+		Date comp = DateUtil.getDate(2015, Month.JANUARY, 5);
+		Date dt = DateUtil.getDate(str, "/");
+		
+		assertEquals(dt, comp);
+		
+		String str2 = DateUtil.toStringDate(dt, "/");
+		assertEquals(str, str2);
 	}
 }

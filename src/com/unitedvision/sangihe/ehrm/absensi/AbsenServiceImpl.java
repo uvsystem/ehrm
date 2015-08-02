@@ -300,10 +300,12 @@ public class AbsenServiceImpl implements AbsenService {
 	@Transactional(readOnly = false)
 	public List<TugasLuar> tambahTugasLuar(Sppd sppd) {
 		Date tanggalBerangkat = sppd.getTanggalBerangkat();
+		
+		System.out.println( String.format("dd/MM/yyyy: %s", DateUtil.toFormattedStringDate(tanggalBerangkat, "/")));
 
 		List<Kalendar> daftarTanggal;
 		try {
-			daftarTanggal = kalendarRepository.findByTanggalGreaterThanEqual(tanggalBerangkat, new PageRequest(1, sppd.getJumlahHari()));
+			daftarTanggal = kalendarRepository.findByTanggalGreaterThanEqual(tanggalBerangkat, new PageRequest(0, sppd.getJumlahHari()));
 		} catch (PersistenceException e) {
 			throw new PersistenceException("Silahkan masukan tanggal pada modul kalendar");
 		}

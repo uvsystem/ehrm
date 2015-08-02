@@ -3,6 +3,8 @@ package com.unitedvision.sangihe.ehrm.sppd;
 import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +33,11 @@ public class SppdServiceImpl implements SppdService {
 	@Override
 	@Transactional(readOnly = false)
 	public Sppd simpan(Sppd sppd) {
+		boolean isNew = (sppd.getId() == 0);
 		sppd = sppdRepository.save(sppd);
 		
-		absenService.tambahTugasLuar(sppd);
+		if (isNew)
+			absenService.tambahTugasLuar(sppd);
 		
 		return sppd;
 	}
@@ -41,7 +45,12 @@ public class SppdServiceImpl implements SppdService {
 	@Override
 	@Transactional(readOnly = false)
 	public Sppd simpan(String nip, String nomor, Message message) {
-		PemegangTugas pemegangTugas = pemegangTugasRepository.findByPegawai_NipAndSuratTugas_Nomor(nip, nomor);
+		PemegangTugas pemegangTugas;
+		try {
+			pemegangTugas = pemegangTugasRepository.findByPegawai_NipAndSuratTugas_Nomor(nip, nomor);
+		} catch (PersistenceException e) {
+			throw new PersistenceException(String.format("Pegawai dengan NIP: %s tidak terdaftar dalam SPT dengan nomor: %s", nip, nomor));
+		}
 		
 		Sppd sppd = new Sppd(message, pemegangTugas);
 		
@@ -130,9 +139,8 @@ public class SppdServiceImpl implements SppdService {
 	}
 	
 	@Override
-	public List<Sppd> cari(String kode) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Sppd> cari(String keyword) {
+		return sppdRepository.findByPegawaiOrNomor(keyword);
 	}
 
 }
