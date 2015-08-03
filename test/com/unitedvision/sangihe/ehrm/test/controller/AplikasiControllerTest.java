@@ -60,15 +60,15 @@ public class AplikasiControllerTest {
 		aplikasiService.simpan(aplikasi);
 		
 		unitKerja = new UnitKerja();
-		unitKerja.setNama("Pengelolaan Data Elektronik");
-		unitKerja.setSingkatan("BPDE");
+		unitKerja.setNama("Unit Kerja");
+		unitKerja.setSingkatan("uk");
 		unitKerja.setTipe(TipeUnitKerja.BAGIAN);
 		
 		unitKerjaService.simpan(unitKerja);
 
 		pegawai = new Pegawai();
-		pegawai.setNik("7171070512910002");
-		pegawai.setNip("090213016");
+		pegawai.setNik("7171070512910000");
+		pegawai.setNip("090213010");
 		pegawai.setNama("Deddy Christoper Kakunsi");
 		pegawai.setPassword("dkakunsi");
 		pegawai.setTanggalLahir(DateUtil.getDate("12-05-1991"));
@@ -152,7 +152,7 @@ public class AplikasiControllerTest {
 	@Test
 	public void test_tambah_operator() throws Exception {
 		this.mockMvc.perform(
-				post("/aplikasi/SIMPEG/operator/090213016")
+				post("/aplikasi/SIMPEG/operator/090213010")
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.message").value("Berhasil"))
@@ -162,7 +162,7 @@ public class AplikasiControllerTest {
 	@Test
 	public void test_tambah_admin() throws Exception {
 		this.mockMvc.perform(
-				post("/aplikasi/SIMPEG/admin/090213016")
+				post("/aplikasi/SIMPEG/admin/090213010")
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.message").value("Berhasil"))
@@ -172,7 +172,7 @@ public class AplikasiControllerTest {
 	@Test
 	public void test_get_operator() throws Exception {
 		this.mockMvc.perform(
-				post("/aplikasi/SIMPEG/operator/090213016")
+				post("/aplikasi/SIMPEG/operator/090213010")
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.message").value("Berhasil"))
@@ -189,7 +189,7 @@ public class AplikasiControllerTest {
 	@Test
 	public void test_get_admin() throws Exception {
 		this.mockMvc.perform(
-				post("/aplikasi/SIMPEG/admin/090213016")
+				post("/aplikasi/SIMPEG/admin/090213010")
 				.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andExpect(jsonPath("$.message").value("Berhasil"))
@@ -202,5 +202,4 @@ public class AplikasiControllerTest {
 			.andExpect(jsonPath("$.message").value("Berhasil"))
 			.andExpect(jsonPath("$.tipe").value("LIST"));
 	}
-
 }

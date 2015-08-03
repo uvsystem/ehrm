@@ -60,15 +60,15 @@ public class AplikasiServiceTest {
 		assertEquals(count + 1, aplikasiRepository.count());
 		
 		UnitKerja unitKerja = new UnitKerja();
-		unitKerja.setNama("Pengelolaan Data Elektronik");
-		unitKerja.setSingkatan("BPDE");
+		unitKerja.setNama("Unit Kerja");
+		unitKerja.setSingkatan("uk");
 		unitKerja.setTipe(TipeUnitKerja.BAGIAN);
 		
 		unitKerjaService.simpan(unitKerja);
 
 		pegawai = new Pegawai();
-		pegawai.setNik("7171070512910002");
-		pegawai.setNip("090213016");
+		pegawai.setNik("7171070512910000");
+		pegawai.setNip("090213010");
 		pegawai.setNama("Deddy Christoper Kakunsi");
 		pegawai.setPassword("dkakunsi");
 		pegawai.setTanggalLahir(DateUtil.getDate("12-05-1991"));
@@ -93,10 +93,10 @@ public class AplikasiServiceTest {
 	public void tambah_operator() {
 		long count = operatorRepository.count();
 		
-		Aplikasi aplikasi = aplikasiService.tambahOperator("090213016", "SIMPEG");
+		Aplikasi aplikasi = aplikasiService.tambahOperator("090213010", "SIMPEG");
 		
 		for (Operator operator : aplikasi.getDaftarOperator()) {
-			if (operator.getPegawai().getNip().equals("090213016"))
+			if (operator.getPegawai().getNip().equals("090213010"))
 				assertEquals(Role.OPERATOR, operator.getRole());
 		}
 		
@@ -107,10 +107,10 @@ public class AplikasiServiceTest {
 	public void tambah_admin() {
 		long count = operatorRepository.count();
 		
-		Aplikasi aplikasi = aplikasiService.tambahAdmin("090213016", "SIMPEG");
+		Aplikasi aplikasi = aplikasiService.tambahAdmin("090213010", "SIMPEG");
 		
 		for (Operator operator : aplikasi.getDaftarOperator()) {
-			if (operator.getPegawai().getNip().equals("090213016"))
+			if (operator.getPegawai().getNip().equals("090213010"))
 				assertEquals(Role.ADMIN, operator.getRole());
 		}
 		
@@ -119,11 +119,27 @@ public class AplikasiServiceTest {
 	
 	@Test
 	public void test_get() {
-		aplikasiService.tambahAdmin("090213016", "SIMPEG");
+		aplikasiService.tambahAdmin("090213010", "SIMPEG");
 		
 		Aplikasi aplikasi = aplikasiService.getByKode("SIMPEG");
 		
 		assertNotNull(aplikasi);
 		assertNotEquals(0, aplikasi.getDaftarOperator().size());
+	}
+	
+	@Test
+	public void test_hapus() {
+		long count = operatorRepository.count();
+		
+		Aplikasi aplikasi = aplikasiService.tambahAdmin("090213010", "SIMPEG");
+		assertEquals(count + 1, operatorRepository.count());
+		assertEquals(1, aplikasi.getDaftarOperator().size());
+
+		System.out.println("HERE");
+		aplikasiService.hapusOperator(aplikasi.getDaftarOperator().get(0).getId());
+		aplikasi = aplikasiService.getByKode("SIMPEG");
+		
+		assertEquals(count, operatorRepository.count());
+		assertEquals(0, aplikasi.getDaftarOperator().size());
 	}
 }

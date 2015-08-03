@@ -107,6 +107,9 @@ public class AplikasiServiceImpl implements AplikasiService {
 	@Override
 	@Transactional(readOnly = false)
 	public void hapus(Operator operator) {
+		Aplikasi aplikasi = operator.getAplikasi();
+		aplikasi.removeOperator(operator);
+
 		operatorRepository.delete(operator);
 	}
 
@@ -121,8 +124,11 @@ public class AplikasiServiceImpl implements AplikasiService {
 	}
 
 	@Override
-	public void hapusOperator(Long idOperator) {
-		operatorRepository.delete(idOperator);
+	@Transactional(readOnly = false)
+	public void hapusOperator(Long id) {
+		Operator operator = operatorRepository.findOne(id);
+		
+		hapus(operator);
 	}
 
 	@Override

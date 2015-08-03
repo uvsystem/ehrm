@@ -63,6 +63,8 @@ public class RepositoryInterceptor {
 			return "Tanggal belum terdaftar sebagai hari kerja";
 		} else if(message.contains("nomor_surat_tugas")) {
 			return "Nomor sudah digunakan";
+		} else if(message.contains("operator_aplikasi")) {
+			return "Operator sudah terdaftar";
 		} else {
 			return "Terdapat kesalahan";
 		}
