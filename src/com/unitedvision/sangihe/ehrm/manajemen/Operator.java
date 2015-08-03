@@ -75,7 +75,17 @@ public class Operator {
 
 	@Transient
 	public String getUsername() {
+		return getNip();
+	}
+
+	@Transient
+	public String getNip() {
 		return pegawai.getNip();
+	}
+
+	@Transient
+	public String getNama() {
+		return pegawai.getNama();
 	}
 	
 	@JsonIgnore

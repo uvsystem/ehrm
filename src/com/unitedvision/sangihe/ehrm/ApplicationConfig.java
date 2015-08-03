@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 })
 public class ApplicationConfig {
 	
-	public static final String KODE_APLIKASI = "SIMPEG";
+	public static final String KODE_APLIKASI = "EHRM";
     
     @Bean
     public HibernateJpaVendorAdapter jpaVendorAdapter() {

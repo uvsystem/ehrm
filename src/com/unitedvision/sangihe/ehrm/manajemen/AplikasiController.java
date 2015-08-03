@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.ApplicationException;
 import com.unitedvision.sangihe.ehrm.EntityRestMessage;
 import com.unitedvision.sangihe.ehrm.ListEntityRestMessage;
@@ -56,6 +57,12 @@ public class AplikasiController {
 		return ListEntityRestMessage.createListAplikasi(daftarAplikasi);
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "/kode")
+	@ResponseBody
+	public RestMessage getKodeAplikasi() throws ApplicationException, PersistenceException {
+		return RestMessage.create(ApplicationConfig.KODE_APLIKASI);
+	}
+
 	@RequestMapping(method = RequestMethod.POST, value = "/{kode}/operator/{nip}")
 	@ResponseBody
 	public RestMessage tambahOperator(@PathVariable String kode, @PathVariable String nip) throws ApplicationException, PersistenceException {
@@ -70,14 +77,6 @@ public class AplikasiController {
 		List<Operator> daftarOperator = aplikasiService.getOperator(kode);
 		
 		return ListEntityRestMessage.createListOperator(daftarOperator);
-	}
-
-	@RequestMapping(method = RequestMethod.DELETE, value = "/{kode}/operator/{nip}")
-	@ResponseBody
-	public RestMessage hapusOperator(@PathVariable String kode, @PathVariable String nip) throws ApplicationException, PersistenceException {
-		aplikasiService.hapusOperator(kode, nip);
-		
-		return RestMessage.success();
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/{kode}/admin/{nip}")
@@ -96,10 +95,10 @@ public class AplikasiController {
 		return ListEntityRestMessage.createListOperator(daftarOperator);
 	}
 
-	@RequestMapping(method = RequestMethod.DELETE, value = "/{kode}/pegawai/{nip}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/operator/{id}")
 	@ResponseBody
-	public RestMessage hapusAdmin(@PathVariable String kode, @PathVariable String nip) throws ApplicationException, PersistenceException {
-		aplikasiService.hapusAdmin(kode, nip);
+	public RestMessage hapusAdmin(@PathVariable Long id) throws ApplicationException, PersistenceException {
+		aplikasiService.hapusOperator(id);
 		
 		return RestMessage.success();
 	}

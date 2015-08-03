@@ -23,14 +23,10 @@ public interface AplikasiService {
 
 	List<Operator> getAdmin(String kode);
 
-	void hapusOperator(String kode, String nip);
-
 	Aplikasi tambahOperator(Pegawai pegawai, Aplikasi aplikasi);
 	Aplikasi tambahOperator(String nip, String kodeAplikasi);
 
 	List<Operator> getOperator(String kode);
-
-	void hapusAdmin(String kode, String nip);
 	
 	Operator promosi(long idOperator, Role role);
 	

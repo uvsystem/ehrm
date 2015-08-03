@@ -77,11 +77,6 @@ public class AplikasiServiceImpl implements AplikasiService {
 		
 		return tambahAdmin(pegawai, aplikasi);
 	}
-	
-	@Override
-	public void hapusAdmin(String kode, String nip) {
-		operatorRepository.deleteByPegawai_NipAndAplikasi_Kode(nip, kode);
-	}
 
 	@Override
 	@Transactional(readOnly = false)
@@ -98,11 +93,6 @@ public class AplikasiServiceImpl implements AplikasiService {
 		Aplikasi aplikasi = aplikasiRepository.findByKode(kodeAplikasi);
 		
 		return tambahOperator(pegawai, aplikasi);
-	}
-
-	@Override
-	public void hapusOperator(String kode, String nip) {
-		operatorRepository.deleteByPegawai_NipAndAplikasi_Kode(nip, kode);
 	}
 	
 	@Override
