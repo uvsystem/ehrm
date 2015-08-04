@@ -153,7 +153,7 @@ public class AbsenController {
 		return RestMessage.success();
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/satker/{kode}/tanggal/{tanggal}")
+	@RequestMapping(method = RequestMethod.GET, value = "/satker/{password}/tanggal/{tanggal}")
 	@ResponseBody
 	public ListEntityRestMessage<Absen> get(@PathVariable String kode, @PathVariable String tanggal) throws ApplicationException, PersistenceException {
 		List<Absen> listAbsen = absenService.find(kode, DateUtil.getDate(tanggal, "-"));

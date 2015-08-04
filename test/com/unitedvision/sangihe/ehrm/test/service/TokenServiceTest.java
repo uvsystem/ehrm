@@ -76,7 +76,7 @@ public class TokenServiceTest {
 		
 		aplikasiService.tambahOperator("090213016", "SIMPEG");
 
-		token = tokenService.create("090213016");
+		token = tokenService.create("090213016", "password");
 		
 		assertEquals(String.format("%d%d", pegawai.hashCode(), DateUtil.getDate().hashCode()), token.getToken());
 		assertNotEquals("", token.getToken());
@@ -85,7 +85,7 @@ public class TokenServiceTest {
 	
 	@Test
 	public void test_create() {
-		Token token = tokenService.create("090213016");
+		Token token = tokenService.create("090213016", "password");
 		
 		assertNotEquals("", token.getToken());
 		assertEquals(StatusToken.AKTIF, token.getStatus());

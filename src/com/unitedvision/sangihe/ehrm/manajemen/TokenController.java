@@ -5,6 +5,7 @@ import javax.persistence.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,24 +23,24 @@ public class TokenController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/{nip}")
 	@ResponseBody
-	public EntityRestMessage<Token> create(@PathVariable String nip) throws ApplicationException, PersistenceException {
-		Token token = tokenService.create(nip);
+	public EntityRestMessage<Token> create(@PathVariable String nip, @RequestBody PasswordWrapper passwordWrapper) throws ApplicationException, PersistenceException {
+		Token token = tokenService.create(nip, passwordWrapper.getPassword());
 		
 		return EntityRestMessage.create(token);
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, value = "/{kode}")
+	@RequestMapping(method = RequestMethod.PUT, value = "/{tokenString}")
 	@ResponseBody
-	public EntityRestMessage<Token> lock(@PathVariable String kode) throws ApplicationException, PersistenceException {
-		Token token = tokenService.lock(kode);
+	public EntityRestMessage<Token> lock(@PathVariable String tokenString) throws ApplicationException, PersistenceException {
+		Token token = tokenService.lock(tokenString);
 		
 		return EntityRestMessage.create(token);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/{kode}")
+	@RequestMapping(method = RequestMethod.GET, value = "/{tokenString}")
 	@ResponseBody
-	public EntityRestMessage<Token> get(@PathVariable String kode) throws ApplicationException, PersistenceException {
-		Token token = tokenService.get(kode);
+	public EntityRestMessage<Token> get(@PathVariable String tokenString) throws ApplicationException, PersistenceException {
+		Token token = tokenService.get(tokenString);
 		
 		return EntityRestMessage.create(token);
 	}

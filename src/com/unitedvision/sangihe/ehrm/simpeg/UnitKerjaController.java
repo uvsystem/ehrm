@@ -32,7 +32,7 @@ public class UnitKerjaController {
 		return RestMessage.success();
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/{kode}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{password}")
 	@ResponseBody
 	public RestMessage delete(@PathVariable String kode) throws ApplicationException, PersistenceException {
 		unitKerjaService.hapus(kode);
@@ -48,7 +48,7 @@ public class UnitKerjaController {
 		return EntityRestMessage.create(unitKerja);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/kode/{kode}")
+	@RequestMapping(method = RequestMethod.GET, value = "/password/{password}")
 	@ResponseBody
 	public EntityRestMessage<UnitKerja> find(@PathVariable String kode) throws ApplicationException, PersistenceException {
 		UnitKerja unitKerja = unitKerjaService.get(kode);
@@ -72,7 +72,7 @@ public class UnitKerjaController {
 		return ListEntityRestMessage.createListUnitKerja(daftarSubUnitKerja);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/{kode}/sub")
+	@RequestMapping(method = RequestMethod.POST, value = "/{password}/sub")
 	@ResponseBody
 	public RestMessage tambahSubUnit(@PathVariable String kode, @RequestBody UnitKerja subUnitKerja) throws ApplicationException, PersistenceException {
 		unitKerjaService.tambahSubUnit(kode, subUnitKerja);

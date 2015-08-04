@@ -177,6 +177,18 @@ public class Pegawai implements Pejabat {
 		this.daftarOperator = daftarOperator;
 	}
 
+	public void addOperator(Operator operator) {
+		operator.setPegawai(this);
+		listOperator.add(operator);
+		daftarOperator.add(operator);
+	}
+
+	public void removeOperator(Operator operator) {
+		operator.setPegawai(null);
+		listOperator.remove(operator);
+		daftarOperator.remove(operator);
+	}
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	public List<Absen> getDaftarAbsen() {
@@ -439,12 +451,10 @@ public class Pegawai implements Pejabat {
 			return false;
 		return true;
 	}
-
 	
 	@Override
 	public String toString() {
 		return "Pegawai [id=" + id + ", nip=" + nip + ", penduduk=" + penduduk
 				+ ", unitKerja=" + unitKerja + ", password=" + password + "]";
 	}
-	
 }

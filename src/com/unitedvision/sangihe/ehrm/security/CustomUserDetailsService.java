@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
-import com.unitedvision.sangihe.ehrm.CodeUtil;
 import com.unitedvision.sangihe.ehrm.OutOfDateEntityException;
 import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator;
@@ -34,9 +33,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private TokenService tokenService;
 	
-	public CustomUser loadAdmin(String username, String password) {
+	public CustomUser loadAdmin(String username, String password) throws UsernameNotFoundException {
 		if (!password.equals("********"))
-			password = CodeUtil.getKode();
+			throw new UsernameNotFoundException("Username atau Password salah");
+		
 		return new CustomUser(username, password, null, getAuthorities(Role.ADMIN));
 	}
 

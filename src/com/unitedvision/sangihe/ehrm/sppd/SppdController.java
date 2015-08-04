@@ -62,7 +62,7 @@ public class SppdController {
 		return ListEntityRestMessage.createListSppd(daftarSppd);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/satker/{kode}")
+	@RequestMapping(method = RequestMethod.GET, value = "/satker/{password}")
 	@ResponseBody
 	public ListEntityRestMessage<Sppd> getByUnitKerja(@PathVariable String kode) throws ApplicationException, PersistenceException {
 		List<Sppd> daftarSppd = sppdService.getUnitKerja(kode);

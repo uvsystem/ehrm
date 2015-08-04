@@ -8,7 +8,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.UnauthenticatedAccessException;
 import com.unitedvision.sangihe.ehrm.duk.Penduduk;
+import com.unitedvision.sangihe.ehrm.manajemen.Operator.Role;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
+import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
+import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja.TipeUnitKerja;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -194,20 +197,40 @@ public class Token implements Serializable {
 	}
 
 	public static Token createAdmin() {
-		Token token = new Token();
-		token.setPegawai(null);
-		token.setToken("********");
-		
 		Penduduk penduduk = new Penduduk();
 		penduduk.setNama("ADMIN");
 		penduduk.setTanggalLahir(DateUtil.getDate());
+		penduduk.setId(0);
+		penduduk.setNik("ADMIN");
+		penduduk.setTelepon("082347643198");
+		penduduk.setEmail("admin@sangihe.go.id");
+		
+		UnitKerja unitKerja = new UnitKerja();
+		unitKerja.setId(0);
+		unitKerja.setNama("ADMIN");
+		unitKerja.setTipe(TipeUnitKerja.SEKRETARIAT);
+		unitKerja.setSingkatan("ADMIN");
 		
 		Pegawai pegawai = new Pegawai();
 		pegawai.setNip("superuser");
+		pegawai.setUnitKerja(unitKerja);
 		pegawai.setPenduduk(penduduk);
-		
-		token.setPegawai(pegawai);
 
+		Aplikasi aplikasi = new Aplikasi();
+		aplikasi.setKode("ALL");
+		
+		Operator operator = new Operator();
+		operator.setRole(Role.ADMIN);
+		operator.setAplikasi(aplikasi);
+		operator.setPegawai(pegawai);
+
+		pegawai.addOperator(operator);
+
+		Token token = new Token();
+		token.setPegawai(null);
+		token.setToken("********");
+		token.setPegawai(pegawai);
+		
 		return token;
 	}
 	

@@ -27,8 +27,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         CustomUser user;
         if (username.equals("superuser")) {
         	user = userDetailService.loadAdmin(username, password);
-        		
-        	
+
         } else {
     		try {
     			user = userDetailService.loadUserByToken(password);

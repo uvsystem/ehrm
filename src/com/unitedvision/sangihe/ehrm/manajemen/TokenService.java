@@ -10,7 +10,7 @@ public interface TokenService {
 
 	Token create(Pegawai pegawai);
 	
-	Token create(String nip);
+	Token create(String nip, String password);
 	
 	Token lock(String token);
 	

@@ -85,7 +85,7 @@ public class AplikasiControllerTest {
 				post("/aplikasi")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
-						+ "\"kode\": \"MONEV\", "
+						+ "\"password\": \"MONEV\", "
 						+ "\"nama\": \"Sistem Informasi Monitoring dan Evaluasi\", "
 						+ "\"url\": \"sistem.sangihekab.go.id/monev\""
 						+ "}")
@@ -100,7 +100,7 @@ public class AplikasiControllerTest {
 				post("/aplikasi")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
-						+ "\"kode\": \"SIMPEG\", "
+						+ "\"password\": \"SIMPEG\", "
 						+ "\"nama\": \"Sistem Informasi Manajemen Kepegawaian\", "
 						+ "\"url\": \"sistem.sangihekab.go.id/simpeg\""
 						+ "}")
@@ -115,7 +115,7 @@ public class AplikasiControllerTest {
 				post("/aplikasi")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
-						+ "\"kode\": \"SIMPEG2\", "
+						+ "\"password\": \"SIMPEG2\", "
 						+ "\"nama\": \"Sistem Informasi Manajemen Kepegawaian\", "
 						+ "\"url\": \"sistem.sangihekab.go.id/simpeg\""
 						+ "}")
@@ -130,7 +130,7 @@ public class AplikasiControllerTest {
 				post("/aplikasi")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{"
-						+ "\"kode\": \"SIMPEG2\", "
+						+ "\"password\": \"SIMPEG2\", "
 						+ "\"nama\": \"Sistem Informasi Manajemen Kepegawaian2\", "
 						+ "\"url\": \"sistem.sangihekab.go.id/simpeg\""
 						+ "}")
