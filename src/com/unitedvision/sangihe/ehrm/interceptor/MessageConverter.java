@@ -19,6 +19,7 @@ public class MessageConverter {
 		try {
 			return (RestMessage) jointPoint.proceed();
 		} catch (Throwable e) {
+			e.printStackTrace();
 			return RestMessage.error((Exception)e);
 		}
 	}
@@ -28,6 +29,7 @@ public class MessageConverter {
 		try {
 			return (EntityRestMessage<?>) jointPoint.proceed();
 		} catch (Throwable e) {
+			e.printStackTrace();
 			return EntityRestMessage.entityError((Exception)e);
 		}
 	}
@@ -37,6 +39,7 @@ public class MessageConverter {
 		try {
 			return (ListEntityRestMessage<?>) jointPoint.proceed();
 		} catch (Throwable e) {
+			e.printStackTrace();
 			return ListEntityRestMessage.listEntityError((Exception)e);
 		}
 	}
