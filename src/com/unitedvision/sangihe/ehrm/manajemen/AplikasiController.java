@@ -41,7 +41,7 @@ public class AplikasiController {
 		return RestMessage.success();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{password}")
+	@RequestMapping(method = RequestMethod.GET, value = "/{kode}")
 	@ResponseBody
 	public EntityRestMessage<Aplikasi> getAplikasi(@PathVariable String kode) throws ApplicationException, PersistenceException {
 		Aplikasi aplikasi = aplikasiService.getByKode(kode);
@@ -63,7 +63,7 @@ public class AplikasiController {
 		return RestMessage.create(ApplicationConfig.KODE_APLIKASI);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/{password}/operator/{nip}")
+	@RequestMapping(method = RequestMethod.POST, value = "/{kode}/operator/{nip}")
 	@ResponseBody
 	public RestMessage tambahOperator(@PathVariable String kode, @PathVariable String nip) throws ApplicationException, PersistenceException {
 		aplikasiService.tambahOperator(nip, kode);
@@ -71,7 +71,7 @@ public class AplikasiController {
 		return RestMessage.success();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{password}/operator")
+	@RequestMapping(method = RequestMethod.GET, value = "/{kode}/operator")
 	@ResponseBody
 	public ListEntityRestMessage<Operator> getOperator(@PathVariable String kode) throws ApplicationException, PersistenceException {
 		List<Operator> daftarOperator = aplikasiService.getOperator(kode);
@@ -79,7 +79,7 @@ public class AplikasiController {
 		return ListEntityRestMessage.createListOperator(daftarOperator);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/{password}/admin/{nip}")
+	@RequestMapping(method = RequestMethod.POST, value = "/{kode}/admin/{nip}")
 	@ResponseBody
 	public RestMessage tambahAdmin(@PathVariable String kode, @PathVariable String nip) throws ApplicationException, PersistenceException {
 		aplikasiService.tambahAdmin(nip, kode);
@@ -87,7 +87,7 @@ public class AplikasiController {
 		return RestMessage.success();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{password}/admin")
+	@RequestMapping(method = RequestMethod.GET, value = "/{kode}/admin")
 	@ResponseBody
 	public ListEntityRestMessage<Operator> getAdmin(@PathVariable String kode) throws ApplicationException, PersistenceException {
 		List<Operator> daftarOperator = aplikasiService.getAdmin(kode);

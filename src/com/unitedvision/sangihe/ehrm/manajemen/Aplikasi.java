@@ -41,7 +41,7 @@ public class Aplikasi {
 		this.id = id;
 	}
 
-	@Column(name = "password")
+	@Column(name = "kode")
 	public String getKode() {
 		return kode;
 	}
