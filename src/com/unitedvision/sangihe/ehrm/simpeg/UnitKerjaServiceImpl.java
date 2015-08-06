@@ -63,6 +63,13 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 		
 		return getSubUnitKerja(unitKerja);
 	}
+	
+	@Override
+	public List<UnitKerja> getSubUnitKerja(String kode) {
+		UnitKerja unitKerja = unitKerjaRepository.findBySingkatan(kode);
+
+		return getSubUnitKerja(unitKerja);
+	}
 
 	@Override
 	public List<UnitKerja> cari(String keyword) {
