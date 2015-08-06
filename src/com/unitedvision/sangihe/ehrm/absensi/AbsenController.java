@@ -1,5 +1,6 @@
 package com.unitedvision.sangihe.ehrm.absensi;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -176,5 +177,14 @@ public class AbsenController {
 		
 		return RestMessage.success();
 	}
-	
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{kode}/rekap/{awal}/{akhir}")
+	@ResponseBody
+	public ListEntityRestMessage<RekapAbsen> getByUnitKerja(@PathVariable String kode, @PathVariable String awal, @PathVariable String akhir) throws ApplicationException, PersistenceException {
+		Date tanggalAwal = DateUtil.getDate(awal, "-");
+		Date tanggalAkhir = DateUtil.getDate(akhir, "-");
+		List<RekapAbsen> listRekap = absenService.rekapByUnitKerja(kode, tanggalAwal, tanggalAkhir);
+		
+		return ListEntityRestMessage.createListRekapAbsen(listRekap);
+	}
 }

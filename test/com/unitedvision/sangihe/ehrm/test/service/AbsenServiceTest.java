@@ -2,6 +2,7 @@ package com.unitedvision.sangihe.ehrm.test.service;
 
 import static org.junit.Assert.*;
 
+import java.sql.Date;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ import com.unitedvision.sangihe.ehrm.absensi.Cuti;
 import com.unitedvision.sangihe.ehrm.absensi.Hadir;
 import com.unitedvision.sangihe.ehrm.absensi.Izin;
 import com.unitedvision.sangihe.ehrm.absensi.KalendarService;
+import com.unitedvision.sangihe.ehrm.absensi.RekapAbsen;
 import com.unitedvision.sangihe.ehrm.absensi.Sakit;
 import com.unitedvision.sangihe.ehrm.absensi.repository.CutiRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.HadirRepository;
@@ -92,7 +94,7 @@ public class AbsenServiceTest {
 
 	@Test
 	public void apel_pagi() throws AbsenException {
-		Hadir hadir = absenService.apelPagi("090213016", DateUtil.getDate(), DateUtil.getTime(7, 0, 0));
+		Hadir hadir = absenService.apelPagi("090213010", DateUtil.getDate(), DateUtil.getTime(7, 0, 0));
 
 		assertNotNull(hadir);
 		assertNotEquals(0, hadir.getId());
@@ -103,9 +105,9 @@ public class AbsenServiceTest {
 	public void apel_pagi_list() throws AbsenException {
 		List<Detail> daftarAbsen = new ArrayList<>();
 		
-		daftarAbsen.add(new Detail("090213016", "01-01-2015", "07:00:00"));
-		daftarAbsen.add(new Detail("090213016", "01-02-2015", "07:00:00"));
-		daftarAbsen.add(new Detail("090213016", "01-03-2015", "07:00:00"));
+		daftarAbsen.add(new Detail("090213010", "01-01-2015", "07:00:00"));
+		daftarAbsen.add(new Detail("090213010", "01-02-2015", "07:00:00"));
+		daftarAbsen.add(new Detail("090213010", "01-03-2015", "07:00:00"));
 		
 		absenService.apelPagi(daftarAbsen);
 		
@@ -114,7 +116,7 @@ public class AbsenServiceTest {
 
 	@Test
 	public void pengecekan_satu() throws AbsenException {
-		Hadir hadir = absenService.pengecekanSatu("090213016", DateUtil.getDate(), DateUtil.getTime(11, 0, 0));
+		Hadir hadir = absenService.pengecekanSatu("090213010", DateUtil.getDate(), DateUtil.getTime(11, 0, 0));
 
 		assertNotNull(hadir);
 		assertNotEquals(0, hadir.getId());
@@ -124,7 +126,7 @@ public class AbsenServiceTest {
 
 	@Test
 	public void pengecekan_dua() throws AbsenException {
-		Hadir hadir = absenService.pengecekanDua("090213016", DateUtil.getDate(), DateUtil.getTime(13, 0, 0));
+		Hadir hadir = absenService.pengecekanDua("090213010", DateUtil.getDate(), DateUtil.getTime(13, 0, 0));
 
 		assertNotNull(hadir);
 		assertNotEquals(0, hadir.getId());
@@ -134,7 +136,7 @@ public class AbsenServiceTest {
 
 	@Test
 	public void apel_sore() throws AbsenException {
-		Hadir hadir = absenService.apelSore("090213016", DateUtil.getDate(), DateUtil.getTime(16, 0, 0));
+		Hadir hadir = absenService.apelSore("090213010", DateUtil.getDate(), DateUtil.getTime(16, 0, 0));
 
 		assertNotNull(hadir);
 		assertNotEquals(0, hadir.getId());
@@ -145,7 +147,7 @@ public class AbsenServiceTest {
 	@Test
 	public void sakit() {
 		String penyakit = "Demam Berdarah";
-		Sakit sakit = absenService.tambahSakit("090213016", DateUtil.getDate(), penyakit);
+		Sakit sakit = absenService.tambahSakit("090213010", DateUtil.getDate(), penyakit);
 		
 		assertNotNull(sakit);
 		assertNotEquals(0, sakit.getId());
@@ -155,7 +157,7 @@ public class AbsenServiceTest {
 	@Test
 	public void izin() {
 		String alasan = "Kedukaan";
-		Izin izin = absenService.tambahIzin("090213016", DateUtil.getDate(), alasan);
+		Izin izin = absenService.tambahIzin("090213010", DateUtil.getDate(), alasan);
 		
 		assertNotNull(izin);
 		assertNotEquals(0, izin.getId());
@@ -165,10 +167,25 @@ public class AbsenServiceTest {
 	@Test
 	public void cuti() {
 		String jenisCuti = "Hamil";
-		Cuti cuti = absenService.tambahCuti("090213016", DateUtil.getDate(), jenisCuti);
+		Cuti cuti = absenService.tambahCuti("090213010", DateUtil.getDate(), jenisCuti);
 		
 		assertNotNull(cuti);
 		assertNotEquals(0, cuti.getId());
 		assertEquals(jenisCuti, cuti.getJenisCuti());
+	}
+	
+	@Test
+	public void test_rekap() {
+//		String jenisCuti = "Hamil";
+//		Cuti cuti = absenService.tambahCuti("090213010", DateUtil.getDate(), jenisCuti);
+//		assertNotEquals(0, cuti.getId());
+		
+		Date tanggalAwal = DateUtil.getFirstDate();
+		Date tanggalAkhir = DateUtil.getLastDate();
+		List<RekapAbsen> daftarRekap = absenService.rekapByUnitKerja("SETDA", tanggalAwal, tanggalAkhir);
+		assertNotEquals(0, daftarRekap.size());
+		
+		for(RekapAbsen rekap : daftarRekap)
+			System.out.println(rekap);
 	}
 }

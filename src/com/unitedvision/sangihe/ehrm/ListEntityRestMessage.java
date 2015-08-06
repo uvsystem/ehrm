@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.unitedvision.sangihe.ehrm.absensi.Absen;
 import com.unitedvision.sangihe.ehrm.absensi.Kalendar;
+import com.unitedvision.sangihe.ehrm.absensi.RekapAbsen;
 import com.unitedvision.sangihe.ehrm.manajemen.Aplikasi;
 import com.unitedvision.sangihe.ehrm.manajemen.Operator;
 import com.unitedvision.sangihe.ehrm.simpeg.Jabatan;
@@ -66,6 +67,10 @@ public class ListEntityRestMessage<T> extends RestMessage {
 
 	public static ListEntityRestMessage<Absen> createListAbsen(List<Absen> daftarAbsen) {
 		return new ListEntityRestMessage<Absen>(daftarAbsen);
+	}
+
+	public static ListEntityRestMessage<RekapAbsen> createListRekapAbsen(List<RekapAbsen> daftarRekap) {
+		return new ListEntityRestMessage<RekapAbsen>(daftarRekap);
 	}
 
 }

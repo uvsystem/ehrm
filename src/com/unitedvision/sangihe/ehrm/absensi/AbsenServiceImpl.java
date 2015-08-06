@@ -20,6 +20,7 @@ import com.unitedvision.sangihe.ehrm.absensi.repository.CutiRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.HadirRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.IzinRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.KalendarRepository;
+import com.unitedvision.sangihe.ehrm.absensi.repository.RekapAbsenRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.SakitRepository;
 import com.unitedvision.sangihe.ehrm.absensi.repository.TugasLuarRepository;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
@@ -43,6 +44,8 @@ public class AbsenServiceImpl implements AbsenService {
 	private IzinRepository izinRepository;
 	@Autowired
 	private CutiRepository cutiRepository;
+	@Autowired
+	private RekapAbsenRepository rekapAbsenRepository;
 	@Autowired
 	private PegawaiRepository pegawaiRepository;
 	@Autowired
@@ -580,5 +583,12 @@ public class AbsenServiceImpl implements AbsenService {
 		}
 		
 		return absen;
+	}
+
+	@Override
+	public List<RekapAbsen> rekapByUnitKerja(String kode, Date tanggalAwal, Date tanggalAkhir) {
+		List<RekapAbsen> daftarRekap = rekapAbsenRepository.rekapByUnitKerja(kode, tanggalAwal, tanggalAkhir);
+		
+		return daftarRekap;
 	}
 }
