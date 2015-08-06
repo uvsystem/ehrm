@@ -72,7 +72,7 @@ public class PegawaiController {
 		return ListEntityRestMessage.createListPegawai(daftarPegawai);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "/{nip}/mutasi/{password}")
+	@RequestMapping(method = RequestMethod.POST, value = "/{nip}/mutasi/{kode}")
 	@ResponseBody
 	public EntityRestMessage<Pegawai> mutasi(@PathVariable String nip, @PathVariable String kode) throws ApplicationException, PersistenceException {
 		Pegawai pegawai = pegawaiService.mutasi(nip, kode);
