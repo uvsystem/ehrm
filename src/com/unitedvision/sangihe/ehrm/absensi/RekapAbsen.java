@@ -125,6 +125,8 @@ public class RekapAbsen {
 	
 	@Transient
 	public Float getPresentase() {
+		if (hadir == 0)
+			return 0F;
 		return ((float)hadir / (float)jumlahHari) * 100;
 	}
 
