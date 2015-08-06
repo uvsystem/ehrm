@@ -3,12 +3,14 @@ package com.unitedvision.sangihe.ehrm.absensi;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity
 public class RekapAbsen {
 
 	private String nip;
 	private String nama;
+	private String namaUnitKerja;
 
 	private Long hadir;
 	private Long tugasLuar;
@@ -38,6 +40,15 @@ public class RekapAbsen {
 	
 	public void setNama(String nama) {
 		this.nama = nama;
+	}
+	
+	@Column(name = "nama_unit_kerja")
+	public String getNamaUnitKerja() {
+		return namaUnitKerja;
+	}
+
+	public void setNamaUnitKerja(String namaUnitKerja) {
+		this.namaUnitKerja = namaUnitKerja;
 	}
 
 	@Column(name = "hadir")
@@ -111,11 +122,17 @@ public class RekapAbsen {
 	public void setJumlahHari(Long jumlahHari) {
 		this.jumlahHari = jumlahHari;
 	}
+	
+	@Transient
+	public Long getPresentase() {
+		return (hadir / jumlahHari) * 100;
+	}
 
 	@Override
 	public String toString() {
 		return "RekapPegawai [" 
 				+ "nip=" + nip + ", nama=" + nama + ", jumlah hari=" + jumlahHari
+				+ ", unit kerja=" + namaUnitKerja
 				+ ", hadir=" + hadir + ", terlambat=" + terlambat 
 				+ ", pulang=" + pulang + ", sakit=" + sakit + ", izin=" 
 				+ izin + ", cuti=" + cuti 

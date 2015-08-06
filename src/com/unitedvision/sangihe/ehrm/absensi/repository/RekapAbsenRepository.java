@@ -11,7 +11,7 @@ import com.unitedvision.sangihe.ehrm.absensi.RekapAbsen;
 
 public interface RekapAbsenRepository extends JpaRepository<RekapAbsen, String> {
 
-	@Query(nativeQuery = true, value = "SELECT pgw.nip as nip, pdk.nama as nama" +
+	@Query(nativeQuery = true, value = "SELECT pgw.nip as nip, pdk.nama as nama, uk.nama as nama_unit_kerja" +
 			", (SELECT COUNT(*) FROM absen in_a WHERE in_a.kalendar between :tanggalAwal and :tanggalAkhir) as jumlah_hari " +
 			", (SELECT COUNT(*) FROM absen in_a INNER JOIN pegawai in_p ON in_a.pegawai = in_p.id WHERE in_p.id = pgw.id and in_a.kalendar between :tanggalAwal and :tanggalAkhir and in_a.status = 'HADIR') as hadir " +
 			", (SELECT COUNT(*) FROM absen in_a INNER JOIN pegawai in_p ON in_a.pegawai = in_p.id WHERE in_p.id = pgw.id and in_a.kalendar between :tanggalAwal and :tanggalAkhir and in_a.status ='HADIR' and (in_a.pagi > '07:30' Or in_a.pagi is null)) as terlambat " +
