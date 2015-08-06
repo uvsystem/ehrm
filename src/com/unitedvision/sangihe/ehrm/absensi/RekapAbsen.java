@@ -19,6 +19,8 @@ public class RekapAbsen {
 	private Long terlambat;
 	private Long pulang;
 	
+	private Long jumlahHari;
+	
 	@Column(name = "nip")
 	@Id
 	public String getNip() {
@@ -101,10 +103,22 @@ public class RekapAbsen {
 		this.pulang = pulang;
 	}
 	
+	@Column(name = "jumlah_hari")
+	public Long getJumlahHari() {
+		return jumlahHari;
+	}
+
+	public void setJumlahHari(Long jumlahHari) {
+		this.jumlahHari = jumlahHari;
+	}
+
 	@Override
 	public String toString() {
-		return "RekapPegawai [hadir=" + hadir 
-				+ ", terlambat=" + terlambat + ", pulang=" + pulang 
-				+ ", sakit=" + sakit + ", izin=" + izin + ", cuti=" + cuti + "]";
+		return "RekapPegawai [" 
+				+ "nip=" + nip + ", nama=" + nama + ", jumlah hari=" + jumlahHari
+				+ ", hadir=" + hadir + ", terlambat=" + terlambat 
+				+ ", pulang=" + pulang + ", sakit=" + sakit + ", izin=" 
+				+ izin + ", cuti=" + cuti 
+				+ "]";
 	}
 }
