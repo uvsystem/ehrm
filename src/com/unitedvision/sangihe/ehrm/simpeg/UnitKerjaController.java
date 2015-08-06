@@ -48,6 +48,14 @@ public class UnitKerjaController {
 		return EntityRestMessage.create(unitKerja);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/{kode}")
+	@ResponseBody
+	public EntityRestMessage<UnitKerja> findByKode(@PathVariable String kode) throws ApplicationException, PersistenceException {
+		UnitKerja unitKerja = unitKerjaService.get(kode);
+		
+		return EntityRestMessage.create(unitKerja);
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/kode/{kode}")
 	@ResponseBody
 	public EntityRestMessage<UnitKerja> find(@PathVariable String kode) throws ApplicationException, PersistenceException {

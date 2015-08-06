@@ -124,8 +124,8 @@ public class RekapAbsen {
 	}
 	
 	@Transient
-	public Long getPresentase() {
-		return (hadir / jumlahHari) * 100;
+	public Float getPresentase() {
+		return ((float)hadir / (float)jumlahHari) * 100;
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class RekapAbsen {
 				+ ", unit kerja=" + namaUnitKerja
 				+ ", hadir=" + hadir + ", terlambat=" + terlambat 
 				+ ", pulang=" + pulang + ", sakit=" + sakit + ", izin=" 
-				+ izin + ", cuti=" + cuti 
+				+ izin + ", cuti=" + cuti + ", presentase=" + getPresentase()
 				+ "]";
 	}
 }
