@@ -103,5 +103,6 @@ public interface AbsenService {
 	List<Absen> cari(String keyword);
 
 	List<RekapAbsen> rekapByUnitKerja(String kode, Date tanggalAwal, Date tanggalAkhir);
+	List<RekapAbsen> rekap(Date tanggalAwal, Date tanggalAkhir);
 
 }

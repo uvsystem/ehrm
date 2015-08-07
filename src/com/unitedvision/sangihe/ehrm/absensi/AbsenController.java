@@ -2,6 +2,7 @@ package com.unitedvision.sangihe.ehrm.absensi;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.PersistenceException;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.unitedvision.sangihe.ehrm.ApplicationException;
 import com.unitedvision.sangihe.ehrm.DateUtil;
@@ -186,5 +188,19 @@ public class AbsenController {
 		List<RekapAbsen> listRekap = absenService.rekapByUnitKerja(kode, tanggalAwal, tanggalAkhir);
 		
 		return ListEntityRestMessage.createListRekapAbsen(listRekap);
+	}
+	
+	@RequestMapping(value = "/rekap/{tanggalAwal}/{tanggalAkhir}", method = RequestMethod.GET)
+	public ModelAndView printRekapByBagian(@PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, Map<String, Object> model) throws ApplicationException {
+		Date awal = DateUtil.getDate(tanggalAwal);
+		Date akhir = DateUtil.getDate(tanggalAkhir);
+		
+		List<RekapAbsen> list = absenService.rekap(awal, akhir);
+		
+		model.put("rekap", list);
+		model.put("tanggalAwal", DateUtil.toFormattedStringDate(awal, "-"));
+		model.put("tanggalAkhir", DateUtil.toFormattedStringDate(akhir, "-"));
+
+		return new ModelAndView("rekapAbsen", model);
 	}
 }

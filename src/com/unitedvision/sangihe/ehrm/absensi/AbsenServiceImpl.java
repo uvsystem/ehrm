@@ -591,4 +591,11 @@ public class AbsenServiceImpl implements AbsenService {
 		
 		return daftarRekap;
 	}
+
+	@Override
+	public List<RekapAbsen> rekap(Date tanggalAwal, Date tanggalAkhir) {
+		List<RekapAbsen> daftarRekap = rekapAbsenRepository.rekap(tanggalAwal, tanggalAkhir);
+		
+		return daftarRekap;
+	}
 }
