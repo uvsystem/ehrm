@@ -195,12 +195,16 @@ public class AbsenController {
 		Date awal = DateUtil.getDate(tanggalAwal);
 		Date akhir = DateUtil.getDate(tanggalAkhir);
 		
-		List<RekapAbsen> list = absenService.rekap(awal, akhir);
-		
-		model.put("rekap", list);
-		model.put("tanggalAwal", DateUtil.toFormattedStringDate(awal, "-"));
-		model.put("tanggalAkhir", DateUtil.toFormattedStringDate(akhir, "-"));
+		try {
+			List<RekapAbsen> list = absenService.rekap(awal, akhir);
+			
+			model.put("rekap", list);
+			model.put("tanggalAwal", DateUtil.toFormattedStringDate(awal, "-"));
+			model.put("tanggalAkhir", DateUtil.toFormattedStringDate(akhir, "-"));
 
-		return new ModelAndView("rekapAbsen", model);
+			return new ModelAndView("rekapAbsen", model);
+		} catch (PersistenceException e) {
+			return new ModelAndView("pdfException", model);
+		}
 	}
 }
