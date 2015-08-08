@@ -71,4 +71,19 @@ public class DateUtilTest {
 		String str2 = DateUtil.toStringDate(dt, "/");
 		assertEquals(str, str2);
 	}
+	
+	@Test
+	public void test2() {
+		Month month = Month.JANUARY;
+		
+		assertEquals(month.ordinal(), month.getValue());
+	}
+	
+	@Test
+	public void test3() {
+		Month month = Month.JANUARY;
+		Month month2 = Month.FEBRUARY;
+		
+		assertTrue(month.compareTo(month2) < 0);
+	}
 }
