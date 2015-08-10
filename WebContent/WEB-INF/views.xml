@@ -5,4 +5,5 @@
 	
 	<bean id="pdfException" class="com.unitedvision.sangihe.ehrm.document.pdf.ExceptionPdfView" />	
 	<bean id="rekapAbsen" class="com.unitedvision.sangihe.ehrm.document.pdf.RekapAbsenPdfView" />
+	<bean id="rekapSppd" class="com.unitedvision.sangihe.ehrm.document.pdf.RekapSppdPdfView" />
 </beans>

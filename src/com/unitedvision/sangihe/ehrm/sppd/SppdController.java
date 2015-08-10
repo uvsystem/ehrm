@@ -2,6 +2,7 @@ package com.unitedvision.sangihe.ehrm.sppd;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.PersistenceException;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.unitedvision.sangihe.ehrm.ApplicationException;
 import com.unitedvision.sangihe.ehrm.DateUtil;
@@ -88,9 +90,23 @@ public class SppdController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/rekap/tahun/{tahun}")
 	@ResponseBody
-	public ListEntityRestMessage<RekapSppd> rekap(@PathVariable Integer tahun) throws ApplicationException, PersistenceException {
+	public ListEntityRestMessage<RekapSppd> rekapView(@PathVariable Integer tahun) throws ApplicationException, PersistenceException {
 		List<RekapSppd> rekap = sppdService.rekap(tahun);
 		
 		return ListEntityRestMessage.createListRekapSppd(rekap);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/rekap/tahun/{tahun}/cetak")
+	public ModelAndView rekap(@PathVariable Integer tahun, Map<String, Object> model) throws ApplicationException, PersistenceException {
+		try {
+			List<RekapSppd> rekap = sppdService.rekap(tahun);
+			
+			model.put("rekap", rekap);
+			model.put("tahun", tahun);
+
+			return new ModelAndView("rekapSppd", model);
+		} catch (PersistenceException e) {
+			return new ModelAndView("pdfException", model);
+		}
 	}
 }
