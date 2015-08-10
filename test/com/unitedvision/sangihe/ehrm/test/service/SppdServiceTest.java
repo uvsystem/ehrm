@@ -27,6 +27,7 @@ import com.unitedvision.sangihe.ehrm.simpeg.UnitKerjaService;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja.TipeUnitKerja;
 import com.unitedvision.sangihe.ehrm.sppd.PemegangTugas;
 import com.unitedvision.sangihe.ehrm.sppd.Pengikut;
+import com.unitedvision.sangihe.ehrm.sppd.RekapSppd;
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
 import com.unitedvision.sangihe.ehrm.sppd.SppdService;
 import com.unitedvision.sangihe.ehrm.sppd.SuratTugas;
@@ -71,14 +72,14 @@ public class SppdServiceTest {
 		
 		unitKerja = new UnitKerja();
 		unitKerja.setNama("Pengelolaan Data Elektronik");
-		unitKerja.setSingkatan("BPDE");
+		unitKerja.setSingkatan("BPDE2");
 		unitKerja.setTipe(TipeUnitKerja.BAGIAN);
 		
 		unitKerjaService.simpan(unitKerja);
 
 		pegawai = new Pegawai();
-		pegawai.setNik("7171070512910002");
-		pegawai.setNip("090213016");
+		pegawai.setNik("7171070512910000");
+		pegawai.setNip("090213010");
 		pegawai.setNama("Deddy Christoper Kakunsi");
 		pegawai.setPassword("dkakunsi");
 		pegawai.setTanggalLahir(DateUtil.getDate("12-05-1991"));
@@ -135,5 +136,15 @@ public class SppdServiceTest {
 		assertNotEquals(0, sppd.getDaftarPengikut().size());
 		
 		assertEquals(pemegangTugas.getSuratTugas().getJumlahHari(), tugasLuarRepository.countBySppd(sppd));
+	}
+	
+	@Test
+	public void test_rekap() {
+		
+		List<RekapSppd> daftarRekap = sppdService.rekap(2015);
+		assertNotEquals(0, daftarRekap.size());
+		
+		for(RekapSppd rekap : daftarRekap)
+			System.out.println(rekap);
 	}
 }

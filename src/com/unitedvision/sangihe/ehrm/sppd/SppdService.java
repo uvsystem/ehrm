@@ -28,5 +28,7 @@ public interface SppdService {
 	List<Sppd> getUnitKerja(String kode);
 
 	List<Sppd> cari(String kode);
+
+	List<RekapSppd> rekap(Integer tahun);
 	
 }

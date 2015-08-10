@@ -85,4 +85,12 @@ public class SppdController {
 		
 		return RestMessage.success();
 	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/rekap/tahun/{tahun}")
+	@ResponseBody
+	public ListEntityRestMessage<RekapSppd> rekap(@PathVariable Integer tahun) throws ApplicationException, PersistenceException {
+		List<RekapSppd> rekap = sppdService.rekap(tahun);
+		
+		return ListEntityRestMessage.createListRekapSppd(rekap);
+	}
 }

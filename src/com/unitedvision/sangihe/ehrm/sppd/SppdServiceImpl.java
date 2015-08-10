@@ -1,6 +1,7 @@
 package com.unitedvision.sangihe.ehrm.sppd;
 
 import java.sql.Date;
+import java.time.Month;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -15,6 +16,7 @@ import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
 import com.unitedvision.sangihe.ehrm.sppd.Sppd.Message;
 import com.unitedvision.sangihe.ehrm.sppd.repository.PemegangTugasRepository;
+import com.unitedvision.sangihe.ehrm.sppd.repository.RekapSppdRepository;
 import com.unitedvision.sangihe.ehrm.sppd.repository.SppdRepository;
 
 @Service
@@ -29,6 +31,8 @@ public class SppdServiceImpl implements SppdService {
 	private PegawaiRepository pegawaiRepository;
 	@Autowired
 	private PemegangTugasRepository pemegangTugasRepository;
+	@Autowired
+	private RekapSppdRepository rekapSppdRepository;
 	
 	@Override
 	@Transactional(readOnly = false)
@@ -141,6 +145,13 @@ public class SppdServiceImpl implements SppdService {
 	@Override
 	public List<Sppd> cari(String keyword) {
 		return sppdRepository.findByPegawaiOrNomor(keyword);
+	}
+
+	@Override
+	public List<RekapSppd> rekap(Integer tahun) {
+		Date awal = DateUtil.getDate(tahun, Month.JANUARY, 1);
+		Date akhir = DateUtil.getDate(tahun, Month.DECEMBER, 31);
+		return rekapSppdRepository.rekap(awal, akhir);
 	}
 
 }

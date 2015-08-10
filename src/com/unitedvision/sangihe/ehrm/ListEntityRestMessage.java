@@ -10,6 +10,7 @@ import com.unitedvision.sangihe.ehrm.manajemen.Operator;
 import com.unitedvision.sangihe.ehrm.simpeg.Jabatan;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
+import com.unitedvision.sangihe.ehrm.sppd.RekapSppd;
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
 import com.unitedvision.sangihe.ehrm.sppd.SuratTugas;
 
@@ -71,6 +72,10 @@ public class ListEntityRestMessage<T> extends RestMessage {
 
 	public static ListEntityRestMessage<RekapAbsen> createListRekapAbsen(List<RekapAbsen> daftarRekap) {
 		return new ListEntityRestMessage<RekapAbsen>(daftarRekap);
+	}
+
+	public static ListEntityRestMessage<RekapSppd> createListRekapSppd(List<RekapSppd> daftarRekap) {
+		return new ListEntityRestMessage<RekapSppd>(daftarRekap);
 	}
 
 }
