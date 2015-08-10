@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.unitedvision.sangihe.ehrm.ApplicationConfig;
 import com.unitedvision.sangihe.ehrm.ApplicationException;
+import com.unitedvision.sangihe.ehrm.CodeUtil;
 import com.unitedvision.sangihe.ehrm.EntityRestMessage;
 import com.unitedvision.sangihe.ehrm.ListEntityRestMessage;
 import com.unitedvision.sangihe.ehrm.RestMessage;
@@ -61,6 +62,24 @@ public class AplikasiController {
 	@ResponseBody
 	public RestMessage getKodeAplikasi() throws ApplicationException, PersistenceException {
 		return RestMessage.create(ApplicationConfig.KODE_APLIKASI);
+	}
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/drive/token/{token}")
+	@ResponseBody
+	public RestMessage saveDriveToken(@PathVariable String token) throws ApplicationException, PersistenceException {
+		CodeUtil.driveToken = token;
+		
+		return RestMessage.create(token);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/drive/token/")
+	@ResponseBody
+	public RestMessage saveDriveToken() throws ApplicationException, PersistenceException {
+		String token = CodeUtil.driveToken;
+		if ( token == null || token.length() <= 0 )
+			token = "null";
+		
+		return RestMessage.create(token);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/{kode}/operator/{nip}")
