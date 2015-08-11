@@ -156,7 +156,7 @@ public class AbsenController {
 		return RestMessage.success();
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/satker/{password}/tanggal/{tanggal}")
+	@RequestMapping(method = RequestMethod.GET, value = "/satker/{kode}/tanggal/{tanggal}")
 	@ResponseBody
 	public ListEntityRestMessage<Absen> get(@PathVariable String kode, @PathVariable String tanggal) throws ApplicationException, PersistenceException {
 		List<Absen> listAbsen = absenService.find(kode, DateUtil.getDate(tanggal, "-"));
@@ -180,18 +180,47 @@ public class AbsenController {
 		return RestMessage.success();
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/{kode}/rekap/{awal}/{akhir}")
+	@RequestMapping(method = RequestMethod.GET, value = "/{kode}/rekap/{tanggalAwal}/{tanggalAkhir}")
 	@ResponseBody
-	public ListEntityRestMessage<RekapAbsen> getByUnitKerja(@PathVariable String kode, @PathVariable String awal, @PathVariable String akhir) throws ApplicationException, PersistenceException {
-		Date tanggalAwal = DateUtil.getDate(awal, "-");
-		Date tanggalAkhir = DateUtil.getDate(akhir, "-");
-		List<RekapAbsen> listRekap = absenService.rekapByUnitKerja(kode, tanggalAwal, tanggalAkhir);
+	public ListEntityRestMessage<RekapAbsen> rekapByUnitKerja(@PathVariable String kode, @PathVariable String tanggalAwal, @PathVariable String tanggalAkhir) throws ApplicationException, PersistenceException {
+		Date awal = DateUtil.getDate(tanggalAwal, "-");
+		Date akhir = DateUtil.getDate(tanggalAkhir, "-");
+		List<RekapAbsen> listRekap = absenService.rekapByUnitKerja(kode, awal, akhir);
 		
 		return ListEntityRestMessage.createListRekapAbsen(listRekap);
 	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/{kode}/rekap/{tanggalAwal}/{tanggalAkhir}/cetak")
+	public ModelAndView printRekapByUnitKerja(@PathVariable String kode, @PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, Map<String, Object> model) throws ApplicationException, PersistenceException {
+		Date awal = DateUtil.getDate(tanggalAwal, "-");
+		Date akhir = DateUtil.getDate(tanggalAkhir, "-");
+
+		try {
+			List<RekapAbsen> listRekap = absenService.rekapByUnitKerja(kode, awal, akhir);
+			
+			model.put("rekap", listRekap);
+			model.put("tanggalAwal", DateUtil.toFormattedStringDate(awal, "-"));
+			model.put("tanggalAkhir", DateUtil.toFormattedStringDate(akhir, "-"));
+
+			return new ModelAndView("rekapAbsen", model);
+		} catch (PersistenceException e) {
+			return new ModelAndView("pdfException", model);
+		}
+	}
 	
 	@RequestMapping(value = "/rekap/{tanggalAwal}/{tanggalAkhir}", method = RequestMethod.GET)
-	public ModelAndView printRekapByBagian(@PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, Map<String, Object> model) throws ApplicationException {
+	@ResponseBody
+	public ListEntityRestMessage<RekapAbsen> rekap(@PathVariable String tanggalAwal, @PathVariable String tanggalAkhir) throws ApplicationException {
+		Date awal = DateUtil.getDate(tanggalAwal);
+		Date akhir = DateUtil.getDate(tanggalAkhir);
+
+		List<RekapAbsen> list = absenService.rekap(awal, akhir);
+
+		return ListEntityRestMessage.createListRekapAbsen(list);
+	}
+	
+	@RequestMapping(value = "/rekap/{tanggalAwal}/{tanggalAkhir}/cetak", method = RequestMethod.GET)
+	public ModelAndView printRekap(@PathVariable String tanggalAwal, @PathVariable String tanggalAkhir, Map<String, Object> model) throws ApplicationException {
 		Date awal = DateUtil.getDate(tanggalAwal);
 		Date akhir = DateUtil.getDate(tanggalAkhir);
 		

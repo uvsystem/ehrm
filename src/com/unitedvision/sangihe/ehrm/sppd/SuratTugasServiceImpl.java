@@ -185,7 +185,7 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 		
 		for (Object inner : list) {
 			for (Object object: (Object[])inner) {
-				if (object instanceof SuratTugas)
+				if (object instanceof SuratTugas && !daftarSuratTugas.contains((object)))
 					daftarSuratTugas.add((SuratTugas)object);
 			}
 		}

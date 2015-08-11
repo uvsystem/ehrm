@@ -125,7 +125,7 @@ public class SuratTugasController {
 		return ListEntityRestMessage.createListSuratTugas(daftarSuratTugas);
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value = "/satker/{password}")
+	@RequestMapping(method = RequestMethod.GET, value = "/satker/{kode}")
 	@ResponseBody
 	public ListEntityRestMessage<SuratTugas> getBySatker(@PathVariable String kode) throws ApplicationException, PersistenceException {
 		List<SuratTugas> daftarSuratTugas = suratTugasService.getBySatker(kode);
