@@ -68,6 +68,14 @@ public class UnitKerjaServiceTest {
 	}
 	
 	@Test
+	public void test_update() {
+		unitKerja.setSingkatan("KODE");
+		unitKerja = unitKerjaService.simpan(unitKerja);
+		
+		assertEquals("KODE", unitKerja.getSingkatan());
+	}
+	
+	@Test
 	public void test_tambah_sub_unit_kerja() {
 		UnitKerja subUnitKerja = new UnitKerja();
 		subUnitKerja.setNama("Pengelola Data Elektronik");
