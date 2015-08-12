@@ -27,7 +27,8 @@ public class UnitKerja {
 		UPT,
 		BIDANG,
 		BAGIAN,
-		SEKSI
+		SEKSI,
+		KEASISTENAN
 	}
 	
 	private long id;

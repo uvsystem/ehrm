@@ -27,6 +27,8 @@ public class UnitKerjaController {
 	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
 	@ResponseBody
 	public RestMessage save(@RequestBody UnitKerja unitKerja) throws ApplicationException, PersistenceException {
+		if (unitKerja.getParent().getTipe() == null)
+			unitKerja.setParent(null);
 		unitKerjaService.simpan(unitKerja);
 		
 		return RestMessage.success();

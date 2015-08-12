@@ -104,6 +104,8 @@ public class Penduduk {
 
 	@Transient
 	public String getEmail() {
+		if (kontak == null)
+			return "";
 		return kontak.getEmail();
 	}
 
@@ -114,6 +116,8 @@ public class Penduduk {
 
 	@Transient
 	public String getTelepon() {
+		if (kontak == null)
+			return "";
 		return kontak.getTelepon();
 	}
 
