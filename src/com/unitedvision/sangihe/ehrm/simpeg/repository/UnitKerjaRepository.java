@@ -20,6 +20,7 @@ public interface UnitKerjaRepository extends JpaRepository<UnitKerja, Long> {
 	@Query("DELETE FROM UnitKerja uk WHERE uk.singkatan = ?1")
 	void deleteBySingkatan(String kode);
 
+	@Query("FROM UnitKerja uk WHERE uk.parent = :unitKerja OR uk.parent.parent = :unitKerja")
 	List<UnitKerja> findByParent(UnitKerja unitKerja);
 
 }
