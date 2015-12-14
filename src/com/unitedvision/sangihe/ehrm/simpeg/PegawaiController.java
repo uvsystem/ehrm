@@ -55,6 +55,16 @@ public class PegawaiController {
 		
 		return ListEntityRestMessage.createListPegawai(daftarPegawai);
 	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/satker/{idUnitKerja}/minim")
+	@ResponseBody
+	public ListEntityRestMessage<Pegawai> findByUnitKerjaMinim(@PathVariable Long idUnitKerja) throws ApplicationException, PersistenceException {
+		List<Pegawai> daftarPegawai = pegawaiService.getByUnitKerja(idUnitKerja);
+		for (Pegawai pegawai : daftarPegawai)
+			pegawai.setPassword("");
+		
+		return ListEntityRestMessage.createListPegawai(daftarPegawai);
+	}
 	
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody

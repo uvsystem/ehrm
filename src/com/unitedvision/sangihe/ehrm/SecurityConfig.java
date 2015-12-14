@@ -45,6 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	.antMatchers(HttpMethod.GET, "/satker").permitAll()
         	.antMatchers(HttpMethod.GET, "/satker/kode/**").permitAll()
         	.antMatchers(HttpMethod.GET, "/satker/**/sub").permitAll()
+        	.antMatchers(HttpMethod.GET, "/pegawai/satker/**/minim").permitAll()
+        	.antMatchers(HttpMethod.GET, "/sppd/**").permitAll() // Load All SPPD by NIP.
 			.anyRequest().authenticated()
             .and()
         .httpBasic();
