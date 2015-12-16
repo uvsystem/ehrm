@@ -2,6 +2,6 @@ package com.unitedvision.sangihe.ehrm.simpeg;
 
 public enum Eselon {
 
-	I, II, III, IV, V
+	Ia, Ib, IIa, IIb, IIIa, IIIb, IVa, IVb, Va, Vb
 	
 }

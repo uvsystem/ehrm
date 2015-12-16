@@ -36,6 +36,11 @@ public class Pegawai implements Pejabat {
 	private UnitKerja unitKerja;
 	private String password;
 	
+	// Property sementara
+	private Pangkat pangkat;
+	private Eselon eselon;
+	private String namaJabatan;
+	
 	private List<RiwayatPangkat> daftarPangkat = new ArrayList<>();
 	private List<RiwayatJabatan> daftarJabatan = new ArrayList<>();
 	private List<Operator> daftarOperator = new ArrayList<>();
@@ -115,6 +120,53 @@ public class Pegawai implements Pejabat {
 	
 	public void setPasswordStr(String password) {
 		setPassword(password);
+	}
+	
+	@Column(name = "pangkat")
+	public Pangkat getPangkat() {
+		return pangkat;
+
+//		try {
+//			return getPangkatTerakhir().getPangkat();
+//		} catch (NullCollectionException | NoPangkatException e) {
+//			return null;
+//		}
+	}
+
+	public void setPangkat(Pangkat pangkat) {
+		this.pangkat = pangkat;
+	}
+	
+	@Override
+	@Column(name = "eselon")
+	public Eselon getEselon() {
+		return eselon;
+
+//		try {
+//			return getJabatan().getEselon();
+//		} catch (NullCollectionException | NoJabatanException e) {
+//			return null;
+//		}
+	}
+
+	public void setEselon(Eselon eselon) {
+		this.eselon = eselon;
+	}
+
+	@Override
+	@Column(name = "jabatan")
+	public String getNamaJabatan() {
+		return namaJabatan;
+
+//	try {
+//		return getJabatan().getNama();
+//	} catch (NullCollectionException | NoJabatanException e) {
+//		return null;
+//	}
+	}
+	
+	public void setNamaJabatan(String namaJabatan) {
+		this.namaJabatan = namaJabatan;
 	}
 
 	@JsonIgnore
@@ -243,15 +295,6 @@ public class Pegawai implements Pejabat {
 		throw new NoPangkatException("Tidak ada pangkat yang aktif");
 	}
 
-	@Transient
-	public Pangkat getPangkat() {
-		try {
-			return getPangkatTerakhir().getPangkat();
-		} catch (NullCollectionException | NoPangkatException e) {
-			return null;
-		}
-	}
-
 	@JsonIgnore
 	@Transient
 	public RiwayatJabatan getJabatanTerakhir() throws NullCollectionException, NoJabatanException {
@@ -265,31 +308,11 @@ public class Pegawai implements Pejabat {
 		
 		throw new NoJabatanException("Tidak ada jabatan yang aktif");
 	}
-	
-	@Override
+
 	@JsonIgnore
 	@Transient
 	public Jabatan getJabatan() throws NullCollectionException, NoJabatanException {
 		return getJabatanTerakhir().getJabatan();
-	}
-
-	@Transient
-	public String getNamaJabatan() {
-		try {
-			return getJabatan().getNama();
-		} catch (NullCollectionException | NoJabatanException e) {
-			return null;
-		}
-	}
-	
-	@Override
-	@Transient
-	public Eselon getEselon() {
-		try {
-			return getJabatan().getEselon();
-		} catch (NullCollectionException | NoJabatanException e) {
-			return null;
-		}
 	}
 
 	@JsonIgnore
@@ -457,4 +480,6 @@ public class Pegawai implements Pejabat {
 		return "Pegawai [id=" + id + ", nip=" + nip + ", penduduk=" + penduduk
 				+ ", unitKerja=" + unitKerja + ", password=" + password + "]";
 	}
+	
+	
 }

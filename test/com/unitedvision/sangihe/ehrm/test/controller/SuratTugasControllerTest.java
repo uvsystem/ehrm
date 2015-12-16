@@ -88,7 +88,7 @@ public class SuratTugasControllerTest {
 
 		Jabatan jabatan = new Jabatan(unitKerja);
 		jabatan.setNama("Kepala Badan");
-		jabatan.setEselon(Eselon.V);
+		jabatan.setEselon(Eselon.Va);
 		jabatan.setPangkat(Pangkat.IIIB);
 		jabatanService.simpan(jabatan);
 

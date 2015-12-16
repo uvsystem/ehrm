@@ -103,7 +103,7 @@ public class PegawaiServiceTest {
 		long countJabatan = jabatanRepository.count();
 		
 		jabatanKaSubBagDatabase = new Jabatan();
-		jabatanKaSubBagDatabase.setEselon(Eselon.V);
+		jabatanKaSubBagDatabase.setEselon(Eselon.Va);
 		jabatanKaSubBagDatabase.setPangkat(Pangkat.IIIC);
 		jabatanKaSubBagDatabase.setUnitKerja(unitKerja);
 		jabatanKaSubBagDatabase.setNama("Kepala Sub Bagian Database");
@@ -112,7 +112,7 @@ public class PegawaiServiceTest {
 		assertEquals(countJabatan + 1, jabatanRepository.count());
 		
 		Jabatan jabatanKaSubBagJaringan = new Jabatan();
-		jabatanKaSubBagJaringan.setEselon(Eselon.V);
+		jabatanKaSubBagJaringan.setEselon(Eselon.Va);
 		jabatanKaSubBagJaringan.setPangkat(Pangkat.IIIC);
 		jabatanKaSubBagJaringan.setUnitKerja(unitKerja);
 		jabatanKaSubBagJaringan.setNama("Kepala Sub Bagian Jaringan");
@@ -227,7 +227,7 @@ public class PegawaiServiceTest {
 	
 	@Test
 	public void test_get_by_eselon() {
-		List<Pegawai> list = pegawaiService.get(Eselon.V);
+		List<Pegawai> list = pegawaiService.get(Eselon.Va);
 		
 		assertNotEquals(0, list.size());
 	}

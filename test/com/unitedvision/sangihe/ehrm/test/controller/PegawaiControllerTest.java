@@ -79,14 +79,14 @@ public class PegawaiControllerTest {
 		pegawaiService.simpan(pegawai);
 
 		kabidBkd = new Jabatan();
-		kabidBkd.setEselon(Eselon.V);
+		kabidBkd.setEselon(Eselon.Va);
 		kabidBkd.setPangkat(Pangkat.IIIC);
 		kabidBkd.setUnitKerja(bkd);
 		kabidBkd.setNama("Kepala Bidang Data dan Informasi");
 		jabatanService.simpan(kabidBkd);
 		
 		Jabatan kabidBappeda = new Jabatan();
-		kabidBappeda.setEselon(Eselon.V);
+		kabidBappeda.setEselon(Eselon.Va);
 		kabidBappeda.setPangkat(Pangkat.IIIC);
 		kabidBappeda.setUnitKerja(bappeda);
 		kabidBappeda.setNama("Kepala Bidang Monitoring dan Evaluasi");

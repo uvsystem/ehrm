@@ -138,4 +138,10 @@ public class PegawaiController {
 		return ListEntityRestMessage.createListPegawai(daftarPegawai);
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/pangkat/test")
+	@ResponseBody
+	public Pangkat testPangkat() throws ApplicationException, PersistenceException {
+		return Pangkat.IIIA;
+	}
+	
 }

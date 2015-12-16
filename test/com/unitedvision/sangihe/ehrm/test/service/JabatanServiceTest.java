@@ -50,7 +50,7 @@ public class JabatanServiceTest {
 		long count = jabatanRepository.count();
 		
 		Jabatan jabatan = new Jabatan();
-		jabatan.setEselon(Eselon.V);
+		jabatan.setEselon(Eselon.Va);
 		jabatan.setPangkat(Pangkat.IIIC);
 		jabatan.setUnitKerja(unitKerja);
 		jabatan.setNama("Kepala Sub Bagian Database");
@@ -63,7 +63,7 @@ public class JabatanServiceTest {
 	@Test(expected = PersistenceException.class)
 	public void test_simpan_duplicate() {
 		Jabatan jabatan = new Jabatan();
-		jabatan.setEselon(Eselon.V);
+		jabatan.setEselon(Eselon.Va);
 		jabatan.setPangkat(Pangkat.IIIC);
 		jabatan.setUnitKerja(unitKerja);
 		jabatan.setNama("Kepala Sub Bagian Database");

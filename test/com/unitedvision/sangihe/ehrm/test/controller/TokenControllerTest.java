@@ -69,7 +69,7 @@ public class TokenControllerTest {
 
 		jabatan = new Jabatan(unitKerja);
 		jabatan.setNama("Kepala Badan");
-		jabatan.setEselon(Eselon.III);
+		jabatan.setEselon(Eselon.IIIa);
 		jabatan.setPangkat(Pangkat.IVB);
 		jabatanService.simpan(jabatan);
 		
