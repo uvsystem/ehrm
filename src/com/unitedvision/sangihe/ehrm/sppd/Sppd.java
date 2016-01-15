@@ -20,7 +20,6 @@ import javax.persistence.Transient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.absensi.TugasLuar;
-import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 
 @Entity
 @Table(name = "sppd")
@@ -241,10 +240,11 @@ public class Sppd {
 	
 	@Transient
 	public String getPangkat() {
-		Pangkat pangkat = pemegangTugas.getPangkat();
-		if (pangkat != null )
-			return pangkat.name();
-		return "";
+//		Pangkat pangkat = pemegangTugas.getPangkat();
+//		if (pangkat != null )
+//			return pangkat.name();
+//		return "";
+		return pemegangTugas.getPangkat();
 	}
 	
 	@Transient

@@ -9,6 +9,7 @@ public interface UnitKerjaService {
 	
 	void hapus(UnitKerja unitKerja);
 	void hapus(String kode);
+	void hapus(Long id);
 	
 	UnitKerja get(Long idUnitKerja);
 	UnitKerja get(String kode);

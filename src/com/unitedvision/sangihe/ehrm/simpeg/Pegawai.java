@@ -28,7 +28,7 @@ import com.unitedvision.sangihe.ehrm.sppd.PemegangTugas;
 
 @Entity
 @Table(name = "pegawai")
-public class Pegawai implements Pejabat {
+public class Pegawai {
 
 	private long id;
 	private String nip;
@@ -37,8 +37,10 @@ public class Pegawai implements Pejabat {
 	private String password;
 	
 	// Property sementara
-	private Pangkat pangkat;
-	private Eselon eselon;
+	// private Pangkat pangkat;
+	// private Eselon eselon;
+	private String pangkat;
+	private String eselon;
 	private String namaJabatan;
 	
 	private List<RiwayatPangkat> daftarPangkat = new ArrayList<>();
@@ -115,54 +117,52 @@ public class Pegawai implements Pejabat {
 
 	@Transient
 	public String getPasswordStr() {
-		return "****";
+		return getPassword();
 	}
 	
 	public void setPasswordStr(String password) {
 		setPassword(password);
 	}
 	
-	@Column(name = "pangkat")
-	public Pangkat getPangkat() {
-		return pangkat;
+//	@Column(name = "pangkat")
+//	public Pangkat getPangkat() {
+//		return pangkat;
+//	}
+//
+//	public void setPangkat(Pangkat pangkat) {
+//		this.pangkat = pangkat;
+//	}
+//	
+//	@Column(name = "eselon")
+//	public Eselon getEselon() {
+//		return eselon;
+//	}
+//
+//	public void setEselon(Eselon eselon) {
+//		this.eselon = eselon;
+//	}
 
-//		try {
-//			return getPangkatTerakhir().getPangkat();
-//		} catch (NullCollectionException | NoPangkatException e) {
-//			return null;
-//		}
+	@Column(name = "pangkat")
+	public String getPangkat() {
+		return pangkat;
 	}
 
-	public void setPangkat(Pangkat pangkat) {
+	public void setPangkat(String pangkat) {
 		this.pangkat = pangkat;
 	}
 	
-	@Override
 	@Column(name = "eselon")
-	public Eselon getEselon() {
+	public String getEselon() {
 		return eselon;
-
-//		try {
-//			return getJabatan().getEselon();
-//		} catch (NullCollectionException | NoJabatanException e) {
-//			return null;
-//		}
 	}
 
-	public void setEselon(Eselon eselon) {
+	public void setEselon(String eselon) {
 		this.eselon = eselon;
 	}
 
-	@Override
 	@Column(name = "jabatan")
 	public String getNamaJabatan() {
 		return namaJabatan;
-
-//	try {
-//		return getJabatan().getNama();
-//	} catch (NullCollectionException | NoJabatanException e) {
-//		return null;
-//	}
 	}
 	
 	public void setNamaJabatan(String namaJabatan) {
@@ -314,26 +314,26 @@ public class Pegawai implements Pejabat {
 	public Jabatan getJabatan() throws NullCollectionException, NoJabatanException {
 		return getJabatanTerakhir().getJabatan();
 	}
-
-	@JsonIgnore
-	@Override
-	@Transient
-	public Date getTanggalMenjabat() throws NoJabatanException {
-		try {
-			return getJabatanTerakhir().getTanggalMulai();
-		} catch (NullCollectionException e) {
-			return null;
-		}
-	}
-
-	@Transient
-	public String getTanggalMenjabatStr() {
-		try {
-			return DateUtil.toStringDate(getTanggalMenjabat(), "-");
-		} catch (NoJabatanException e) {
-			return null;
-		}
-	}
+//
+//	@JsonIgnore
+//	@Override
+//	@Transient
+//	public Date getTanggalMenjabat() throws NoJabatanException {
+//		try {
+//			return getJabatanTerakhir().getTanggalMulai();
+//		} catch (NullCollectionException e) {
+//			return null;
+//		}
+//	}
+//
+//	@Transient
+//	public String getTanggalMenjabatStr() {
+//		try {
+//			return DateUtil.toStringDate(getTanggalMenjabat(), "-");
+//		} catch (NoJabatanException e) {
+//			return null;
+//		}
+//	}
 
 	@Transient
 	public String getNik() {

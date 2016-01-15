@@ -14,9 +14,7 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.unitedvision.sangihe.ehrm.NullCollectionException;
-import com.unitedvision.sangihe.ehrm.simpeg.Eselon;
 import com.unitedvision.sangihe.ehrm.simpeg.NoJabatanException;
-import com.unitedvision.sangihe.ehrm.simpeg.Pangkat;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.UnitKerja;
 
@@ -83,9 +81,14 @@ public class PemegangTugas {
 	public UnitKerja getUnitKerja() {
 		return pegawai.getUnitKerja();
 	}
+//
+//	@Transient
+//	public Pangkat getPangkat() {
+//		return pegawai.getPangkat();
+//	}
 
 	@Transient
-	public Pangkat getPangkat() {
+	public String getPangkat() {
 		return pegawai.getPangkat();
 	}
 
@@ -97,9 +100,14 @@ public class PemegangTugas {
 			return "tidak ada jabatan";
 		}
 	}
+//
+//	@Transient
+//	public Eselon getEselon() {
+//		return pegawai.getEselon();
+//	}
 
 	@Transient
-	public Eselon getEselon() {
+	public String getEselon() {
 		return pegawai.getEselon();
 	}
 

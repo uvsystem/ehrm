@@ -32,10 +32,10 @@ public class PegawaiController {
 		return RestMessage.success();
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/{nip}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	@ResponseBody
-	public RestMessage delete(@PathVariable String nip) throws ApplicationException, PersistenceException {
-		pegawaiService.hapus(nip);
+	public RestMessage delete(@PathVariable Long id) throws ApplicationException, PersistenceException {
+		pegawaiService.hapus(id);
 		
 		return RestMessage.success();
 	}

@@ -13,6 +13,7 @@ public interface PegawaiService {
 
 	void hapus(Pegawai pegawai);
 	void hapus(String nip);
+	void hapus(Long id);
 
 	Pegawai getByNip(String nip);
 

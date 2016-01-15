@@ -34,10 +34,10 @@ public class UnitKerjaController {
 		return RestMessage.success();
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE, value = "/{kode}")
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 	@ResponseBody
-	public RestMessage delete(@PathVariable String kode) throws ApplicationException, PersistenceException {
-		unitKerjaService.hapus(kode);
+	public RestMessage delete(@PathVariable Long id) throws ApplicationException, PersistenceException {
+		unitKerjaService.hapus(id);
 		
 		return RestMessage.success();
 	}

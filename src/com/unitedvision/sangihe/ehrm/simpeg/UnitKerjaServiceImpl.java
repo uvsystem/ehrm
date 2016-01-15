@@ -43,6 +43,12 @@ public class UnitKerjaServiceImpl implements UnitKerjaService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
+	public void hapus(Long id) {
+		unitKerjaRepository.delete(id);
+	}
+
+	@Override
 	public UnitKerja get(Long idUnitkerja) {
 		return unitKerjaRepository.findOne(idUnitkerja);
 	}

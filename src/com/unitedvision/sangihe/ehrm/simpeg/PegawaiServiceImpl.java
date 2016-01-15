@@ -67,6 +67,12 @@ public class PegawaiServiceImpl implements PegawaiService {
 	}
 
 	@Override
+	@Transactional(readOnly = false)
+	public void hapus(Long id) {
+		pegawaiRepository.delete(id);
+	}
+
+	@Override
 	public Pegawai getByNip(String nip) {
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
 		
