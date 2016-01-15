@@ -1,6 +1,5 @@
 package com.unitedvision.sangihe.ehrm.absensi;
 
-import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unitedvision.sangihe.ehrm.sppd.Sppd;
 
 @Entity
@@ -27,6 +27,7 @@ public class TugasLuar extends Absen {
 		setKalendar(kalendar);
 	}
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "sppd", nullable = false)
 	public Sppd getSppd() {
