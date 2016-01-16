@@ -16,6 +16,7 @@ import com.unitedvision.sangihe.ehrm.ApplicationException;
 import com.unitedvision.sangihe.ehrm.EntityRestMessage;
 import com.unitedvision.sangihe.ehrm.ListEntityRestMessage;
 import com.unitedvision.sangihe.ehrm.RestMessage;
+import com.unitedvision.sangihe.ehrm.manajemen.PasswordWrapper;
 
 @Controller
 @RequestMapping("/pegawai")
@@ -138,10 +139,12 @@ public class PegawaiController {
 		return ListEntityRestMessage.createListPegawai(daftarPegawai);
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/pangkat/test")
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}/password")
 	@ResponseBody
-	public Pangkat testPangkat() throws ApplicationException, PersistenceException {
-		return Pangkat.IIIA;
+	public RestMessage updatePassword(@PathVariable Long id, @RequestBody PasswordWrapper passwordWrapper) throws ApplicationException, PersistenceException {
+		pegawaiService.updatePassword(id, passwordWrapper.getPassword());
+		
+		return RestMessage.success();
 	}
 	
 }

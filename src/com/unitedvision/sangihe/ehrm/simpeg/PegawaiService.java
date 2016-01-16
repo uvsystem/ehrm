@@ -50,4 +50,6 @@ public interface PegawaiService {
 	void hapusRiwayatJabatan(String nip, Long idJabatan);
 	void hapusRiwayatJabatan(Long idRiwayatJabatan);
 
+	void updatePassword(Long id, String password);
+
 }

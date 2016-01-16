@@ -3,6 +3,7 @@ package com.unitedvision.sangihe.ehrm.simpeg.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -33,5 +34,9 @@ public interface PegawaiRepository extends JpaRepository<Pegawai, Long> {
 
 	@Query("FROM Pegawai pg WHERE pg.nip = ?1 OR pg.penduduk.nama = ?1")
 	Pegawai findByNipOrPenduduk_Nama(String keyword);
+
+	@Modifying
+	@Query("Update Pegawai p Set p.password = ?2 Where p.id = ?1")
+	void updatePassword(Long id, String password);
 
 }

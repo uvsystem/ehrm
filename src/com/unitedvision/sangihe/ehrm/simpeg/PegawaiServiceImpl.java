@@ -286,4 +286,8 @@ public class PegawaiServiceImpl implements PegawaiService {
 		return riwayatJabatanRepository.findByPegawai_Nip(nip);
 	}
 	
+	@Override
+	public void updatePassword(Long id, String password) {
+		pegawaiRepository.updatePassword(id, password);
+	}
 }
