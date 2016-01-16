@@ -38,6 +38,6 @@ public interface RekapAbsenRepository extends JpaRepository<RekapAbsen, String> 
 			"FROM pegawai pgw INNER JOIN penduduk pdk ON pgw.penduduk = pdk.id " +
 			"INNER JOIN unit_kerja uk ON pgw.unit_kerja = uk.id " +
 			"LEFT JOIN unit_kerja uk2 ON uk.parent = uk2.id " +
-			"GROUP BY uk.nama ORDER BY nip DESC")
+			"ORDER BY uk.nama, hadir DESC")
 	List<RekapAbsen> rekap(@Param("tanggalAwal") Date awal, @Param("tanggalAkhir") Date akhir);
 }
