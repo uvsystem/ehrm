@@ -49,7 +49,7 @@ public class TokenServiceTest {
 	private Pegawai pegawai;
 	
 	@Before
-	public void setup() {
+	public void setup() throws UnauthenticatedAccessException {
 		Aplikasi aplikasi = new Aplikasi();
 		aplikasi.setKode("SIMPEG");
 		aplikasi.setNama("Sistem Informasi Manajemen Pegawai");
@@ -84,7 +84,7 @@ public class TokenServiceTest {
 	}
 	
 	@Test
-	public void test_create() {
+	public void test_create() throws UnauthenticatedAccessException {
 		Token token = tokenService.create("090213016", "password");
 		
 		assertNotEquals("", token.getToken());

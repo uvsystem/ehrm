@@ -83,13 +83,15 @@ public class TokenServiceImpl implements TokenService {
 	
 	@Override
 	@Transactional(readOnly = false)
-	public Token create(String nip, String password) {
+	public Token create(String nip, String password) throws UnauthenticatedAccessException {
 		if (nip.equals(CodeUtil.username) && password.equals(CodeUtil.password))
 			return Token.createAdmin();
 		
 		Pegawai pegawai = pegawaiRepository.findByNip(nip);
+		if (nip.equals(pegawai.getNip()) && password.equals(pegawai.getPassword()))
+			return create(pegawai);
 		
-		return create(pegawai);
+		throw new UnauthenticatedAccessException("Username/Password salah!");
 	}
 
 	@Override
