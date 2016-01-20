@@ -21,14 +21,15 @@ public class RekapSppdPdfView extends CustomAbstractPdfView {
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		@SuppressWarnings("unchecked")
 		List<RekapSppd> list = (List<RekapSppd>) model.get("rekap");
-		Integer tahun = (Integer) model.get("tahun");
+		Date awal = (Date) model.get("awal");
+		Date akhir = (Date) model.get("akhir");
 		
 		doc.newPage();
 		
 		createTitle(doc);
 		addEmptyLine(doc, 1);
 		
-		createSubTitle(doc, tahun);
+		createSubTitle(doc, awal, akhir);
 		addEmptyLine(doc, 1);
 		
 		createContent(doc, list);
@@ -47,7 +48,7 @@ public class RekapSppdPdfView extends CustomAbstractPdfView {
 		doc.add(title);
 	}
 
-	protected void createSubTitle(Document doc, Integer tahun) throws DocumentException {
+	protected void createSubTitle(Document doc, Date awal, Date akhir) throws DocumentException {
 		Paragraph subTitle = new Paragraph();
 		subTitle.setAlignment(Element.ALIGN_CENTER);
 		
@@ -56,8 +57,8 @@ public class RekapSppdPdfView extends CustomAbstractPdfView {
 		PdfPTable table = new PdfPTable(columnWidth);
 		table.setWidthPercentage(tablePercentage);
 		
-		insertCell(table, "Tahun", align, 1, fontHeader, Rectangle.BOX, Color.WHITE, null);
-		insertCell(table, String.format(": %d", tahun), align, 1, fontHeader, Rectangle.BOX, Color.WHITE, null);
+		insertCell(table, "Periode", align, 1, fontHeader, Rectangle.BOX, Color.WHITE, null);
+		insertCell(table, String.format(": %s s/d %s", DateUtil.toFormattedStringDate(awal, "-"), DateUtil.toFormattedStringDate(akhir, "-")), align, 1, fontHeader, Rectangle.BOX, Color.WHITE, null);
 		Date tanggalCetak = DateUtil.getDate();
 		insertCell(table, String.format("Tanggal Cetak: %s", DateUtil.toFormattedStringDate(tanggalCetak, "-")), Element.ALIGN_RIGHT, 2, fontContent, Rectangle.BOX, Color.WHITE, null);
 		

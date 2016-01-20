@@ -26,16 +26,20 @@ public interface RekapSppdRepository extends JpaRepository<RekapSppd, String> {
 	List<RekapSppd> rekapSppd(@Param("awal") Date awal, @Param("akhir") Date akhir);
 
 	@Query(nativeQuery = true,
-		value="SELECT pgw.nip as nip, pdk.nama as nama, uk.nama as unit_kerja"
-				+ ", (SELECT COUNT(*) FROM pemegang_tugas ptgs INNER JOIN surat_tugas stgs ON ptgs.surat_tugas = stgs.id WHERE ptgs.pegawai = pgw.id AND stgs.tanggal BETWEEN :awal AND :akhir) as jumlah"
-				+ ", (SELECT SUM(stgs.jumlah_hari) FROM pemegang_tugas ptgs INNER JOIN surat_tugas stgs ON ptgs.surat_tugas = stgs.id WHERE ptgs.pegawai = pgw.id AND stgs.tanggal BETWEEN :awal AND :akhir) as jumlah_hari "
+		value="SELECT "
+				+ "pgw.nip AS nip, "
+				+ "pdk.nama AS nama, "
+				+ "uk.nama AS unit_kerja, "
+				+ "COUNT(*) As jumlah, "
+				+ "SUM(st.jumlah_hari) AS jumlah_hari "
 				+ "FROM pemegang_tugas pt "
 				+ "INNER JOIN pegawai pgw ON pt.pegawai = pgw.id "
 				+ "INNER JOIN penduduk pdk ON pgw.penduduk = pdk.id "
 				+ "INNER JOIN unit_kerja uk ON pgw.unit_kerja = uk.id "
 				+ "INNER JOIN surat_tugas st ON pt.surat_tugas = st.id "
 				+ "WHERE st.tanggal BETWEEN :awal AND :akhir "
-				+ "ORDER BY jumlah DESC")
+				+ "GROUP BY nip "
+				+ "ORDER BY jumlah DESC, jumlah_hari DESC")
 	List<RekapSppd> rekapSpt(@Param("awal") Date awal, @Param("akhir") Date akhir);
 
 }

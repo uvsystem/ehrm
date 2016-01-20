@@ -1,6 +1,7 @@
 package com.unitedvision.sangihe.ehrm.sppd;
 
 import java.sql.Date;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 
@@ -146,18 +147,47 @@ public class SuratTugasController {
 	@RequestMapping(method = RequestMethod.GET, value = "/rekap/tahun/{tahun}")
 	@ResponseBody
 	public ListEntityRestMessage<RekapSppd> rekapViewSpt(@PathVariable Integer tahun) throws ApplicationException, PersistenceException {
-		List<RekapSppd> rekap = suratTugasService.rekap(tahun);
+		Date awal = DateUtil.getDate(tahun, Month.JANUARY, 1);
+		Date akhir = DateUtil.getDate(tahun, Month.DECEMBER, 31);
+
+		List<RekapSppd> rekap = suratTugasService.rekap(awal, akhir);
 		
 		return ListEntityRestMessage.createListRekapSppd(rekap);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/rekap/tahun/{tahun}/cetak")
 	public ModelAndView rekapSpt(@PathVariable Integer tahun, Map<String, Object> model) throws ApplicationException, PersistenceException {
+		Date awal = DateUtil.getDate(tahun, Month.JANUARY, 1);
+		Date akhir = DateUtil.getDate(tahun, Month.DECEMBER, 31);
+
 		try {
-			List<RekapSppd> rekap = suratTugasService.rekap(tahun);
+			List<RekapSppd> rekap = suratTugasService.rekap(awal, akhir);
 			
 			model.put("rekap", rekap);
 			model.put("tahun", tahun);
+
+			return new ModelAndView("rekapSppd", model);
+		} catch (PersistenceException e) {
+			return new ModelAndView("pdfException", model);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/rekap/{awal}/to/{akhir}")
+	@ResponseBody
+	public ListEntityRestMessage<RekapSppd> rekapViewSpt(@PathVariable Date awal, @PathVariable Date akhir) throws ApplicationException, PersistenceException {
+		List<RekapSppd> rekap = suratTugasService.rekap(awal, akhir);
+		
+		return ListEntityRestMessage.createListRekapSppd(rekap);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/rekap/{awal}/to/{akhir}/cetak")
+	public ModelAndView rekapSpt(@PathVariable Date awal, @PathVariable Date akhir, Map<String, Object> model) throws ApplicationException, PersistenceException {
+		try {
+			List<RekapSppd> rekap = suratTugasService.rekap(awal, akhir);
+			
+			model.put("rekap", rekap);
+			model.put("awal", awal);
+			model.put("akhir", akhir);
 
 			return new ModelAndView("rekapSppd", model);
 		} catch (PersistenceException e) {

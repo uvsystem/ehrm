@@ -41,5 +41,8 @@ public interface SuratTugasService {
 	List<SuratTugas> cari(String keyword);
 
 	void hapus(Long id);
+	
+	@Deprecated
 	List<RekapSppd> rekap(Integer tahun);
+	List<RekapSppd> rekap(Date awal, Date akhir);
 }

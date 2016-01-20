@@ -214,4 +214,9 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 		return rekapSppdRepository.rekapSpt(awal, akhir);
 	}
 
+	@Override
+	public List<RekapSppd> rekap(Date awal, Date akhir) {
+		return rekapSppdRepository.rekapSpt(awal, akhir);
+	}
+
 }
