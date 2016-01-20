@@ -13,14 +13,29 @@ public interface RekapSppdRepository extends JpaRepository<RekapSppd, String> {
 
 	@Query(nativeQuery = true,
 		value="SELECT pgw.nip as nip, pdk.nama as nama, uk.nama as unit_kerja"
-				+ ", (SELECT COUNT(*) FROM sppd in_s INNER JOIN pemegang_tugas p_tgs ON in_s.pemegang_tugas = p_tgs.id WHERE p_tgs.pegawai = pgw.id AND in_s.tanggal_berangkat BETWEEN :awal AND :akhir) as jumlah_sppd"
-				+ ", (SELECT COUNT(*) FROM absen a WHERE a.pegawai = pgw.id AND a.status = 'TUGAS_LUAR') as jumlah_tugas_luar "
+				+ ", (SELECT COUNT(*) FROM sppd in_s INNER JOIN pemegang_tugas p_tgs ON in_s.pemegang_tugas = p_tgs.id WHERE p_tgs.pegawai = pgw.id AND in_s.tanggal_berangkat BETWEEN :awal AND :akhir) as jumlah"
+				+ ", (SELECT COUNT(*) FROM absen a WHERE a.pegawai = pgw.id AND a.status = 'TUGAS_LUAR') as jumlah_hari "
 				+ "FROM sppd s "
 				+ "INNER JOIN pemegang_tugas ptgs ON s.pemegang_tugas = ptgs.id "
 				+ "INNER JOIN pegawai pgw ON ptgs.pegawai = pgw.id "
 				+ "INNER JOIN penduduk pdk ON pgw.penduduk = pdk.id "
 				+ "INNER JOIN unit_kerja uk ON pgw.unit_kerja = uk.id "
-				+ "ORDER BY jumlah_sppd DESC")
-	List<RekapSppd> rekap(@Param("awal") Date awal, @Param("akhir") Date akhir);
+				+ "INNER JOIN surat_tugas st ON ptgs.surat_tugas = st.id "
+				+ "WHERE st.tanggal BETWEEN :awal AND :akhir "
+				+ "ORDER BY jumlah DESC")
+	List<RekapSppd> rekapSppd(@Param("awal") Date awal, @Param("akhir") Date akhir);
+
+	@Query(nativeQuery = true,
+		value="SELECT pgw.nip as nip, pdk.nama as nama, uk.nama as unit_kerja"
+				+ ", (SELECT COUNT(*) FROM pemegang_tugas ptgs INNER JOIN surat_tugas stgs ON ptgs.surat_tugas = stgs.id WHERE ptgs.pegawai = pgw.id AND stgs.tanggal BETWEEN :awal AND :akhir) as jumlah"
+				+ ", (SELECT SUM(stgs.jumlah_hari) FROM pemegang_tugas ptgs INNER JOIN surat_tugas stgs ON ptgs.surat_tugas = stgs.id WHERE ptgs.pegawai = pgw.id AND stgs.tanggal BETWEEN :awal AND :akhir) as jumlah_hari "
+				+ "FROM pemegang_tugas pt "
+				+ "INNER JOIN pegawai pgw ON pt.pegawai = pgw.id "
+				+ "INNER JOIN penduduk pdk ON pgw.penduduk = pdk.id "
+				+ "INNER JOIN unit_kerja uk ON pgw.unit_kerja = uk.id "
+				+ "INNER JOIN surat_tugas st ON pt.surat_tugas = st.id "
+				+ "WHERE st.tanggal BETWEEN :awal AND :akhir "
+				+ "ORDER BY jumlah DESC")
+	List<RekapSppd> rekapSpt(@Param("awal") Date awal, @Param("akhir") Date akhir);
 
 }

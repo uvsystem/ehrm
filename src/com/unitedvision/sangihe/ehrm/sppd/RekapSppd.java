@@ -46,7 +46,7 @@ public class RekapSppd {
 		this.namaUnitKerja = namaUnitKerja;
 	}
 
-	@Column(name = "jumlah_sppd")
+	@Column(name = "jumlah")
 	public Integer getJumlahSppd() {
 		return jumlahSppd;
 	}
@@ -55,7 +55,7 @@ public class RekapSppd {
 		this.jumlahSppd = jumlahSppd;
 	}
 
-	@Column(name = "jumlah_tugas_luar")
+	@Column(name = "jumlah_hari")
 	public Integer getJumlahTugasLuar() {
 		return jumlahTugasLuar;
 	}

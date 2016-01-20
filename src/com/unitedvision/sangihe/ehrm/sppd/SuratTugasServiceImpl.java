@@ -13,6 +13,7 @@ import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.simpeg.Pegawai;
 import com.unitedvision.sangihe.ehrm.simpeg.repository.PegawaiRepository;
 import com.unitedvision.sangihe.ehrm.sppd.SuratTugas.Status;
+import com.unitedvision.sangihe.ehrm.sppd.repository.RekapSppdRepository;
 import com.unitedvision.sangihe.ehrm.sppd.repository.SuratTugasRepository;
 
 @Service
@@ -23,6 +24,8 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 	private SuratTugasRepository suratTugasRepository;
 	@Autowired
 	private PegawaiRepository pegawaiRepository;
+	@Autowired
+	private RekapSppdRepository rekapSppdRepository;
 	
 	@Override
 	@Transactional(readOnly = false)
@@ -202,6 +205,13 @@ public class SuratTugasServiceImpl implements SuratTugasService {
 	@Override
 	public List<SuratTugas> cari(String keyword) {
 		return suratTugasRepository.findByNomorContaining(keyword);
+	}
+
+	@Override
+	public List<RekapSppd> rekap(Integer tahun) {
+		Date awal = DateUtil.getDate(tahun, Month.JANUARY, 1);
+		Date akhir = DateUtil.getDate(tahun, Month.DECEMBER, 31);
+		return rekapSppdRepository.rekapSpt(awal, akhir);
 	}
 
 }

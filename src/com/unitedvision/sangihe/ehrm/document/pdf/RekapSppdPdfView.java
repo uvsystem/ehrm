@@ -81,8 +81,8 @@ public class RekapSppdPdfView extends CustomAbstractPdfView {
 		insertCell(table, "Nip", align, 1, fontHeader, Rectangle.BOX, null, null);
 		insertCell(table, "Nama", align, 1, fontHeader, Rectangle.BOX, null, null);
 		insertCell(table, "Satuan Kerja", align, 1, fontHeader, Rectangle.BOX, null, null);
-		insertCell(table, "SPPD", align, 1, fontHeader, Rectangle.BOX, null, null);
-		insertCell(table, "TL", align, 1, fontHeader, Rectangle.BOX, null, null);
+		insertCell(table, "Jumlah Surat", align, 1, fontHeader, Rectangle.BOX, null, null);
+		insertCell(table, "Jumlah Hari", align, 1, fontHeader, Rectangle.BOX, null, null);
 		table.setHeaderRows(1);
 		
 		for (Object object : list) {

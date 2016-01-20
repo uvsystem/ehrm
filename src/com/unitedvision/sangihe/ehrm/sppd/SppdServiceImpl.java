@@ -151,7 +151,7 @@ public class SppdServiceImpl implements SppdService {
 	public List<RekapSppd> rekap(Integer tahun) {
 		Date awal = DateUtil.getDate(tahun, Month.JANUARY, 1);
 		Date akhir = DateUtil.getDate(tahun, Month.DECEMBER, 31);
-		return rekapSppdRepository.rekap(awal, akhir);
+		return rekapSppdRepository.rekapSppd(awal, akhir);
 	}
 
 }
