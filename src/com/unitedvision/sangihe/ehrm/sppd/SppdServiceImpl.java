@@ -154,4 +154,9 @@ public class SppdServiceImpl implements SppdService {
 		return rekapSppdRepository.rekapSppd(awal, akhir);
 	}
 
+	@Override
+	public List<RekapSppd> rekap(Date awal, Date akhir) {
+		return rekapSppdRepository.rekapSppd(awal, akhir);
+	}
+
 }

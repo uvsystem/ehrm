@@ -32,7 +32,8 @@ public class RekapSppdPdfViewTest extends RekapSppdPdfView {
             document.open();
 
             int tahun = 2015;
-            List<RekapSppd> list = sppdService.rekap(tahun);
+            @SuppressWarnings("deprecation")
+			List<RekapSppd> list = sppdService.rekap(tahun);
 
             Map<String, Object> model = new HashMap<>();
             model.put("rekap", list);

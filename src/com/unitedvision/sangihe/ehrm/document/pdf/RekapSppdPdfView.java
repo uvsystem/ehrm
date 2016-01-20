@@ -16,13 +16,15 @@ import com.unitedvision.sangihe.ehrm.DateUtil;
 import com.unitedvision.sangihe.ehrm.sppd.RekapSppd;
 
 public class RekapSppdPdfView extends CustomAbstractPdfView {
-
+	private String judul;
+	
 	@Override
 	public Document create(Map<String, Object> model, Document doc) throws DocumentException {
 		@SuppressWarnings("unchecked")
 		List<RekapSppd> list = (List<RekapSppd>) model.get("rekap");
 		Date awal = (Date) model.get("awal");
 		Date akhir = (Date) model.get("akhir");
+		judul = (String) model.get("judul");
 		
 		doc.newPage();
 		
@@ -42,7 +44,7 @@ public class RekapSppdPdfView extends CustomAbstractPdfView {
 	protected void createTitle(Document doc) throws DocumentException {
 		Paragraph title = new Paragraph();
 		title.add(new Paragraph("Pemerintah Kabupaten Kepulauan Sangihe", fontTitle));
-		title.add(new Paragraph("Rekap SPPD & Tugas Luar", fontSubTitle));
+		title.add(new Paragraph(String.format("Rekap %s", judul), fontSubTitle));
 		title.setAlignment(Element.ALIGN_CENTER);
 		
 		doc.add(title);

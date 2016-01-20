@@ -29,6 +29,8 @@ public interface SppdService {
 
 	List<Sppd> cari(String kode);
 
+	@Deprecated
 	List<RekapSppd> rekap(Integer tahun);
+	List<RekapSppd> rekap(Date awal, Date akhir);
 	
 }

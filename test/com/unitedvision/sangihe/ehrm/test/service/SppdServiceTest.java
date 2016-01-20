@@ -138,6 +138,7 @@ public class SppdServiceTest {
 		assertEquals(pemegangTugas.getSuratTugas().getJumlahHari(), tugasLuarRepository.countBySppd(sppd));
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void test_rekap() {
 		

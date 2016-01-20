@@ -165,6 +165,7 @@ public class SuratTugasController {
 			
 			model.put("rekap", rekap);
 			model.put("tahun", tahun);
+			model.put("judul", "Surat Tugas");
 
 			return new ModelAndView("rekapSppd", model);
 		} catch (PersistenceException e) {
@@ -188,6 +189,7 @@ public class SuratTugasController {
 			model.put("rekap", rekap);
 			model.put("awal", awal);
 			model.put("akhir", akhir);
+			model.put("judul", "Surat Tugas");
 
 			return new ModelAndView("rekapSppd", model);
 		} catch (PersistenceException e) {

@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.unitedvision.sangihe</groupId>
   <artifactId>ehrm</artifactId>
-  <version>0.0.4-SNAPSHOT</version>
+  <version>1.0.1</version>
   <packaging>war</packaging>
   <build>
     <sourceDirectory>src</sourceDirectory>

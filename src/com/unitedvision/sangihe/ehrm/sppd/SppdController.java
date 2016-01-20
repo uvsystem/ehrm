@@ -1,6 +1,7 @@
 package com.unitedvision.sangihe.ehrm.sppd;
 
 import java.sql.Date;
+import java.time.Month;
 import java.util.List;
 import java.util.Map;
 
@@ -91,18 +92,49 @@ public class SppdController {
 	@RequestMapping(method = RequestMethod.GET, value = "/rekap/tahun/{tahun}")
 	@ResponseBody
 	public ListEntityRestMessage<RekapSppd> rekapView(@PathVariable Integer tahun) throws ApplicationException, PersistenceException {
-		List<RekapSppd> rekap = sppdService.rekap(tahun);
+		Date awal = DateUtil.getDate(tahun, Month.JANUARY, 1);
+		Date akhir = DateUtil.getDate(tahun, Month.DECEMBER, 31);
+
+		List<RekapSppd> rekap = sppdService.rekap(awal, akhir);
 		
 		return ListEntityRestMessage.createListRekapSppd(rekap);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/rekap/tahun/{tahun}/cetak")
 	public ModelAndView rekap(@PathVariable Integer tahun, Map<String, Object> model) throws ApplicationException, PersistenceException {
+		Date awal = DateUtil.getDate(tahun, Month.JANUARY, 1);
+		Date akhir = DateUtil.getDate(tahun, Month.DECEMBER, 31);
+
 		try {
-			List<RekapSppd> rekap = sppdService.rekap(tahun);
+			List<RekapSppd> rekap = sppdService.rekap(awal, akhir);
 			
 			model.put("rekap", rekap);
 			model.put("tahun", tahun);
+			model.put("judul", "SPPD & Tugas Luar");
+
+			return new ModelAndView("rekapSppd", model);
+		} catch (PersistenceException e) {
+			return new ModelAndView("pdfException", model);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/rekap/{awal}/to/{akhir}")
+	@ResponseBody
+	public ListEntityRestMessage<RekapSppd> rekapView(@PathVariable Date awal, @PathVariable Date akhir) throws ApplicationException, PersistenceException {
+		List<RekapSppd> rekap = sppdService.rekap(awal, akhir);
+		
+		return ListEntityRestMessage.createListRekapSppd(rekap);
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "/rekap/{awal}/to/{akhir}/cetak")
+	public ModelAndView rekap(@PathVariable Date awal, @PathVariable Date akhir, Map<String, Object> model) throws ApplicationException, PersistenceException {
+		try {
+			List<RekapSppd> rekap = sppdService.rekap(awal, akhir);
+			
+			model.put("rekap", rekap);
+			model.put("awal", awal);
+			model.put("akhir", akhir);
+			model.put("judul", "SPPD & Tugas Luar");
 
 			return new ModelAndView("rekapSppd", model);
 		} catch (PersistenceException e) {
