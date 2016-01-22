@@ -55,6 +55,7 @@ public class SuratTugas {
 		tujuan = message.getTujuan();
 		maksud = message.getMaksud();
 		id = message.getId();
+		tanggal = message.getTanggal();
 	}
 
 	@Id
@@ -161,6 +162,7 @@ public class SuratTugas {
 		private Integer jumlahHari;
 		private String tujuan;
 		private String maksud;
+		private Date tanggal;
 		
 		public Message() {
 			super();
@@ -213,6 +215,14 @@ public class SuratTugas {
 
 		public void setMaksud(String maksud) {
 			this.maksud = maksud;
+		}
+
+		public Date getTanggal() {
+			return tanggal;
+		}
+
+		public void setTanggal(Date tanggal) {
+			this.tanggal = tanggal;
 		}
 
 	}
